@@ -1,0 +1,43 @@
+{
+  "cookies": [
+    {
+      "name": "access_token",
+      "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwidXNlcl9pZCI6MSwiZXhwIjo5OTk5OTk5OTk5fQ.mock_access_token",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1755476031.507393,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "refresh_token",
+      "value": "mock_refresh_token",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1757463231.507495,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:3001",
+      "localStorage": [
+        {
+          "name": "user",
+          "value": "{\"id\":1,\"email\":\"admin@padelyzer.com\",\"username\":\"admin\",\"is_superuser\":true,\"first_name\":\"Admin\",\"last_name\":\"User\",\"name\":\"Admin User\",\"role\":\"Administrator\"}"
+        },
+        {
+          "name": "refresh_token",
+          "value": "mock_refresh_token"
+        },
+        {
+          "name": "access_token",
+          "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwidXNlcl9pZCI6MSwiZXhwIjo5OTk5OTk5OTk5fQ.mock_access_token"
+        }
+      ]
+    }
+  ]
+}

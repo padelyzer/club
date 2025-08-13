@@ -1,0 +1,344 @@
+{
+  "timestamp": "2025-08-06T10:03:34.817592",
+  "test_summary": {
+    "authentication": true,
+    "clubs": true,
+    "courts": true,
+    "availability": true,
+    "listing": true,
+    "creation": false
+  },
+  "detailed_results": {
+    "AUTHENTICATION": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:03:34.587943",
+      "details": {
+        "email": "apitest@padelyzer.com",
+        "token_length": 324,
+        "user_id": 138,
+        "is_staff": false,
+        "club": null
+      }
+    },
+    "CLUBS_DATA": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:03:34.606094",
+      "details": {
+        "clubs_count": 1,
+        "total_count": 1,
+        "sample_club": {
+          "id": "555730d5-b0ea-4579-9e16-c7b307fd8f6d",
+          "name": "Test Padel Club Partners"
+        },
+        "data_preview": "Found 1 clubs"
+      }
+    },
+    "COURTS_DATA": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:03:34.617381",
+      "details": {
+        "courts_count": 3,
+        "required_fields_present": [
+          "id",
+          "name",
+          "club",
+          "price_per_hour"
+        ],
+        "missing_fields": [],
+        "sample_court_fields": [
+          "id",
+          "club",
+          "club_name",
+          "organization",
+          "name",
+          "number",
+          "surface_type",
+          "surface_type_display",
+          "has_lighting",
+          "has_heating"
+        ],
+        "sample_pricing": "110.00",
+        "data_preview": "Found 3 courts"
+      }
+    },
+    "AVAILABILITY": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:03:34.756383",
+      "details": {
+        "endpoint": "http://localhost:8000/api/v1/reservations/reservations/check_availability/",
+        "method": "POST",
+        "params": {
+          "club": "555730d5-b0ea-4579-9e16-c7b307fd8f6d",
+          "date": "2025-08-06"
+        },
+        "response_type": "dict",
+        "data_preview": "{'date': '2025-08-06', 'availability': [{'court': {'id': '5d845c57-21fa-430f-bfc7-e37abfcfa6d7', 'name': 'Cancha 1', 'price_per_hour': 110.0}, 'slots': [{'start_time': '07:00', 'end_time': '08:00', 'i"
+      }
+    },
+    "RESERVATION_LISTING": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:03:34.769085",
+      "details": {
+        "endpoint": "http://localhost:8000/api/v1/reservations/reservations/",
+        "reservations_count": 0,
+        "total_count": 0,
+        "sample_reservation": null,
+        "data_preview": "Found 0 reservations"
+      }
+    },
+    "RESERVATION_VALIDATION_1": {
+      "status": "INFO",
+      "timestamp": "2025-08-06T10:03:34.779753",
+      "details": {
+        "endpoint": "http://localhost:8000/api/v1/reservations/reservations/",
+        "status_code": 400,
+        "validation_errors": {
+          "club": [
+            "Este campo es requerido."
+          ],
+          "player_name": [
+            "Este campo es requerido."
+          ]
+        },
+        "request_data_fields": [
+          "court",
+          "date",
+          "start_time",
+          "end_time",
+          "visitor_name",
+          "visitor_email",
+          "visitor_phone",
+          "notes",
+          "payment_status"
+        ]
+      }
+    },
+    "RESERVATION_VALIDATION_2": {
+      "status": "INFO",
+      "timestamp": "2025-08-06T10:03:34.789812",
+      "details": {
+        "endpoint": "http://localhost:8000/api/v1/reservations/reservations/",
+        "status_code": 400,
+        "validation_errors": {
+          "club": [
+            "Este campo es requerido."
+          ],
+          "player_name": [
+            "Este campo es requerido."
+          ]
+        },
+        "request_data_fields": [
+          "court",
+          "date",
+          "start_time",
+          "end_time",
+          "visitor_name",
+          "visitor_email",
+          "visitor_phone",
+          "notes",
+          "payment_status",
+          "court_id"
+        ]
+      }
+    },
+    "RESERVATION_VALIDATION_3": {
+      "status": "INFO",
+      "timestamp": "2025-08-06T10:03:34.799082",
+      "details": {
+        "endpoint": "http://localhost:8000/api/v1/reservations/reservations/",
+        "status_code": 400,
+        "validation_errors": {
+          "club": [
+            "Este campo es requerido."
+          ],
+          "player_name": [
+            "Este campo es requerido."
+          ]
+        },
+        "request_data_fields": [
+          "court",
+          "date",
+          "start_time",
+          "end_time",
+          "visitor_name",
+          "visitor_email",
+          "visitor_phone",
+          "notes",
+          "payment_status",
+          "datetime"
+        ]
+      }
+    },
+    "RESERVATION_CREATE": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T10:03:34.817525",
+      "details": {
+        "error": "No reservation endpoint accepted the creation request",
+        "tested_endpoints": [
+          "http://localhost:8000/api/v1/reservations/reservations/",
+          "http://localhost:8000/api/v1/reservations/"
+        ],
+        "court_used": "5d845c57-21fa-430f-bfc7-e37abfcfa6d7"
+      }
+    },
+    "API_ANALYSIS": {
+      "status": "INFO",
+      "timestamp": "2025-08-06T10:03:34.817547",
+      "details": {
+        "analysis": {
+          "authentication_working": true,
+          "user_context": true,
+          "user_has_organization": false,
+          "user_has_club": false,
+          "clubs_available": 1,
+          "courts_available": 3,
+          "pricing_configured": true
+        },
+        "issues_found": [
+          "User lacks organization context"
+        ],
+        "recommendations": [
+          "Ensure users are properly assigned to organizations"
+        ],
+        "data_preview": "1 clubs, 3 courts"
+      }
+    }
+  },
+  "user_data": {
+    "id": 138,
+    "username": "apitest",
+    "email": "apitest@padelyzer.com",
+    "first_name": "API",
+    "last_name": "Test",
+    "phone": "",
+    "email_verified": false,
+    "phone_verified": false,
+    "two_factor_enabled": false,
+    "two_factor_method": "email",
+    "avatar_url": "",
+    "language": "es-mx",
+    "timezone": "America/Mexico_City",
+    "organization_memberships": [
+      {
+        "id": "fe9a3036-478e-4246-8dfe-2d9e91fb3f2c",
+        "organization": "21900354-589c-420f-8ed3-ed475d91e0d3",
+        "organization_name": "Test Padel",
+        "role": "admin",
+        "permissions": {},
+        "joined_at": "2025-08-06 10:02:38"
+      }
+    ],
+    "current_organization": {
+      "id": "21900354-589c-420f-8ed3-ed475d91e0d3",
+      "trade_name": "Test Padel",
+      "business_name": "Test Padel Organization",
+      "type": "club",
+      "state": "active"
+    },
+    "current_organization_id": "21900354-589c-420f-8ed3-ed475d91e0d3",
+    "club": null,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_active": true,
+    "date_joined": "2025-08-06 10:01:29",
+    "last_login": "2025-08-06 10:03:34"
+  },
+  "clubs_data": [
+    {
+      "id": "555730d5-b0ea-4579-9e16-c7b307fd8f6d",
+      "organization": "21900354-589c-420f-8ed3-ed475d91e0d3",
+      "name": "Test Padel Club Partners",
+      "slug": "test-padel-club-partners",
+      "description": "",
+      "email": "club@test.com",
+      "phone": "+1234567890",
+      "website": "",
+      "address": {},
+      "full_address": "M\u00e9xico",
+      "latitude": null,
+      "longitude": null,
+      "opening_time": "07:00:00",
+      "closing_time": "23:00:00",
+      "days_open": [],
+      "features": [],
+      "settings": {},
+      "logo_url": "",
+      "cover_image_url": "",
+      "primary_color": "#1E88E5",
+      "total_courts": 3,
+      "courts_count": 3,
+      "active_courts_count": 3,
+      "total_members": 0,
+      "is_active": true,
+      "created_at": "2025-08-05 18:11:42",
+      "updated_at": "2025-08-06 10:03:29"
+    }
+  ],
+  "courts_data": [
+    {
+      "id": "5d845c57-21fa-430f-bfc7-e37abfcfa6d7",
+      "club": "555730d5-b0ea-4579-9e16-c7b307fd8f6d",
+      "club_name": "Test Padel Club Partners",
+      "organization": "21900354-589c-420f-8ed3-ed475d91e0d3",
+      "name": "Cancha 1",
+      "number": 1,
+      "surface_type": "glass",
+      "surface_type_display": "Cristal",
+      "has_lighting": true,
+      "has_heating": false,
+      "has_roof": false,
+      "is_maintenance": false,
+      "maintenance_notes": "",
+      "price_per_hour": "110.00",
+      "is_active": true,
+      "created_at": "2025-08-06 10:03:29",
+      "updated_at": "2025-08-06 10:03:29"
+    },
+    {
+      "id": "54723b54-fddb-43f6-85e8-d7b3d792b39b",
+      "club": "555730d5-b0ea-4579-9e16-c7b307fd8f6d",
+      "club_name": "Test Padel Club Partners",
+      "organization": "21900354-589c-420f-8ed3-ed475d91e0d3",
+      "name": "Cancha 2",
+      "number": 2,
+      "surface_type": "glass",
+      "surface_type_display": "Cristal",
+      "has_lighting": true,
+      "has_heating": false,
+      "has_roof": false,
+      "is_maintenance": false,
+      "maintenance_notes": "",
+      "price_per_hour": "120.00",
+      "is_active": true,
+      "created_at": "2025-08-06 10:03:29",
+      "updated_at": "2025-08-06 10:03:29"
+    },
+    {
+      "id": "d883e04d-6eb2-4668-aa9d-18bde62767a7",
+      "club": "555730d5-b0ea-4579-9e16-c7b307fd8f6d",
+      "club_name": "Test Padel Club Partners",
+      "organization": "21900354-589c-420f-8ed3-ed475d91e0d3",
+      "name": "Cancha 3",
+      "number": 3,
+      "surface_type": "glass",
+      "surface_type_display": "Cristal",
+      "has_lighting": true,
+      "has_heating": false,
+      "has_roof": false,
+      "is_maintenance": false,
+      "maintenance_notes": "",
+      "price_per_hour": "130.00",
+      "is_active": true,
+      "created_at": "2025-08-06 10:03:29",
+      "updated_at": "2025-08-06 10:03:29"
+    }
+  ],
+  "critical_issues": [],
+  "frontend_recommendations": [
+    "Use email field for authentication",
+    "Use /api/v1/clubs/courts/ for court data",
+    "Verify user organization context",
+    "Check court availability endpoints",
+    "Review reservation creation validation"
+  ]
+}

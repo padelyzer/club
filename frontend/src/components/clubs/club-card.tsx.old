@@ -1,0 +1,409 @@
+'use client';
+
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Users,
+  TrendingUp,
+  MoreVertical,
+  Edit,
+  Trash2,
+  Eye,
+  Settings,
+  Building2,
+  Star,
+  CheckCircle,
+} from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Club, ClubViewMode } from '@/types/club';
+import { useClubsStore } from '@/store/clubsStore';
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+
+interface ClubCardProps {
+  club: Club;
+  viewMode: ClubViewMode;
+}
+
+export const ClubCard: React.FC<ClubCardProps> = ({ club, viewMode }) => {
+  const { t } = useTranslation();
+  const { openDetail, openForm, activeClubId, switchClub } = useClubsStore();
+  const [imageError, setImageError] = useState(false);
+
+  const isActive = activeClubId === club.id;
+
+  const handleSetActive = () => {
+    switchClub(club.id);
+  };
+
+  const getOperatingStatus = () => {
+    const now = new Date();
+    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const currentDay = days[now.getDay()];
+    const currentTime = now.toTimeString().slice(0, 5);
+
+    const todaySchedule = club.schedule.find((s) => s.day === currentDay);
+
+    if (!todaySchedule || !todaySchedule.is_open) {
+      return { isOpen: false, text: t('clubs.closed') };
+    }
+
+    if (todaySchedule.open_time && todaySchedule.close_time) {
+      const isOpen =
+        currentTime >= todaySchedule.open_time &&
+        currentTime <= todaySchedule.close_time;
+      return {
+        isOpen,
+        text: isOpen ? t('clubs.openNow') : t('clubs.closed'),
+        hours: `${todaySchedule.open_time} - ${todaySchedule.close_time}`,
+      };
+    }
+
+    return { isOpen: false, text: t('clubs.closed') };
+  };
+
+  const operatingStatus = getOperatingStatus();
+
+  if (viewMode === 'list') {
+    return (
+      <motion.div
+        whileHover={{ scale: 1.01 }}
+        className={cn(
+          'bg-white dark:bg-gray-800 rounded-lg shadow-sm border transition-all',
+          isActive
+            ? 'border-blue-500 ring-2 ring-blue-500/20'
+            : 'border-gray-200 dark:border-gray-700'
+        )}
+      >
+        <div className="p-6">
+          <div className="flex items-start justify-between">
+            <div className="flex items-start space-x-4 flex-1">
+              {/* Club Logo */}
+              <div className="flex-shrink-0">
+                {club.logo && !imageError ? (
+                  <img
+                    src={club.logo}
+                    alt={club.name}
+                    className="h-16 w-16 rounded-lg object-cover"
+                    onError={() => setImageError(true)}
+                  />
+                ) : (
+                  <div className="h-16 w-16 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                    <Building2 className="h-8 w-8 text-white" />
+                  </div>
+                )}
+              </div>
+
+              {/* Club Info */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                      {club.name}
+                      {isActive && (
+                        <Badge variant="primary" size="sm">
+                          <CheckCircle className="h-3 w-3 mr-1" />
+                          {t('clubs.active')}
+                        </Badge>
+                      )}
+                    </h3>
+                    {club.description && (
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
+                        {club.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mt-3 flex flex-wrap items-center gap-4 text-sm">
+                  <div className="flex items-center text-gray-600 dark:text-gray-400">
+                    <MapPin className="h-4 w-4 mr-1" />
+                    <span>
+                      {club.address?.city || t('clubs.noLocation')}, {club.address?.state || ''}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center text-gray-600 dark:text-gray-400">
+                    <Phone className="h-4 w-4 mr-1" />
+                    <span>{club.phone || 'Sin teléfono'}</span>
+                  </div>
+
+                  <div className="flex items-center text-gray-600 dark:text-gray-400">
+                    <Building2 className="h-4 w-4 mr-1" />
+                    <span>
+                      {t('clubs.courts', { count: club.total_courts })}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center">
+                    <div
+                      className={cn(
+                        'flex items-center px-2 py-1 rounded-full text-xs font-medium',
+                        operatingStatus.isOpen
+                          ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                          : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
+                      )}
+                    >
+                      <Clock className="h-3 w-3 mr-1" />
+                      {operatingStatus.text}
+                      {operatingStatus.hours && (
+                        <span className="ml-1">({operatingStatus.hours})</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {club.rating && (
+                    <div className="flex items-center text-yellow-600 dark:text-yellow-500">
+                      <Star className="h-4 w-4 mr-1 fill-current" />
+                      <span>{club.rating.toFixed(1)}</span>
+                      {club.total_reviews && (
+                        <span className="text-gray-500 dark:text-gray-400 ml-1">
+                          ({club.total_reviews})
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center space-x-2 ml-4">
+              {!isActive && (
+                <button
+                  onClick={handleSetActive}
+                  className="px-3 py-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 border border-blue-600 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                >
+                  {t('clubs.setActive')}
+                </button>
+              )}
+
+              <DropdownMenu
+                trigger={
+                  <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                    <MoreVertical className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                  </button>
+                }
+                items={[
+                  {
+                    label: t('common.view'),
+                    icon: Eye,
+                    onClick: () => openDetail(club),
+                  },
+                  {
+                    label: t('common.edit'),
+                    icon: Edit,
+                    onClick: () => openForm(club),
+                  },
+                  {
+                    label: t('clubs.manageSettings'),
+                    icon: Settings,
+                    onClick: () => {
+                      // TODO: Implement manage settings functionality
+                    },
+                  },
+                  {
+                    type: 'separator',
+                  },
+                  {
+                    label: t('common.delete'),
+                    icon: Trash2,
+                    onClick: () => {
+                      // TODO: Implement delete functionality
+                    },
+                    variant: 'danger',
+                  },
+                ]}
+              />
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="mt-4 grid grid-cols-4 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {t('clubs.members')}
+              </p>
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+                <Users className="h-3 w-3 mr-1" />
+                {club.active_members}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {t('clubs.occupancy')}
+              </p>
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+                <TrendingUp className="h-3 w-3 mr-1" />
+                {club.average_occupancy}%
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {t('clubs.services')}
+              </p>
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                {club.services.filter((s) => s.is_available).length}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {t('clubs.features')}
+              </p>
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                {club.features.length}
+              </p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // Grid view
+  return (
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      className={cn(
+        'bg-white dark:bg-gray-800 rounded-lg shadow-sm border transition-all overflow-hidden group',
+        isActive
+          ? 'border-blue-500 ring-2 ring-blue-500/20'
+          : 'border-gray-200 dark:border-gray-700'
+      )}
+    >
+      {/* Cover Image */}
+      <div className="relative h-48 bg-gradient-to-br from-blue-500 to-indigo-600 overflow-hidden">
+        {club.cover_image && !imageError ? (
+          <img
+            src={club.cover_image}
+            alt={club.name}
+            className="w-full h-full object-cover"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Building2 className="h-16 w-16 text-white/20" />
+          </div>
+        )}
+
+        {/* Operating Status Badge */}
+        <div className="absolute top-4 right-4">
+          <div
+            className={cn(
+              'flex items-center px-3 py-1.5 rounded-full text-xs font-medium backdrop-blur-sm',
+              operatingStatus.isOpen
+                ? 'bg-green-500/90 text-white'
+                : 'bg-gray-900/70 text-white'
+            )}
+          >
+            <Clock className="h-3 w-3 mr-1" />
+            {operatingStatus.text}
+          </div>
+        </div>
+
+        {/* Active Badge */}
+        {isActive && (
+          <div className="absolute top-4 left-4">
+            <Badge
+              variant="primary"
+              size="sm"
+              className="bg-blue-500/90 text-white backdrop-blur-sm"
+            >
+              <CheckCircle className="h-3 w-3 mr-1" />
+              {t('clubs.active')}
+            </Badge>
+          </div>
+        )}
+      </div>
+
+      <div className="p-4">
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex-1">
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 line-clamp-1">
+              {club.name}
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center mt-1">
+              <MapPin className="h-3 w-3 mr-1" />
+              {club.address?.city || t('clubs.noLocation')}
+            </p>
+          </div>
+
+          <DropdownMenu
+            trigger={
+              <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors opacity-0 group-hover:opacity-100">
+                <MoreVertical className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              </button>
+            }
+            items={[
+              {
+                label: t('common.view'),
+                icon: Eye,
+                onClick: () => openDetail(club),
+              },
+              {
+                label: t('common.edit'),
+                icon: Edit,
+                onClick: () => openForm(club),
+              },
+            ]}
+          />
+        </div>
+
+        {/* Quick Info */}
+        <div className="space-y-2 text-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500 dark:text-gray-400">
+              {t('clubs.courts')}
+            </span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">
+              {club.total_courts}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500 dark:text-gray-400">
+              {t('clubs.members')}
+            </span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">
+              {club.active_members}
+            </span>
+          </div>
+          {club.rating && (
+            <div className="flex items-center justify-between">
+              <span className="text-gray-500 dark:text-gray-400">
+                {t('clubs.rating')}
+              </span>
+              <div className="flex items-center text-yellow-600 dark:text-yellow-500">
+                <Star className="h-3 w-3 mr-1 fill-current" />
+                <span className="font-medium">{club.rating.toFixed(1)}</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Action Button */}
+        <div className="mt-4">
+          {!isActive ? (
+            <button
+              onClick={handleSetActive}
+              className="w-full px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 border border-blue-600 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+            >
+              {t('clubs.setActive')}
+            </button>
+          ) : (
+            <button
+              onClick={() => openDetail(club)}
+              className="w-full px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            >
+              {t('clubs.viewDetails')}
+            </button>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+};

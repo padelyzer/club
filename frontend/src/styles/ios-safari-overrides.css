@@ -1,0 +1,139 @@
+/* iOS Safari Specific Overrides */
+
+/* Use CSS custom property for accurate viewport height */
+:root {
+  --vh: 1vh;
+}
+
+/* iOS Safari safe area handling */
+.ios-safari-booking-container {
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Prevent zoom on input focus in iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  input[type="time"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* iOS Safari momentum scrolling */
+.ios-scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+}
+
+/* Disable bounce scrolling */
+.ios-no-bounce {
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+/* iOS Safari tap highlight removal */
+.ios-touch-element {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Ensure minimum touch target size */
+.ios-touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fix for iOS Safari fixed positioning */
+.ios-fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* iOS Safari button styling fixes */
+.ios-button {
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+/* Prevent text size adjustment */
+@media screen and (max-width: 768px) {
+  .ios-no-text-size-adjust {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* iOS Safari animation performance */
+.ios-hardware-accelerated {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Fix for iOS Safari date input styling */
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+/* iOS Safari select styling */
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.7em center;
+  background-size: 1em;
+  padding-right: 2.5em;
+}
+
+/* Smooth transitions for iOS Safari */
+@media (prefers-reduced-motion: no-preference) {
+  .ios-smooth-transition {
+    transition-property: transform, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* iOS Safari modal backdrop fix */
+.ios-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Keyboard handling for iOS Safari */
+.ios-keyboard-visible {
+  height: calc(100vh - var(--keyboard-height, 0px));
+  transition: height 0.3s ease;
+}

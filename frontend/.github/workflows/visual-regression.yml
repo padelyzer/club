@@ -1,0 +1,83 @@
+name: Visual Regression Tests
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'frontend/src/components/**'
+      - 'frontend/src/styles/**'
+      - 'frontend/.storybook/**'
+
+jobs:
+  visual-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+
+    - name: Install dependencies
+      working-directory: ./frontend
+      run: npm ci
+
+    - name: Install Playwright browsers
+      working-directory: ./frontend
+      run: npx playwright install chromium
+
+    - name: Build Storybook
+      working-directory: ./frontend
+      run: npm run build-storybook
+
+    - name: Serve Storybook
+      working-directory: ./frontend
+      run: |
+        npx serve -s storybook-static -p 6006 &
+        sleep 5
+
+    - name: Run Visual Regression Tests
+      working-directory: ./frontend
+      run: npm run test:visual
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: visual-regression-results
+        path: |
+          frontend/visual-tests/diff/
+          frontend/visual-tests/report.json
+
+    - name: Comment PR with results
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('frontend/visual-tests/report.json', 'utf8'));
+          const failed = report.filter(r => r.status === 'failed');
+          
+          if (failed.length > 0) {
+            const comment = `## 🎨 Visual Regression Test Results
+            
+            ❌ **${failed.length} visual differences detected**
+            
+            ### Failed Tests:
+            ${failed.map(f => `- ${f.story} (${f.viewport})`).join('\n')}
+            
+            Please review the visual differences in the artifacts.`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          }

@@ -1,0 +1,774 @@
+'use client';
+
+import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  TrendingUp, TrendingDown, Users, DollarSign, Activity,
+  Calendar, Clock, Award, Target, Zap, BarChart3,
+  LineChart, PieChart, Filter, Download, RefreshCw,
+  ChevronUp, ChevronDown, Info, Star, MapPin
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useClubAnalytics } from '@/lib/api/hooks/useClubsOptimized';
+import { ClubUI } from '@/types/club-unified';
+import { clubDesignTokens as tokens } from '@/styles/club-design-tokens';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
+import { es } from 'date-fns/locale';
+
+/**
+ * Club Analytics Dashboard
+ * The world's most powerful analytics for club management
+ */
+
+interface ClubAnalyticsDashboardProps {
+  club: ClubUI;
+  className?: string;
+}
+
+export const ClubAnalyticsDashboard: React.FC<ClubAnalyticsDashboardProps> = ({
+  club,
+  className
+}) => {
+  const [dateRange, setDateRange] = useState<'week' | 'month' | 'quarter' | 'year'>('month');
+  const [compareMode, setCompareMode] = useState(false);
+  
+  // Calculate date ranges
+  const { startDate, endDate, previousStartDate, previousEndDate } = useMemo(() => {
+    const now = new Date();
+    let start: Date, end: Date, prevStart: Date, prevEnd: Date;
+    
+    switch (dateRange) {
+      case 'week':
+        end = endOfWeek(now, { locale: es });
+        start = startOfWeek(now, { locale: es });
+        prevEnd = subDays(start, 1);
+        prevStart = subDays(start, 7);
+        break;
+      case 'month':
+        end = endOfMonth(now);
+        start = startOfMonth(now);
+        prevEnd = subDays(start, 1);
+        prevStart = startOfMonth(prevEnd);
+        break;
+      case 'quarter':
+        end = now;
+        start = subDays(now, 90);
+        prevEnd = subDays(start, 1);
+        prevStart = subDays(start, 90);
+        break;
+      case 'year':
+        end = now;
+        start = subDays(now, 365);
+        prevEnd = subDays(start, 1);
+        prevStart = subDays(start, 365);
+        break;
+    }
+    
+    return { startDate: start, endDate: end, previousStartDate: prevStart, previousEndDate: prevEnd };
+  }, [dateRange]);
+  
+  // Fetch analytics data
+  const { data: analytics, isLoading, refetch } = useClubAnalytics(club.id, { start: startDate, end: endDate });
+  const { data: previousAnalytics } = useClubAnalytics(club.id, { start: previousStartDate, end: previousEndDate });
+  
+  // Mock data for demonstration (replace with real API data)
+  const mockAnalytics = {
+    revenue: {
+      total: 45678,
+      growth: 12.5,
+      breakdown: [
+        { category: 'Reservas', amount: 28450, percentage: 62 },
+        { category: 'Membresías', amount: 12300, percentage: 27 },
+        { category: 'Clases', amount: 3500, percentage: 8 },
+        { category: 'Tienda', amount: 1428, percentage: 3 },
+      ],
+    },
+    occupancy: {
+      average: 78,
+      peak: 95,
+      byHour: [
+        { hour: '08:00', rate: 45 },
+        { hour: '09:00', rate: 62 },
+        { hour: '10:00', rate: 78 },
+        { hour: '11:00', rate: 85 },
+        { hour: '12:00', rate: 72 },
+        { hour: '13:00', rate: 68 },
+        { hour: '14:00', rate: 55 },
+        { hour: '15:00', rate: 48 },
+        { hour: '16:00', rate: 52 },
+        { hour: '17:00', rate: 75 },
+        { hour: '18:00', rate: 88 },
+        { hour: '19:00', rate: 95 },
+        { hour: '20:00', rate: 92 },
+        { hour: '21:00', rate: 78 },
+        { hour: '22:00', rate: 45 },
+      ],
+    },
+    members: {
+      total: club.stats.members.total,
+      active: club.stats.members.active,
+      new: 23,
+      churn: 3,
+      retention: 94,
+    },
+    reservations: {
+      total: 1247,
+      completed: 1198,
+      cancelled: 49,
+      revenue: 28450,
+      averageValue: 22.8,
+    },
+    ratings: {
+      average: club.stats.rating.value,
+      count: club.stats.rating.count,
+      distribution: [
+        { stars: 5, count: 145, percentage: 72 },
+        { stars: 4, count: 38, percentage: 19 },
+        { stars: 3, count: 12, percentage: 6 },
+        { stars: 2, count: 4, percentage: 2 },
+        { stars: 1, count: 2, percentage: 1 },
+      ],
+    },
+    performance: {
+      courtUtilization: 82,
+      staffProductivity: 91,
+      customerSatisfaction: 94,
+      operationalEfficiency: 87,
+    },
+  };
+  
+  const data = analytics || mockAnalytics;
+  const previousData = previousAnalytics || mockAnalytics;
+  
+  return (
+    <div className={cn("space-y-6", className)}>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
+              <BarChart3 className="w-6 h-6" />
+            </div>
+            Analytics Dashboard
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            {club.name} - Datos en tiempo real
+          </p>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          {/* Date Range Selector */}
+          <Select value={dateRange} onValueChange={(v: any) => setDateRange(v)}>
+            <SelectTrigger className="w-40">
+              <Calendar className="w-4 h-4 mr-2" />
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="week">Esta Semana</SelectItem>
+              <SelectItem value="month">Este Mes</SelectItem>
+              <SelectItem value="quarter">Trimestre</SelectItem>
+              <SelectItem value="year">Este Año</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          {/* Compare Toggle */}
+          <Button
+            variant={compareMode ? "default" : "outline"}
+            size="sm"
+            onClick={() => setCompareMode(!compareMode)}
+            className="gap-2"
+          >
+            <Activity className="w-4 h-4" />
+            Comparar
+          </Button>
+          
+          {/* Refresh */}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => refetch()}
+            disabled={isLoading}
+            className={cn(isLoading && "animate-spin")}
+          >
+            <RefreshCw className="w-4 h-4" />
+          </Button>
+          
+          {/* Export */}
+          <Button variant="outline" size="sm" className="gap-2">
+            <Download className="w-4 h-4" />
+            Exportar
+          </Button>
+        </div>
+      </div>
+      
+      {/* Key Metrics Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <MetricCard
+          title="Ingresos Totales"
+          value={`€${data.revenue.total.toLocaleString()}`}
+          change={data.revenue.growth}
+          icon={DollarSign}
+          color="green"
+          compareValue={compareMode ? previousData.revenue.total : undefined}
+        />
+        
+        <MetricCard
+          title="Ocupación Media"
+          value={`${data.occupancy.average}%`}
+          change={data.occupancy.average - previousData.occupancy.average}
+          icon={Activity}
+          color="blue"
+          subtitle={`Pico: ${data.occupancy.peak}%`}
+        />
+        
+        <MetricCard
+          title="Miembros Activos"
+          value={data.members.active}
+          change={((data.members.new - data.members.churn) / data.members.total) * 100}
+          icon={Users}
+          color="purple"
+          subtitle={`+${data.members.new} nuevos`}
+        />
+        
+        <MetricCard
+          title="Satisfacción"
+          value={`${data.ratings.average} ⭐`}
+          change={0.2}
+          icon={Star}
+          color="amber"
+          subtitle={`${data.ratings.count} reviews`}
+        />
+      </div>
+      
+      {/* Analytics Tabs */}
+      <Tabs defaultValue="revenue" className="space-y-6">
+        <TabsList className="grid grid-cols-4 w-full max-w-2xl mx-auto">
+          <TabsTrigger value="revenue" className="gap-2">
+            <DollarSign className="w-4 h-4" />
+            Ingresos
+          </TabsTrigger>
+          <TabsTrigger value="occupancy" className="gap-2">
+            <Activity className="w-4 h-4" />
+            Ocupación
+          </TabsTrigger>
+          <TabsTrigger value="members" className="gap-2">
+            <Users className="w-4 h-4" />
+            Miembros
+          </TabsTrigger>
+          <TabsTrigger value="performance" className="gap-2">
+            <Target className="w-4 h-4" />
+            Rendimiento
+          </TabsTrigger>
+        </TabsList>
+        
+        {/* Revenue Tab */}
+        <TabsContent value="revenue" className="space-y-6">
+          <RevenueAnalytics data={data.revenue} club={club} />
+        </TabsContent>
+        
+        {/* Occupancy Tab */}
+        <TabsContent value="occupancy" className="space-y-6">
+          <OccupancyAnalytics data={data.occupancy} />
+        </TabsContent>
+        
+        {/* Members Tab */}
+        <TabsContent value="members" className="space-y-6">
+          <MembersAnalytics data={data.members} ratings={data.ratings} />
+        </TabsContent>
+        
+        {/* Performance Tab */}
+        <TabsContent value="performance" className="space-y-6">
+          <PerformanceAnalytics data={data.performance} />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+};
+
+/**
+ * Metric Card Component
+ */
+interface MetricCardProps {
+  title: string;
+  value: string | number;
+  change?: number;
+  icon: any;
+  color: 'green' | 'blue' | 'purple' | 'amber' | 'red';
+  subtitle?: string;
+  compareValue?: number;
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({
+  title,
+  value,
+  change,
+  icon: Icon,
+  color,
+  subtitle,
+  compareValue
+}) => {
+  const colorClasses = {
+    green: 'from-green-500 to-emerald-500',
+    blue: 'from-blue-500 to-indigo-500',
+    purple: 'from-purple-500 to-pink-500',
+    amber: 'from-amber-500 to-orange-500',
+    red: 'from-red-500 to-pink-500',
+  };
+  
+  const isPositive = change && change > 0;
+  const TrendIcon = isPositive ? ChevronUp : ChevronDown;
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -2 }}
+      className={cn(
+        "relative overflow-hidden rounded-2xl",
+        "bg-white dark:bg-gray-800",
+        "border border-gray-200 dark:border-gray-700",
+        "p-6",
+        tokens.effects.cardShadow,
+        tokens.effects.transition,
+        "hover:shadow-xl"
+      )}
+    >
+      {/* Background Gradient */}
+      <div className={cn(
+        "absolute top-0 right-0 w-32 h-32 rounded-full",
+        "bg-gradient-to-br",
+        colorClasses[color],
+        "opacity-10 blur-2xl"
+      )} />
+      
+      <div className="relative">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-4">
+          <div className={cn(
+            "p-2.5 rounded-xl",
+            "bg-gradient-to-br",
+            colorClasses[color],
+            "text-white shadow-lg"
+          )}>
+            <Icon className="w-5 h-5" />
+          </div>
+          
+          {change !== undefined && (
+            <div className={cn(
+              "flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium",
+              isPositive 
+                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+            )}>
+              <TrendIcon className="w-3 h-3" />
+              {Math.abs(change).toFixed(1)}%
+            </div>
+          )}
+        </div>
+        
+        {/* Value */}
+        <div className="space-y-1">
+          <p className="text-sm text-gray-600 dark:text-gray-400">{title}</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+            {value}
+          </p>
+          
+          {subtitle && (
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {subtitle}
+            </p>
+          )}
+          
+          {compareValue !== undefined && (
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              vs. €{compareValue.toLocaleString()} anterior
+            </p>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+/**
+ * Revenue Analytics Component
+ */
+const RevenueAnalytics: React.FC<{ data: any; club: ClubUI }> = ({ data, club }) => {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Revenue Breakdown */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <PieChart className="w-5 h-5 text-indigo-600" />
+            Desglose de Ingresos
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {data.breakdown.map((item: any, i: number) => {
+              const colors = ['bg-indigo-500', 'bg-purple-500', 'bg-pink-500', 'bg-amber-500'];
+              return (
+                <div key={i} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">{item.category}</span>
+                    <span className="text-sm text-gray-600">€{item.amount.toLocaleString()}</span>
+                  </div>
+                  <div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${item.percentage}%` }}
+                      transition={{ duration: 0.5, delay: i * 0.1 }}
+                      className={cn("absolute inset-y-0 left-0", colors[i])}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <span>{item.percentage}%</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Proyección mensual</span>
+              <span className="text-lg font-bold text-green-600">
+                €{(data.total * 1.125).toLocaleString()}
+              </span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* Revenue Trends */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <LineChart className="w-5 h-5 text-purple-600" />
+            Tendencia de Ingresos
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-64 flex items-center justify-center text-gray-500">
+            <div className="text-center">
+              <TrendingUp className="w-12 h-12 mx-auto mb-3 text-green-500" />
+              <p className="text-lg font-medium">+{data.growth}% este período</p>
+              <p className="text-sm mt-1">Crecimiento sostenido</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4 mt-6">
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                €{(data.total / 30).toFixed(0)}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Por día</p>
+            </div>
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {club.courts?.length || 6}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Pistas activas</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+/**
+ * Occupancy Analytics Component
+ */
+const OccupancyAnalytics: React.FC<{ data: any }> = ({ data }) => {
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Clock className="w-5 h-5 text-blue-600" />
+          Ocupación por Hora
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-2">
+          {data.byHour.map((hour: any, i: number) => {
+            const isHigh = hour.rate > 80;
+            const isMedium = hour.rate > 60;
+            
+            return (
+              <div key={i} className="flex items-center gap-3">
+                <span className="text-sm font-medium w-12">{hour.hour}</span>
+                <div className="flex-1 relative h-8 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${hour.rate}%` }}
+                    transition={{ duration: 0.5, delay: i * 0.05 }}
+                    className={cn(
+                      "absolute inset-y-0 left-0 rounded-lg",
+                      "bg-gradient-to-r",
+                      isHigh ? "from-red-500 to-orange-500" :
+                      isMedium ? "from-amber-500 to-yellow-500" :
+                      "from-green-500 to-emerald-500"
+                    )}
+                  />
+                  <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-gray-700 dark:text-gray-300">
+                    {hour.rate}%
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        
+        <div className="mt-6 grid grid-cols-3 gap-4">
+          <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
+            <p className="text-sm font-medium text-green-700 dark:text-green-400">Baja</p>
+            <p className="text-xs text-green-600 dark:text-green-500">< 60%</p>
+          </div>
+          <div className="text-center p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl">
+            <p className="text-sm font-medium text-amber-700 dark:text-amber-400">Media</p>
+            <p className="text-xs text-amber-600 dark:text-amber-500">60-80%</p>
+          </div>
+          <div className="text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-xl">
+            <p className="text-sm font-medium text-red-700 dark:text-red-400">Alta</p>
+            <p className="text-xs text-red-600 dark:text-red-500">> 80%</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+/**
+ * Members Analytics Component
+ */
+const MembersAnalytics: React.FC<{ data: any; ratings: any }> = ({ data, ratings }) => {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Member Stats */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="w-5 h-5 text-purple-600" />
+            Estadísticas de Miembros
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl">
+              <div>
+                <p className="text-sm text-purple-700 dark:text-purple-400">Retención</p>
+                <p className="text-2xl font-bold text-purple-900 dark:text-purple-200">
+                  {data.retention}%
+                </p>
+              </div>
+              <Award className="w-8 h-8 text-purple-500" />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Nuevos</p>
+                <p className="text-xl font-bold text-green-600">+{data.new}</p>
+              </div>
+              <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Bajas</p>
+                <p className="text-xl font-bold text-red-600">-{data.churn}</p>
+              </div>
+            </div>
+            
+            <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-gray-600">Crecimiento neto</span>
+                <span className="text-sm font-medium text-green-600">
+                  +{data.new - data.churn} miembros
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Tasa de actividad</span>
+                <span className="text-sm font-medium">
+                  {((data.active / data.total) * 100).toFixed(1)}%
+                </span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* Ratings Distribution */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Star className="w-5 h-5 text-amber-600" />
+            Distribución de Calificaciones
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {ratings.distribution.map((rating: any) => (
+              <div key={rating.stars} className="flex items-center gap-3">
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={cn(
+                        "w-4 h-4",
+                        i < rating.stars
+                          ? "text-amber-500 fill-amber-500"
+                          : "text-gray-300"
+                      )}
+                    />
+                  ))}
+                </div>
+                <div className="flex-1 relative h-6 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${rating.percentage}%` }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-amber-500 to-orange-500"
+                  />
+                </div>
+                <span className="text-sm font-medium w-12 text-right">
+                  {rating.count}
+                </span>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl text-center">
+            <p className="text-3xl font-bold text-amber-700 dark:text-amber-300">
+              {ratings.average} ⭐
+            </p>
+            <p className="text-sm text-amber-600 dark:text-amber-400 mt-1">
+              Basado en {ratings.count} reseñas
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+/**
+ * Performance Analytics Component
+ */
+const PerformanceAnalytics: React.FC<{ data: any }> = ({ data }) => {
+  const metrics = [
+    { 
+      label: 'Utilización de Pistas', 
+      value: data.courtUtilization, 
+      icon: Activity,
+      color: 'from-blue-500 to-indigo-500'
+    },
+    { 
+      label: 'Productividad del Personal', 
+      value: data.staffProductivity, 
+      icon: Users,
+      color: 'from-purple-500 to-pink-500'
+    },
+    { 
+      label: 'Satisfacción del Cliente', 
+      value: data.customerSatisfaction, 
+      icon: Star,
+      color: 'from-amber-500 to-orange-500'
+    },
+    { 
+      label: 'Eficiencia Operacional', 
+      value: data.operationalEfficiency, 
+      icon: Zap,
+      color: 'from-green-500 to-emerald-500'
+    },
+  ];
+  
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {metrics.map((metric, i) => {
+        const Icon = metric.icon;
+        
+        return (
+          <Card key={i}>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className={cn(
+                    "p-2 rounded-lg bg-gradient-to-r",
+                    metric.color,
+                    "text-white"
+                  )}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-medium">{metric.label}</h3>
+                </div>
+                <Badge variant={metric.value > 90 ? "default" : metric.value > 70 ? "secondary" : "destructive"}>
+                  {metric.value > 90 ? 'Excelente' : metric.value > 70 ? 'Bueno' : 'Mejorar'}
+                </Badge>
+              </div>
+              
+              <div className="relative h-32">
+                <svg className="w-full h-full" viewBox="0 0 100 100">
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="40"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="8"
+                    className="text-gray-200 dark:text-gray-700"
+                  />
+                  <motion.circle
+                    cx="50"
+                    cy="50"
+                    r="40"
+                    fill="none"
+                    stroke="url(#gradient-${i})"
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: metric.value / 100 }}
+                    transition={{ duration: 1, ease: "easeInOut" }}
+                    style={{
+                      rotate: '-90deg',
+                      transformOrigin: '50% 50%',
+                    }}
+                  />
+                  <defs>
+                    <linearGradient id={`gradient-${i}`}>
+                      <stop offset="0%" stopColor="rgb(99 102 241)" />
+                      <stop offset="100%" stopColor="rgb(139 92 246)" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                      {metric.value}%
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-4 text-center">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {metric.value > 90 
+                    ? 'Rendimiento óptimo'
+                    : metric.value > 70
+                    ? 'Buen rendimiento'
+                    : 'Requiere atención'
+                  }
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        );
+      })}
+    </div>
+  );
+};
+
+export default ClubAnalyticsDashboard;

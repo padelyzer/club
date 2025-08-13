@@ -1,0 +1,148 @@
+{
+  "timestamp": "2025-08-06T10:02:44.199366",
+  "test_summary": {
+    "authentication": true,
+    "clubs": true,
+    "courts": false
+  },
+  "detailed_results": {
+    "AUTHENTICATION": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:02:44.166207",
+      "details": {
+        "email": "apitest@padelyzer.com",
+        "token_length": 324,
+        "user_id": 138,
+        "is_staff": false,
+        "club": null
+      }
+    },
+    "CLUBS_DATA": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:02:44.189356",
+      "details": {
+        "clubs_count": 1,
+        "total_count": 1,
+        "sample_club": {
+          "id": "555730d5-b0ea-4579-9e16-c7b307fd8f6d",
+          "name": "Test Padel Club Partners"
+        },
+        "data_preview": "Found 1 clubs"
+      }
+    },
+    "COURTS_DATA": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T10:02:44.199308",
+      "details": {
+        "error": "No courts found in response"
+      }
+    },
+    "API_ANALYSIS": {
+      "status": "INFO",
+      "timestamp": "2025-08-06T10:02:44.199328",
+      "details": {
+        "analysis": {
+          "authentication_working": true,
+          "user_context": true,
+          "user_has_organization": false,
+          "user_has_club": false,
+          "clubs_available": 1,
+          "courts_available": 0,
+          "pricing_configured": false
+        },
+        "issues_found": [
+          "User lacks organization context",
+          "No courts available for reservations",
+          "Court pricing not configured"
+        ],
+        "recommendations": [
+          "Ensure users are properly assigned to organizations",
+          "Create courts and verify court endpoints",
+          "Configure price_per_hour for courts"
+        ],
+        "data_preview": "1 clubs, 0 courts"
+      }
+    }
+  },
+  "user_data": {
+    "id": 138,
+    "username": "apitest",
+    "email": "apitest@padelyzer.com",
+    "first_name": "API",
+    "last_name": "Test",
+    "phone": "",
+    "email_verified": false,
+    "phone_verified": false,
+    "two_factor_enabled": false,
+    "two_factor_method": "email",
+    "avatar_url": "",
+    "language": "es-mx",
+    "timezone": "America/Mexico_City",
+    "organization_memberships": [
+      {
+        "id": "fe9a3036-478e-4246-8dfe-2d9e91fb3f2c",
+        "organization": "21900354-589c-420f-8ed3-ed475d91e0d3",
+        "organization_name": "Test Padel",
+        "role": "admin",
+        "permissions": {},
+        "joined_at": "2025-08-06 10:02:38"
+      }
+    ],
+    "current_organization": {
+      "id": "21900354-589c-420f-8ed3-ed475d91e0d3",
+      "trade_name": "Test Padel",
+      "business_name": "Test Padel Organization",
+      "type": "club",
+      "state": "active"
+    },
+    "current_organization_id": "21900354-589c-420f-8ed3-ed475d91e0d3",
+    "club": null,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_active": true,
+    "date_joined": "2025-08-06 10:01:29",
+    "last_login": "2025-08-06 10:02:44"
+  },
+  "clubs_data": [
+    {
+      "id": "555730d5-b0ea-4579-9e16-c7b307fd8f6d",
+      "organization": "21900354-589c-420f-8ed3-ed475d91e0d3",
+      "name": "Test Padel Club Partners",
+      "slug": "test-padel-club-partners",
+      "description": "",
+      "email": "club@test.com",
+      "phone": "+1234567890",
+      "website": "",
+      "address": {},
+      "full_address": "M\u00e9xico",
+      "latitude": null,
+      "longitude": null,
+      "opening_time": "07:00:00",
+      "closing_time": "23:00:00",
+      "days_open": [],
+      "features": [],
+      "settings": {},
+      "logo_url": "",
+      "cover_image_url": "",
+      "primary_color": "#1E88E5",
+      "total_courts": 0,
+      "courts_count": 0,
+      "active_courts_count": 0,
+      "total_members": 0,
+      "is_active": true,
+      "created_at": "2025-08-05 18:11:42",
+      "updated_at": "2025-08-05 18:11:42"
+    }
+  ],
+  "courts_data": [],
+  "critical_issues": [
+    "Court Access"
+  ],
+  "frontend_recommendations": [
+    "Use email field for authentication",
+    "Use /api/v1/clubs/courts/ for court data",
+    "Verify user organization context",
+    "Check court availability endpoints",
+    "Review reservation creation validation"
+  ]
+}

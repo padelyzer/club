@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 45.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  /* Temporarily disabled dark mode
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+  */
+}
+
+@layer base {
+  * {
+    @apply border-gray-200; /* dark:border-gray-700 */
+  }
+  
+  body {
+    @apply bg-gradient-to-br from-gray-50 to-gray-100; /* dark:from-gray-900 dark:to-gray-800 */
+    color: var(--foreground);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Apple HIG Typography - Default heading styles */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold text-gray-900 tracking-tight; /* dark:text-gray-100 */
+  }
+
+  h1 {
+    @apply text-headline-lg leading-snug; /* 32px */
+  }
+
+  h2 {
+    @apply text-headline-md leading-snug; /* 28px */
+  }
+
+  h3 {
+    @apply text-headline-sm leading-snug; /* 24px */
+  }
+
+  h4 {
+    @apply text-body-lg font-semibold leading-7; /* 18px */
+  }
+
+  h5 {
+    @apply text-body-md font-semibold leading-6; /* 16px */
+  }
+
+  h6 {
+    @apply text-body-sm font-semibold leading-5; /* 14px */
+  }
+  
+  /* Default paragraph styling */
+  p {
+    @apply text-body-md leading-6; /* 16px with proper line height */
+  }
+  
+  /* Apple HIG Button touch targets */
+  button {
+    @apply min-h-[2.75rem] min-w-[2.75rem]; /* 44px minimum touch target */
+  }
+  
+  /* Apple HIG Focus states */
+  *:focus {
+    @apply outline-none;
+  }
+  
+  *:focus-visible {
+    @apply ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+  
+  /* Improved readability for small text */
+  small, .text-xs, .text-sm {
+    @apply antialiased;
+  }
+  
+  /* Apple HIG spacing between interactive elements */
+  .touch-spacing > * + * {
+    @apply ml-2; /* 8px minimum spacing */
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-apple; /* dark:bg-gray-900/80 dark:border-gray-700/50 */
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:scale-105 hover:shadow-apple-lg;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent;
+  }
+
+  .safe-area-padding {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+}

@@ -1,0 +1,41 @@
+[bandit]
+exclude_dirs = [
+    '/tests/',
+    '/test_*.py',
+    '*/migrations/',
+    '/venv/',
+    '/venv_py312/'
+]
+skips = [
+    'B101',  # assert_used - Used in tests
+    'B601',  # paramiko_calls - Not using paramiko
+    'B603',  # subprocess_without_shell_equals_true - Careful review needed
+]
+tests = [
+    'B201',  # flask_debug_true
+    'B301',  # pickle
+    'B302',  # marshal
+    'B303',  # md5
+    'B304',  # des
+    'B305',  # cipher
+    'B306',  # mktemp_q
+    'B307',  # eval
+    'B308',  # mark_safe
+    'B309',  # httpsconnection
+    'B310',  # urllib_urlopen
+    'B311',  # random
+    'B312',  # telnetlib
+    'B313',  # xml_bad_cElementTree
+    'B314',  # xml_bad_ElementTree
+    'B315',  # xml_bad_expatreader
+    'B316',  # xml_bad_expatbuilder
+    'B317',  # xml_bad_sax
+    'B318',  # xml_bad_minidom
+    'B319',  # xml_bad_pulldom
+    'B320',  # xml_bad_etree
+    'B321',  # ftplib
+    'B322',  # input
+    'B323',  # unverified_context
+    'B324',  # hashlib_new_insecure_functions
+    'B325',  # tempnam
+]

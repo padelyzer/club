@@ -1,0 +1,210 @@
+{
+  "python_version": "3.12.10 (main, Apr  8 2025, 11:35:47) [Clang 16.0.0 (clang-1600.0.26.6)]",
+  "django_version": [
+    4,
+    2,
+    23,
+    "final",
+    0
+  ],
+  "timestamp": "2025-07-29T00:16:04.290269",
+  "tests": {
+    "user_model_creation": {
+      "status": "PASS",
+      "details": {
+        "user_id": 64,
+        "custom_fields": [
+          "phone",
+          "phone_verified",
+          "email_verified",
+          "two_factor_enabled"
+        ]
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:04.418671"
+    },
+    "organization_membership": {
+      "status": "FAIL",
+      "details": {},
+      "error": "Organization() got unexpected keyword arguments: 'name', 'slug', 'email'",
+      "timestamp": "2025-07-29T00:16:04.419750"
+    },
+    "session_model": {
+      "status": "PASS",
+      "details": {
+        "session_id": "b94b1d06-8684-4f79-9e41-e362978ba826",
+        "device_type": "web",
+        "revoked": true
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:04.428678"
+    },
+    "otp_verification": {
+      "status": "PASS",
+      "details": {
+        "otp_id": "f6525cf3-9ffc-4520-b089-f595ec8e8fa0",
+        "purpose": "login",
+        "verified": true
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:04.431590"
+    },
+    "jwt_blacklist": {
+      "status": "PASS",
+      "details": {
+        "blacklist_id": "a8d8029d-846d-4933-a9f5-c5c6fe72e859",
+        "jti": "93bf2b7d623a4e6f942bf1c8d2539e23",
+        "is_blacklisted": true
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:04.466196"
+    },
+    "auth_audit_log": {
+      "status": "PASS",
+      "details": {
+        "audit_id": "ffef6ef6-c955-4c8b-b8aa-623d30917bcf",
+        "event_type": "login_success"
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:04.468402"
+    },
+    "registration_api": {
+      "status": "FAIL",
+      "details": {},
+      "error": "'HttpResponse' object has no attribute 'data'",
+      "timestamp": "2025-07-29T00:16:04.568711"
+    },
+    "login_api": {
+      "status": "FAIL",
+      "details": {},
+      "error": "'HttpResponse' object has no attribute 'data'",
+      "timestamp": "2025-07-29T00:16:04.580856"
+    },
+    "token_refresh": {
+      "status": "FAIL",
+      "details": {},
+      "error": "'HttpResponse' object has no attribute 'data'",
+      "timestamp": "2025-07-29T00:16:04.613344"
+    },
+    "rate_limiting": {
+      "status": "WARN",
+      "details": {
+        "rate_limited": false,
+        "response_codes": [
+          400,
+          400,
+          400,
+          400,
+          400
+        ]
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.768632"
+    },
+    "password_validation": {
+      "status": "FAIL",
+      "details": {
+        "weak_passwords_rejected": true,
+        "strong_password_accepted": false
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.824545"
+    },
+    "jwt_blacklist_functionality": {
+      "status": "FAIL",
+      "details": {
+        "authorized_before_logout": false,
+        "unauthorized_after_logout": false
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.858289"
+    },
+    "rbac_system": {
+      "status": "SKIP",
+      "details": {
+        "reason": "No test user or organization"
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.858339"
+    },
+    "api_endpoint_protection": {
+      "status": "FAIL",
+      "details": {
+        "status_code": 400,
+        "protected": false
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.869192"
+    },
+    "email_service": {
+      "status": "PASS",
+      "details": {
+        "otp_email_sent": true,
+        "welcome_email_sent": true
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.884689"
+    },
+    "token_service": {
+      "status": "PASS",
+      "details": {
+        "has_access_token": true,
+        "has_refresh_token": true
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.885916"
+    },
+    "ip_geolocation_service": {
+      "status": "PASS",
+      "details": {
+        "location_data": {
+          "country": "",
+          "country_code": "",
+          "city": "",
+          "region": "",
+          "latitude": null,
+          "longitude": null
+        }
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.885944"
+    },
+    "python_version_check": {
+      "status": "PASS",
+      "details": {
+        "python_version": "3.12.10",
+        "is_python312": true
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.885982"
+    },
+    "database_connection": {
+      "status": "PASS",
+      "details": {
+        "connection_works": true,
+        "database": "sqlite"
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.886054"
+    },
+    "model_operations": {
+      "status": "PASS",
+      "details": {
+        "user_count": 64,
+        "session_count": 67,
+        "audit_count": 25
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.886898"
+    },
+    "cache_operations": {
+      "status": "FAIL",
+      "details": {
+        "cache_works": false,
+        "cache_backend": "ConnectionProxy"
+      },
+      "error": null,
+      "timestamp": "2025-07-29T00:16:05.886937"
+    }
+  }
+}

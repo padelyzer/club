@@ -1,0 +1,37 @@
+{
+  "pluginEnabledStatus": {
+    "file-explorer": true,
+    "global-search": true,
+    "switcher": true,
+    "graph": true,
+    "backlink": true,
+    "outgoing-link": true,
+    "tag-pane": true,
+    "page-preview": true,
+    "daily-notes": true,
+    "templates": true,
+    "note-composer": true,
+    "command-palette": true,
+    "markdown-importer": true,
+    "word-count": true,
+    "open-with-default-app": true,
+    "file-recovery": true
+  },
+  "theme": "obsidian",
+  "cssTheme": "Blue Topaz",
+  "interfaceDirection": "ltr",
+  "enabledPlugins": [
+    "obsidian-tasks-plugin",
+    "dataview",
+    "templater-obsidian",
+    "obsidian-kanban"
+  ],
+  "newFileLocation": "folder",
+  "newFileFolderPath": "inbox",
+  "attachmentFolderPath": "assets",
+  "alwaysUpdateLinks": true,
+  "useMarkdownLinks": true,
+  "showInlineTitle": false,
+  "showFrontmatter": false,
+  "promptDelete": false
+}

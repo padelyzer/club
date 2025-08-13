@@ -1,0 +1,132 @@
+{
+  "deployment_assessment": {
+    "status": "\u274c NOT READY FOR PRODUCTION",
+    "recommendation": "Multiple system failures. Extensive fixes needed before deployment.",
+    "success_rate": 57.14285714285714,
+    "critical_failures": 0
+  },
+  "test_summary": {
+    "total_tests": 7,
+    "passed": 4,
+    "failed": 2,
+    "skipped": 1
+  },
+  "test_results": [
+    {
+      "test_name": "System Health Comprehensive",
+      "status": "PASS",
+      "timestamp": "2025-07-29T01:22:19.750835",
+      "details": {
+        "api_operational": true,
+        "database_connected": true,
+        "overall_health": true
+      },
+      "error": null
+    },
+    {
+      "test_name": "Authentication Flow Complete",
+      "status": "PASS",
+      "timestamp": "2025-07-29T01:22:30.881374",
+      "details": {
+        "registration": true,
+        "login": true,
+        "token_refresh": true,
+        "profile_access": true
+      },
+      "error": null
+    },
+    {
+      "test_name": "Client Profile Comprehensive",
+      "status": "FAIL",
+      "timestamp": "2025-07-29T01:22:31.920412",
+      "details": {
+        "profile_creation": true,
+        "profile_retrieval": false,
+        "emergency_contact": true
+      },
+      "error": null
+    },
+    {
+      "test_name": "Clubs and Courts Integration",
+      "status": "FAIL",
+      "timestamp": "2025-07-29T01:22:32.937082",
+      "details": {
+        "club_access": false,
+        "court_access": false,
+        "club_id": null,
+        "court_id": null
+      },
+      "error": "No accessible clubs/courts found"
+    },
+    {
+      "test_name": "Reservations Complete Workflow",
+      "status": "SKIP",
+      "timestamp": "2025-07-29T01:22:33.937374",
+      "details": {},
+      "error": "Missing required test data"
+    },
+    {
+      "test_name": "API Endpoints Coverage",
+      "status": "PASS",
+      "timestamp": "2025-07-29T01:22:35.013965",
+      "details": {
+        "accessible_endpoints": 6,
+        "total_endpoints": 8,
+        "coverage_percentage": 75.0,
+        "endpoint_details": {
+          "Profile access": {
+            "accessible": true,
+            "status_code": 200
+          },
+          "Clubs listing": {
+            "accessible": true,
+            "status_code": 200
+          },
+          "Courts listing": {
+            "accessible": true,
+            "status_code": 200
+          },
+          "Client profiles": {
+            "accessible": true,
+            "status_code": 200
+          },
+          "Emergency contacts": {
+            "accessible": true,
+            "status_code": 200
+          },
+          "Reservations": {
+            "accessible": true,
+            "status_code": 200
+          },
+          "Analytics": {
+            "accessible": false,
+            "status_code": 404
+          },
+          "Organizations": {
+            "accessible": false,
+            "status_code": 403
+          }
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "Data Consistency and Cleanup",
+      "status": "PASS",
+      "timestamp": "2025-07-29T01:22:36.037202",
+      "details": {
+        "reservation_cleanup": true,
+        "logout_success": true
+      },
+      "error": null
+    }
+  ],
+  "test_data": {
+    "user_email": "final_test_user_1753773740@example.com",
+    "user_password": "TestPassword123!",
+    "user_id": 97,
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUzNzc3MzUwLCJpYXQiOjE3NTM3NzM3NTAsImp0aSI6ImZmNzczMGVhZjczNjQwNzViYjY1ZGUzYjI0MjQ5YWE4IiwidXNlcl9pZCI6OTcsImVtYWlsIjoiZmluYWxfdGVzdF91c2VyXzE3NTM3NzM3NDBAZXhhbXBsZS5jb20iLCJpc19zdXBlcnVzZXIiOmZhbHNlLCJpc19zdGFmZiI6ZmFsc2V9.2dX8cE8RthKuzgySkUI2oq2YejZvDV7esM4fABgQ-nU",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NDM3ODU1MCwiaWF0IjoxNzUzNzczNzUwLCJqdGkiOiIwNzE0ZjgwMGRhODM0Mjc0YWU2MTZlNGQ0ZTRlNjM5YiIsInVzZXJfaWQiOjk3LCJlbWFpbCI6ImZpbmFsX3Rlc3RfdXNlcl8xNzUzNzczNzQwQGV4YW1wbGUuY29tIiwiaXNfc3VwZXJ1c2VyIjpmYWxzZSwiaXNfc3RhZmYiOmZhbHNlfQ.R2LGLBjwgQcN75esa9hGGFbpqTRfzhZ2Waw1bypaFFg",
+    "client_profile_id": null
+  }
+}

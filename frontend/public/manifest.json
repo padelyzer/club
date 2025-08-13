@@ -1,0 +1,156 @@
+{
+  "name": "Padelyzer - Padel Analytics Platform",
+  "short_name": "Padelyzer",
+  "description": "Advanced padel analytics and club management platform with real-time notifications",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#007AFF",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["sports", "analytics", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "permissions": [
+    "notifications",
+    "background-sync"
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "screenshots": [
+    {
+      "src": "/screenshots/dashboard-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Padelyzer Dashboard"
+    },
+    {
+      "src": "/screenshots/dashboard-narrow.png", 
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile Dashboard"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Go to main dashboard",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/icons/dashboard.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Reservations",
+      "short_name": "Reservations", 
+      "description": "Manage court reservations",
+      "url": "/reservations",
+      "icons": [
+        {
+          "src": "/icons/reservations.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Tournaments",
+      "short_name": "Tournaments",
+      "description": "View tournaments",
+      "url": "/tournaments", 
+      "icons": [
+        {
+          "src": "/icons/tournaments.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "short_name": "Notifications",
+      "description": "View notifications",
+      "url": "/notifications",
+      "icons": [
+        {
+          "src": "/icons/notifications.png",
+          "sizes": "192x192", 
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+padelyzer",
+      "url": "/app?action=%s"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/files",
+      "accept": {
+        "application/json": [".json"],
+        "text/csv": [".csv"]
+      }
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "files",
+          "accept": ["image/*", "text/*", ".pdf"]
+        }
+      ]
+    }
+  },
+  "related_applications": [],
+  "gcm_sender_id": "103953800507",
+  "iarc_rating_id": "",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui", "browser"],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}

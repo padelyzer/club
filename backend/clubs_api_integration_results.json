@@ -1,0 +1,41 @@
+{
+  "club_crud": {
+    "create": "PASS",
+    "read": "PASS",
+    "update": "PASS",
+    "list": "PASS"
+  },
+  "court_crud": {
+    "create": "PASS",
+    "read": "PASS",
+    "update": "PASS",
+    "business_logic": "PASS"
+  },
+  "schedule_crud": {
+    "creation": "PASS",
+    "filtering": "PASS",
+    "error": "FAIL: Valid schedule data rejected: {'non_field_errors': [ErrorDetail(string='Los campos club, weekday deben formar un conjunto \u00fanico.', code='unique')]}"
+  },
+  "announcement_crud": {
+    "creation": "PASS",
+    "filtering": "PASS",
+    "active_filtering": "PASS"
+  },
+  "search_filters": {
+    "club_name_search": "PASS",
+    "active_filtering": "PASS",
+    "court_club_filter": "PASS",
+    "court_surface_filter": "PASS"
+  },
+  "business_endpoints": {
+    "club_stats": "PASS",
+    "operational_hours": "PASS",
+    "court_availability": "PASS",
+    "multi_tenant_isolation": "PASS"
+  },
+  "errors": [
+    "API setup error: UserManager.create_user() missing 1 required positional argument: 'username'",
+    "Schedule operations test: Valid schedule data rejected: {'non_field_errors': [ErrorDetail(string='Los campos club, weekday deben formar un conjunto \u00fanico.', code='unique')]}"
+  ],
+  "integration": "PASS"
+}

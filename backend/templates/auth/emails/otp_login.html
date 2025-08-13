@@ -1,0 +1,23 @@
+{% extends "auth/emails/base.html" %}
+
+{% block title %}Código de verificación - Padelyzer{% endblock %}
+
+{% block content %}
+<h2>Verifica tu identidad</h2>
+
+<p>Hola {{ user.first_name|default:"Usuario" }},</p>
+
+<p>Has solicitado iniciar sesión en tu cuenta de Padelyzer. Para completar el proceso, ingresa el siguiente código de verificación:</p>
+
+<div class="otp-code">{{ otp_code }}</div>
+
+<p>Este código es válido por <strong>10 minutos</strong>.</p>
+
+<div class="warning">
+    <strong>Importante:</strong> Si no solicitaste este código, ignora este correo. Tu cuenta permanecerá segura.
+</div>
+
+<p>Por tu seguridad, nunca compartas este código con nadie. El equipo de Padelyzer nunca te pedirá tu código de verificación.</p>
+
+<p>Saludos,<br>El equipo de Padelyzer</p>
+{% endblock %}

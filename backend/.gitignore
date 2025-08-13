@@ -1,0 +1,161 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+env/
+ENV/
+venv_py312/
+.venv/
+
+# Django
+*.log
+local_settings.py
+# Note: Keeping .sqlite3 files as requested
+# db.sqlite3
+media/
+staticfiles/
+static_root/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+.sublime-project
+.sublime-workspace
+
+# Testing
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+cover/
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.coveragerc
+test-reports/
+
+# Documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Environment
+.env
+.env.local
+.env.*.local
+.envrc
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backups and temporary files
+*.bak
+*.backup
+*.tmp
+*.temp
+*_backup.py
+*_broken.py
+*_original.py
+*.orig
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+celerybeat-schedule.db
+
+# Security
+*.pem
+*.key
+*.crt
+*.csr
+.secrets/
+
+# Monitoring
+*.pid
+.ruff_cache/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# Package managers
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+test_*.json
+*_test_report*.json
+*_validation_results.json
+
+# Profiling
+*.prof
+*.lprof
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# IPython
+profile_default/
+ipython_config.py

@@ -1,0 +1,31 @@
+{
+  "setup": {
+    "data_creation": "FAIL: UserManager.create_user() missing 1 required positional argument: 'username'"
+  },
+  "court_reservation_flow": {
+    "error": "FAIL: Required test data not available"
+  },
+  "club_availability": {
+    "maintenance_blocking": "PASS"
+  },
+  "schedule_integration": {},
+  "pricing_integration": {
+    "basic_calculation": "PASS",
+    "consistency_check": "PASS",
+    "dynamic_updates": "PASS"
+  },
+  "business_rules": {
+    "multi_tenant_isolation": "PASS",
+    "error": "FAIL: {'created_by': ['Este campo no puede ser nulo.']}"
+  },
+  "data_consistency": {
+    "referential_integrity": "PASS",
+    "cascade_behavior": "PASS",
+    "statistics_consistency": "PASS"
+  },
+  "errors": [
+    "Integration setup: UserManager.create_user() missing 1 required positional argument: 'username'",
+    "Court reservation flow: Required test data not available",
+    "Business rules integration: {'created_by': ['Este campo no puede ser nulo.']}"
+  ]
+}

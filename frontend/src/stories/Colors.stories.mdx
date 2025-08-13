@@ -1,0 +1,179 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
+
+<Meta title="Foundation/Colors" />
+
+# Color System
+
+Our color system is built with semantic naming and supports both light and dark themes through CSS variables.
+
+## Semantic Colors
+
+<ColorPalette>
+  <ColorItem
+    title="Primary"
+    subtitle="Main brand color"
+    colors={{
+      Default: 'hsl(222.2 47.4% 45.2%)',
+      Foreground: 'hsl(210 40% 98%)',
+    }}
+  />
+  <ColorItem
+    title="Secondary"
+    subtitle="Secondary actions"
+    colors={{
+      Default: 'hsl(210 40% 96.1%)',
+      Foreground: 'hsl(222.2 47.4% 11.2%)',
+    }}
+  />
+  <ColorItem
+    title="Destructive"
+    subtitle="Destructive actions"
+    colors={{
+      Default: 'hsl(0 84.2% 60.2%)',
+      Foreground: 'hsl(210 40% 98%)',
+    }}
+  />
+  <ColorItem
+    title="Muted"
+    subtitle="Muted elements"
+    colors={{
+      Default: 'hsl(210 40% 96.1%)',
+      Foreground: 'hsl(215.4 16.3% 46.9%)',
+    }}
+  />
+</ColorPalette>
+
+## Extended Palette
+
+### Success Colors
+<ColorPalette>
+  <ColorItem
+    title="Success"
+    subtitle="Positive states and confirmations"
+    colors={{
+      50: '#f0fdf4',
+      100: '#dcfce7',
+      200: '#bbf7d0',
+      300: '#86efac',
+      400: '#4ade80',
+      500: '#22c55e',
+      600: '#16a34a',
+      700: '#15803d',
+      800: '#166534',
+      900: '#14532d',
+    }}
+  />
+</ColorPalette>
+
+### Warning Colors
+<ColorPalette>
+  <ColorItem
+    title="Warning"
+    subtitle="Warning states and alerts"
+    colors={{
+      50: '#fffbeb',
+      100: '#fef3c7',
+      200: '#fde68a',
+      300: '#fcd34d',
+      400: '#fbbf24',
+      500: '#f59e0b',
+      600: '#d97706',
+      700: '#b45309',
+      800: '#92400e',
+      900: '#78350f',
+    }}
+  />
+</ColorPalette>
+
+### Danger Colors
+<ColorPalette>
+  <ColorItem
+    title="Danger"
+    subtitle="Error states and critical actions"
+    colors={{
+      50: '#fef2f2',
+      100: '#fee2e2',
+      200: '#fecaca',
+      300: '#fca5a5',
+      400: '#f87171',
+      500: '#ef4444',
+      600: '#dc2626',
+      700: '#b91c1c',
+      800: '#991b1b',
+      900: '#7f1d1d',
+    }}
+  />
+</ColorPalette>
+
+### Gray Scale
+<ColorPalette>
+  <ColorItem
+    title="Gray"
+    subtitle="Neutral colors for UI elements"
+    colors={{
+      50: '#f9fafb',
+      100: '#f3f4f6',
+      200: '#e5e7eb',
+      300: '#d1d5db',
+      400: '#9ca3af',
+      500: '#6b7280',
+      600: '#4b5563',
+      700: '#374151',
+      800: '#1f2937',
+      900: '#111827',
+    }}
+  />
+</ColorPalette>
+
+## Usage Guidelines
+
+### CSS Variables
+```css
+/* Light theme */
+:root {
+  --primary: 222.2 47.4% 45.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  /* ... more variables */
+}
+
+/* Dark theme */
+.dark {
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  /* ... more variables */
+}
+```
+
+### Usage in Components
+```tsx
+// Using with Tailwind
+<div className="bg-primary text-primary-foreground">
+  Primary colored element
+</div>
+
+// Using semantic colors
+<Button variant="destructive">Delete</Button>
+<Badge variant="success">Active</Badge>
+<Alert variant="warning">Warning message</Alert>
+```
+
+### Best Practices
+
+1. **Use semantic colors** - Prefer `primary`, `secondary`, etc. over specific color values
+2. **Maintain contrast** - Ensure text is readable on all backgrounds (WCAG AA)
+3. **Consistent usage** - Use the same color for the same purpose throughout the app
+4. **Dark mode support** - Always test components in both light and dark themes
+5. **Accessibility** - Check color contrast ratios for all text/background combinations
+
+### Color Application Examples
+
+- **Primary**: Main CTAs, active states, links
+- **Secondary**: Secondary buttons, subtle backgrounds
+- **Destructive**: Delete actions, error states
+- **Success**: Confirmations, positive feedback
+- **Warning**: Cautions, important notices
+- **Muted**: Disabled states, placeholder text

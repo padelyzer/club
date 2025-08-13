@@ -1,0 +1,77 @@
+{
+  "start_time": "2025-08-07 18:39:20.127625",
+  "modules_tested": {
+    "Clients": {
+      "status": "failed",
+      "error": "create_user() missing 1 required positional argument: 'username'",
+      "summary": "Module test failed: create_user() missing 1 required positional argument: 'username'"
+    },
+    "Reservations": {
+      "status": "failed",
+      "error": "Court() got unexpected keyword arguments: 'court_type'",
+      "summary": "Module test failed: Court() got unexpected keyword arguments: 'court_type'"
+    },
+    "Payments": {
+      "status": "failed",
+      "error": "create_user() missing 1 required positional argument: 'username'",
+      "summary": "Module test failed: create_user() missing 1 required positional argument: 'username'"
+    },
+    "Revenue": {
+      "status": "failed",
+      "error": "create_user() missing 1 required positional argument: 'username'",
+      "summary": "Module test failed: create_user() missing 1 required positional argument: 'username'"
+    }
+  },
+  "critical_flows": {
+    "Complete Reservation Flow": {
+      "status": "failed",
+      "error": "Court() got unexpected keyword arguments: 'court_type'",
+      "summary": "Flow test failed: Court() got unexpected keyword arguments: 'court_type'"
+    },
+    "Payment and Revenue Flow": {
+      "status": "failed",
+      "error": "create_user() missing 1 required positional argument: 'username'",
+      "summary": "Flow test failed: create_user() missing 1 required positional argument: 'username'"
+    },
+    "Check-in and Completion Flow": {
+      "status": "failed",
+      "error": "Court() got unexpected keyword arguments: 'court_type'",
+      "summary": "Flow test failed: Court() got unexpected keyword arguments: 'court_type'"
+    },
+    "Refund Flow": {
+      "status": "failed",
+      "error": "create_user() missing 1 required positional argument: 'username'",
+      "summary": "Flow test failed: create_user() missing 1 required positional argument: 'username'"
+    }
+  },
+  "data_integrity": {
+    "status": "failed",
+    "error": "no such column: finance_payment.client_id",
+    "summary": "Integrity check failed: no such column: finance_payment.client_id"
+  },
+  "performance_metrics": {
+    "status": "failed",
+    "error": "Court() got unexpected keyword arguments: 'court_type'"
+  },
+  "issues_found": [],
+  "recommendations": [],
+  "edge_cases": {
+    "Concurrent Reservations": {
+      "passed": false,
+      "error": "Court() got unexpected keyword arguments: 'court_type'"
+    },
+    "Payment Limits": {
+      "passed": false,
+      "error": "['Los pagos en cash solo se procesan en horario comercial (8:00 AM - 8:00 PM)']"
+    },
+    "Invalid Data Handling": {
+      "passed": false,
+      "error": "['No se pueden crear reservas en el pasado', 'Las reservas deben hacerse con al menos 30 minutos de anticipaci\u00f3n']"
+    },
+    "Business Rule Violations": {
+      "passed": false,
+      "error": "object of type 'bool' has no len()"
+    }
+  },
+  "end_time": "2025-08-07 18:39:20.163493"
+}

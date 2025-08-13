@@ -1,0 +1,113 @@
+{
+  "test_start": "2025-08-07T12:30:15.168021",
+  "flows_tested": [],
+  "validations": [
+    {
+      "timestamp": "12:30:15",
+      "step": "Organizaci\u00f3n de prueba configurada",
+      "status": "SUCCESS",
+      "details": "QA Test Padel Club"
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "Club de prueba configurado",
+      "status": "SUCCESS",
+      "details": "QA Test Padel Club 7ec146b5"
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "Cancha de prueba configurada",
+      "status": "SUCCESS",
+      "details": "Cancha QA 1 - $150.00/hr"
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "Usuario de prueba configurado",
+      "status": "SUCCESS",
+      "details": "qa.user.7ec146b5@test.com"
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "Cliente de prueba configurado",
+      "status": "SUCCESS",
+      "details": "qa.user.7ec146b5@test.com"
+    }
+  ],
+  "errors": [
+    {
+      "timestamp": "12:30:15",
+      "step": "Error creando reserva",
+      "status": "ERROR",
+      "details": "{'price_per_hour': ['Este campo no puede ser nulo.']}"
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "1. Crear Reserva fall\u00f3",
+      "status": "ERROR",
+      "details": null
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "No hay reserva disponible",
+      "status": "ERROR",
+      "details": null
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "2. Registrar Pago fall\u00f3",
+      "status": "ERROR",
+      "details": null
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "No hay reserva disponible",
+      "status": "ERROR",
+      "details": null
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "3. Confirmar y Check-in fall\u00f3",
+      "status": "ERROR",
+      "details": null
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "No hay reserva disponible",
+      "status": "ERROR",
+      "details": null
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "4. Verificar Ingresos fall\u00f3",
+      "status": "ERROR",
+      "details": null
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "Error verificando consistencia",
+      "status": "ERROR",
+      "details": "'reservation'"
+    },
+    {
+      "timestamp": "12:30:15",
+      "step": "5. Consistencia de Datos fall\u00f3",
+      "status": "ERROR",
+      "details": null
+    }
+  ],
+  "summary": {
+    "total_flows": 5,
+    "successful_flows": 0,
+    "failed_flows": 5,
+    "success_rate": "0.0%",
+    "test_duration": 0.208928,
+    "test_data_ids": {
+      "organization_id": "a7dd3bcf-b648-449d-bc5f-d4562f4fc9c4",
+      "club_id": "a9079a89-4283-45f3-b846-36b5a89e02f0",
+      "court_id": "a1cd9c78-74f2-4f95-97d3-3a1cd62e2d83",
+      "client_id": "82c0dc8f-4049-4e56-ade9-866a0c942640",
+      "user_id": "141",
+      "reservation_id": null
+    }
+  }
+}

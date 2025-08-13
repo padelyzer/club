@@ -1,0 +1,177 @@
+{
+  "timestamp": "2025-08-06T10:04:52.059221",
+  "success_rate": 100.0,
+  "test_results": {
+    "authentication": true,
+    "club_access": true,
+    "court_access": true,
+    "availability_check": true,
+    "reservation_listing": true,
+    "reservation_creation": true
+  },
+  "detailed_logs": {
+    "AUTHENTICATION": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:04:51.977494",
+      "details": {
+        "summary": "Authenticated as apitest@padelyzer.com",
+        "user_id": 138,
+        "is_staff": false
+      }
+    },
+    "CLUB_ACCESS": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:04:51.994807",
+      "details": {
+        "summary": "Found 1 clubs",
+        "club_id": "555730d5-b0ea-4579-9e16-c7b307fd8f6d",
+        "club_name": "Test Padel Club Partners"
+      }
+    },
+    "COURT_ACCESS": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:04:52.007429",
+      "details": {
+        "summary": "Found 3 courts",
+        "court_id": "5d845c57-21fa-430f-bfc7-e37abfcfa6d7",
+        "court_name": "Cancha 1",
+        "price_per_hour": "110.00",
+        "missing_fields": []
+      }
+    },
+    "AVAILABILITY": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:04:52.024817",
+      "details": {
+        "summary": "Available slots for 3 courts",
+        "has_date": true,
+        "has_availability": true,
+        "test_date": "2025-08-06"
+      }
+    },
+    "RESERVATION_LIST": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:04:52.036948",
+      "details": {
+        "summary": "Found 0 reservations",
+        "total_count": 0,
+        "sample_reservation_id": null
+      }
+    },
+    "RESERVATION_CREATE": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T10:04:52.059153",
+      "details": {
+        "summary": "Created reservation 40513be4-c1dd-477c-adf7-5e947719315f",
+        "reservation_id": "40513be4-c1dd-477c-adf7-5e947719315f",
+        "court": "5d845c57-21fa-430f-bfc7-e37abfcfa6d7",
+        "player_name": "API Test Player",
+        "date": "2025-08-07",
+        "status": "pending"
+      }
+    }
+  },
+  "user_data": {
+    "id": 138,
+    "username": "apitest",
+    "email": "apitest@padelyzer.com",
+    "first_name": "API",
+    "last_name": "Test",
+    "phone": "",
+    "email_verified": false,
+    "phone_verified": false,
+    "two_factor_enabled": false,
+    "two_factor_method": "email",
+    "avatar_url": "",
+    "language": "es-mx",
+    "timezone": "America/Mexico_City",
+    "organization_memberships": [
+      {
+        "id": "fe9a3036-478e-4246-8dfe-2d9e91fb3f2c",
+        "organization": "21900354-589c-420f-8ed3-ed475d91e0d3",
+        "organization_name": "Test Padel",
+        "role": "admin",
+        "permissions": {},
+        "joined_at": "2025-08-06 10:02:38"
+      }
+    ],
+    "current_organization": {
+      "id": "21900354-589c-420f-8ed3-ed475d91e0d3",
+      "trade_name": "Test Padel",
+      "business_name": "Test Padel Organization",
+      "type": "club",
+      "state": "active"
+    },
+    "current_organization_id": "21900354-589c-420f-8ed3-ed475d91e0d3",
+    "club": null,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_active": true,
+    "date_joined": "2025-08-06 10:01:29",
+    "last_login": "2025-08-06 10:04:51"
+  },
+  "club_data": {
+    "id": "555730d5-b0ea-4579-9e16-c7b307fd8f6d",
+    "organization": "21900354-589c-420f-8ed3-ed475d91e0d3",
+    "name": "Test Padel Club Partners",
+    "slug": "test-padel-club-partners",
+    "description": "",
+    "email": "club@test.com",
+    "phone": "+1234567890",
+    "website": "",
+    "address": {},
+    "full_address": "M\u00e9xico",
+    "latitude": null,
+    "longitude": null,
+    "opening_time": "07:00:00",
+    "closing_time": "23:00:00",
+    "days_open": [],
+    "features": [],
+    "settings": {},
+    "logo_url": "",
+    "cover_image_url": "",
+    "primary_color": "#1E88E5",
+    "total_courts": 3,
+    "courts_count": 3,
+    "active_courts_count": 3,
+    "total_members": 0,
+    "is_active": true,
+    "created_at": "2025-08-05 18:11:42",
+    "updated_at": "2025-08-06 10:03:29"
+  },
+  "court_data": {
+    "id": "5d845c57-21fa-430f-bfc7-e37abfcfa6d7",
+    "club": "555730d5-b0ea-4579-9e16-c7b307fd8f6d",
+    "club_name": "Test Padel Club Partners",
+    "organization": "21900354-589c-420f-8ed3-ed475d91e0d3",
+    "name": "Cancha 1",
+    "number": 1,
+    "surface_type": "glass",
+    "surface_type_display": "Cristal",
+    "has_lighting": true,
+    "has_heating": false,
+    "has_roof": false,
+    "is_maintenance": false,
+    "maintenance_notes": "",
+    "price_per_hour": "110.00",
+    "is_active": true,
+    "created_at": "2025-08-06 10:03:29",
+    "updated_at": "2025-08-06 10:03:29"
+  },
+  "critical_issues": [],
+  "api_ready_for_production": true,
+  "frontend_integration_notes": {
+    "auth_field": "email",
+    "courts_endpoint": "/api/v1/clubs/courts/",
+    "availability_endpoint": "/api/v1/reservations/reservations/check_availability/",
+    "reservations_endpoint": "/api/v1/reservations/reservations/",
+    "required_reservation_fields": [
+      "club",
+      "court",
+      "player_name",
+      "date",
+      "start_time",
+      "end_time"
+    ]
+  }
+}

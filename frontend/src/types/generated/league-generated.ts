@@ -1,0 +1,339 @@
+/**
+ * Tipos TypeScript para leagues
+ * Generado automáticamente desde models.py
+ */
+
+export interface LeagueSeason {
+  id: string;
+  createdAt: string;
+  created_at: string;
+  updatedAt: string;
+  updated_at: string;
+  league: string;
+  name: string;
+  seasonNumber: number;
+  season_number: number;
+  startDate: string;
+  start_date: string;
+  endDate: string;
+  end_date: string;
+  registrationStart: string;
+  registration_start: string;
+  registrationEnd: string;
+  registration_end: string;
+  status: string;
+  currentMatchday: number;
+  current_matchday: number;
+  totalMatchdays: number;
+  total_matchdays: number;
+  matchesPerTeam: number;
+  matches_per_team: number;
+  totalMatches: number;
+  total_matches: number;
+  playoffEnabled: boolean;
+  playoff_enabled: boolean;
+  playoffStartDate?: string;
+  playoff_start_date?: string;
+  playoffTeams: number;
+  playoff_teams: number;
+}
+
+export interface LeagueSeasonForm {
+  league?: string;
+  name?: string;
+  seasonNumber?: number;
+  startDate?: string;
+  endDate?: string;
+  registrationStart?: string;
+  registrationEnd?: string;
+  status?: string;
+  currentMatchday?: number;
+  totalMatchdays?: number;
+  matchesPerTeam?: number;
+  totalMatches?: number;
+  playoffEnabled?: boolean;
+  playoffStartDate?: string;
+  playoffTeams?: number;
+}
+
+export interface LeagueTeam {
+  id: string;
+  createdAt: string;
+  created_at: string;
+  updatedAt: string;
+  updated_at: string;
+  season: string;
+  teamName: string;
+  team_name: string;
+  player1: string;
+  player2: string;
+  substitute1?: string;
+  substitute2?: string;
+  status: string;
+  contactPhone: string;
+  contact_phone: string;
+  contactEmail: string;
+  contact_email: string;
+  paymentStatus: string;
+  payment_status: string;
+  paymentReference?: string;
+  payment_reference?: string;
+  registrationDate: string;
+  registration_date: string;
+  approvedBy?: string;
+  approved_by?: string;
+  approvedAt?: string;
+  approved_at?: string;
+}
+
+export interface LeagueTeamForm {
+  season?: string;
+  teamName?: string;
+  player1?: string;
+  player2?: string;
+  substitute1?: string;
+  substitute2?: string;
+  status?: string;
+  contactPhone?: string;
+  contactEmail?: string;
+  paymentStatus?: string;
+  paymentReference?: string;
+  registrationDate?: string;
+  approvedBy?: string;
+  approvedAt?: string;
+}
+
+export interface LeagueMatch {
+  id: string;
+  createdAt: string;
+  created_at: string;
+  updatedAt: string;
+  updated_at: string;
+  season: string;
+  matchday: number;
+  matchNumber: number;
+  match_number: number;
+  homeTeam: string;
+  home_team: string;
+  awayTeam: string;
+  away_team: string;
+  scheduledDate: string;
+  scheduled_date: string;
+  court?: string;
+  status: string;
+  homeScore: Record<string, any>;
+  home_score: Record<string, any>;
+  awayScore: Record<string, any>;
+  away_score: Record<string, any>;
+  winner?: string;
+  actualStartTime?: string;
+  actual_start_time?: string;
+  actualEndTime?: string;
+  actual_end_time?: string;
+  durationMinutes?: number;
+  duration_minutes?: number;
+  confirmedByHome: boolean;
+  confirmed_by_home: boolean;
+  confirmedByAway: boolean;
+  confirmed_by_away: boolean;
+  confirmedAt?: string;
+  confirmed_at?: string;
+  notes?: string;
+  walkoverReason?: string;
+  walkover_reason?: string;
+  rescheduleRequests: number;
+  reschedule_requests: number;
+  originalDate?: string;
+  original_date?: string;
+}
+
+export interface LeagueMatchForm {
+  season?: string;
+  matchday?: number;
+  matchNumber?: number;
+  homeTeam?: string;
+  awayTeam?: string;
+  scheduledDate?: string;
+  court?: string;
+  status?: string;
+  homeScore?: Record<string, any>;
+  awayScore?: Record<string, any>;
+  winner?: string;
+  actualStartTime?: string;
+  actualEndTime?: string;
+  durationMinutes?: number;
+  confirmedByHome?: boolean;
+  confirmedByAway?: boolean;
+  confirmedAt?: string;
+  notes?: string;
+  walkoverReason?: string;
+  rescheduleRequests?: number;
+  originalDate?: string;
+}
+
+export interface LeagueStanding {
+  id: string;
+  createdAt: string;
+  created_at: string;
+  updatedAt: string;
+  updated_at: string;
+  season: string;
+  team: string;
+  position: number;
+  matchesPlayed: number;
+  matches_played: number;
+  matchesWon: number;
+  matches_won: number;
+  matchesDrawn: number;
+  matches_drawn: number;
+  matchesLost: number;
+  matches_lost: number;
+  setsWon: number;
+  sets_won: number;
+  setsLost: number;
+  sets_lost: number;
+  setsDifference: number;
+  sets_difference: number;
+  gamesWon: number;
+  games_won: number;
+  gamesLost: number;
+  games_lost: number;
+  gamesDifference: number;
+  games_difference: number;
+  points: number;
+  homeWins: number;
+  home_wins: number;
+  awayWins: number;
+  away_wins: number;
+  walkoversFor: number;
+  walkovers_for: number;
+  walkoversAgainst: number;
+  walkovers_against: number;
+  currentStreak?: string;
+  current_streak?: string;
+  longestWinStreak: number;
+  longest_win_streak: number;
+  form: Record<string, any>;
+}
+
+export interface LeagueStandingForm {
+  season?: string;
+  team?: string;
+  position?: number;
+  matchesPlayed?: number;
+  matchesWon?: number;
+  matchesDrawn?: number;
+  matchesLost?: number;
+  setsWon?: number;
+  setsLost?: number;
+  setsDifference?: number;
+  gamesWon?: number;
+  gamesLost?: number;
+  gamesDifference?: number;
+  points?: number;
+  homeWins?: number;
+  awayWins?: number;
+  walkoversFor?: number;
+  walkoversAgainst?: number;
+  currentStreak?: string;
+  longestWinStreak?: number;
+  form?: Record<string, any>;
+}
+
+export interface LeagueRules {
+  id: string;
+  createdAt: string;
+  created_at: string;
+  updatedAt: string;
+  updated_at: string;
+  league: string;
+  ruleType: string;
+  rule_type: string;
+  title: string;
+  description: string;
+  order: number;
+  pointsForWin: number;
+  points_for_win: number;
+  pointsForDraw: number;
+  points_for_draw: number;
+  pointsForLoss: number;
+  points_for_loss: number;
+  pointsForWalkoverWin: number;
+  points_for_walkover_win: number;
+  pointsForWalkoverLoss: number;
+  points_for_walkover_loss: number;
+  isMandatory: boolean;
+  is_mandatory: boolean;
+  penaltyPoints: number;
+  penalty_points: number;
+  penaltyDescription?: string;
+  penalty_description?: string;
+  tiebreakerCriteria: Record<string, any>;
+  tiebreaker_criteria: Record<string, any>;
+}
+
+export interface LeagueRulesForm {
+  league?: string;
+  ruleType?: string;
+  title?: string;
+  description?: string;
+  order?: number;
+  pointsForWin?: number;
+  pointsForDraw?: number;
+  pointsForLoss?: number;
+  pointsForWalkoverWin?: number;
+  pointsForWalkoverLoss?: number;
+  isMandatory?: boolean;
+  penaltyPoints?: number;
+  penaltyDescription?: string;
+  tiebreakerCriteria?: Record<string, any>;
+}
+
+export interface LeagueSchedule {
+  id: string;
+  createdAt: string;
+  created_at: string;
+  updatedAt: string;
+  updated_at: string;
+  season: string;
+  scheduleType: string;
+  schedule_type: string;
+  preferredDays: Record<string, any>;
+  preferred_days: Record<string, any>;
+  startTime: string;
+  start_time: string;
+  endTime: string;
+  end_time: string;
+  preferredCourts?: string[];
+  preferred_courts?: string[];
+  maxMatchesPerDay: number;
+  max_matches_per_day: number;
+  minRestDays: number;
+  min_rest_days: number;
+  autoSchedule: boolean;
+  auto_schedule: boolean;
+  allowReschedule: boolean;
+  allow_reschedule: boolean;
+  rescheduleDeadlineHours: number;
+  reschedule_deadline_hours: number;
+  excludeHolidays: boolean;
+  exclude_holidays: boolean;
+  customExcludedDates: Record<string, any>;
+  custom_excluded_dates: Record<string, any>;
+}
+
+export interface LeagueScheduleForm {
+  season?: string;
+  scheduleType?: string;
+  preferredDays?: Record<string, any>;
+  startTime?: string;
+  endTime?: string;
+  preferredCourts?: string[];
+  maxMatchesPerDay?: number;
+  minRestDays?: number;
+  autoSchedule?: boolean;
+  allowReschedule?: boolean;
+  rescheduleDeadlineHours?: number;
+  excludeHolidays?: boolean;
+  customExcludedDates?: Record<string, any>;
+}

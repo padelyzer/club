@@ -1,0 +1,14 @@
+# Padelyzer Backend Requirements
+# This file points to the appropriate requirements file based on environment
+#
+# For development:
+#   pip install -r requirements/development.txt
+#
+# For production:
+#   pip install -r requirements/production.txt
+#
+# For base dependencies only:
+#   pip install -r requirements/base.txt
+
+# Default to production environment
+-r requirements/production.txt

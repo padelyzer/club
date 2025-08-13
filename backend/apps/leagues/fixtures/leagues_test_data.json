@@ -1,0 +1,65 @@
+[
+  {
+    "model": "leagues.league",
+    "pk": 1,
+    "fields": {
+      "name": "Liga de Verano 2024",
+      "slug": "liga-verano-2024",
+      "description": "Liga competitiva de verano con los mejores jugadores del club",
+      "club": 1,
+      "start_date": "2024-06-01",
+      "end_date": "2024-08-31",
+      "registration_start": "2024-05-01",
+      "registration_end": "2024-05-25",
+      "format": "round_robin",
+      "categories": ["masculino_a", "masculino_b", "femenino", "mixto"],
+      "max_teams": 16,
+      "min_teams": 8,
+      "entry_fee": "50.00",
+      "prize_pool": "2000.00",
+      "rules": {
+        "match_format": "best_of_3",
+        "sets_to_win": 2,
+        "games_per_set": 6,
+        "tie_break": true,
+        "golden_point": true,
+        "time_limit_minutes": 90
+      },
+      "status": "in_progress",
+      "is_active": true,
+      "created_at": "2024-05-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "leagues.league",
+    "pk": 2,
+    "fields": {
+      "name": "Liga Corporativa Q3",
+      "slug": "liga-corporativa-q3",
+      "description": "Liga para empresas y equipos corporativos",
+      "club": 1,
+      "start_date": "2024-07-01",
+      "end_date": "2024-09-30",
+      "registration_start": "2024-06-01",
+      "registration_end": "2024-06-25",
+      "format": "groups_knockout",
+      "categories": ["corporativo"],
+      "max_teams": 32,
+      "min_teams": 16,
+      "entry_fee": "100.00",
+      "prize_pool": "5000.00",
+      "rules": {
+        "match_format": "single_set",
+        "games_per_set": 9,
+        "tie_break": false,
+        "golden_point": true,
+        "time_limit_minutes": 60
+      },
+      "status": "registration",
+      "is_active": true,
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-15T10:00:00Z"
+    }
+  }
+]

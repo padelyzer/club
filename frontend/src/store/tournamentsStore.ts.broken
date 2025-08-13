@@ -1,0 +1,591 @@
+import { create } from 'zustand';
+import { immer } from 'zustand/middleware/immer';
+import {
+  Tournament,
+  TournamentState,
+  TournamentFilters,
+  TournamentRegistration,
+  TournamentMatch,
+  TournamentParticipant,
+  TournamentBracket,
+  TournamentGroup,
+  TournamentStandings,
+  TournamentStatus,
+  TournamentCategory,
+  TournamentFormat,
+} from '@/types/tournament';
+import { OptimisticUpdate } from '@/types';
+import {
+  WebSocketMessage,
+  WebSocketStoreIntegration,
+  TournamentUpdatedPayload,
+  TournamentMatchUpdatePayload,
+  TournamentRegistrationPayload,
+  isTournamentMessage,
+} from '@/types/websocket';
+
+interface TournamentStore extends TournamentState, WebSocketStoreIntegration {
+  // Real-time state
+// lastWebSocketUpdate: string | null;
+  liveMatches: Set<string>;
+
+  // Actions
+  setTournaments: (tournaments: Tournament[]) => void;
+  addTournament: (tournament: Tournament) => void;
+  updateTournament: (id: string, updates: Partial<Tournament>) => void;
+// deleteTournament: (id: string) => void;
+
+  // Selection
+  setSelectedTournament: (tournament: Tournament | null) => void;
+  loadTournamentDetails: (tournamentId: string) => Promise<void>;
+
+  // Tournament details
+  setBracket: (bracket: TournamentBracket) => void;
+  setGroups: (groups: TournamentGroup[]) => void;
+  setStandings: (standings: TournamentStandings) => void;
+  setParticipants: (participants: TournamentParticipant[]) => void;
+  setMatches: (matches: TournamentMatch[]) => void;
+
+  // Match updates
+  updateMatch: (matchId: string, updates: Partial<TournamentMatch>) => void;
+  updateMatchScore: (
+    matchId: string,
+    team1Score: number,
+    team2Score: number
+  ) => void;
+
+  // Registrations
+  setMyRegistrations: (registrations: TournamentRegistration[]) => void;
+  addRegistration: (registration: TournamentRegistration) => void;
+  updateRegistration: (
+    id: string,
+    updates: Partial<TournamentRegistration>
+  ) => void;
+  withdrawRegistration: (id: string) => void;
+
+  // Filters
+  setFilters: (filters: Partial<TournamentFilters>) => void;
+  resetFilters: () => void;
+
+  // Loading states
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+
+  // Optimistic updates
+  optimisticUpdates: OptimisticUpdate<
+    Tournament | TournamentMatch | TournamentRegistration
+  >[];
+  addOptimisticUpdate: (
+    update: OptimisticUpdate<
+      Tournament | TournamentMatch | TournamentRegistration
+    >
+  ) => void;
+  removeOptimisticUpdate: (id: string) => void;
+
+  // Computed getters
+  getFilteredTournaments: () => Tournament[];
+  getUpcomingTournaments: () => Tournament[];
+  getActiveTournaments: () => Tournament[];
+  getTournamentsByClub: (clubId: string) => Tournament[];
+  getMyActiveTournaments: () => Tournament[];
+  canRegister: (tournamentId: string) => boolean;
+  getNextMatch: (participantId: string) => TournamentMatch | undefined;
+  getTournamentProgress: (tournamentId: string) => number;
+}
+
+const defaultFilters: TournamentFilters = {
+  status: [],
+  category: [],
+  format: [],
+  dateRange: {
+    start: new Date().toISOString().split('T')[0],
+    end: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split('T')[0], // 90 days
+  },
+  hasAvailableSpots: false
+};
+
+export const useTournamentStore = create<TournamentStore>()(
+  immer((set, get) => {
+    // Initial state
+    return {
+      tournaments: [],
+      selectedTournament: null,
+      tournamentDetails: {},
+      filters: defaultFilters,
+      myRegistrations: [],
+      isLoading: false,
+      error: null,
+      optimisticUpdates: [],
+      lastWebSocketUpdate: null,
+      liveMatches: new Set(),
+    // WebSocket integration
+// messageTypes: [
+      'tournament:updated'
+      'tournament:match_update',
+      'tournament:registration',
+    ],
+// handleMessage: (message: WebSocketMessage) => {
+      if (!isTournamentMessage(message)) return;
+
+      set((state) => {
+        state.lastWebSocketUpdate = new Date().toISOString();
+
+      switch (message.type) {
+        case 'tournament:updated':
+          const updatePayload = message.payload as TournamentUpdatedPayload;
+          set((state) => {
+            const index = state.tournaments.findIndex(
+              (t) => t.id === updatePayload.tournament.id
+            );
+            if (index !== -1) {
+              state.tournaments[index] = updatePayload.tournament;
+            }
+            // Update selected tournament if it&apos;s the same
+            if (state.selectedTournament?.id === updatePayload.tournament.id) {
+              state.selectedTournament = updatePayload.tournament;
+            }
+
+          break;
+
+        case 'tournament:match_update':
+          const matchPayload = message.payload as TournamentMatchUpdatePayload;
+          set((state) => {
+            // Update match in tournament details
+            if (state.tournamentDetails.matches) {
+              const matchIndex = state.tournamentDetails.matches.findIndex(
+                (m) => m.id === matchPayload.match.id
+              );
+              if (matchIndex !== -1) {
+                state.tournamentDetails.matches[matchIndex] =
+                  matchPayload.match;
+              }
+            }
+
+            // Update match in bracket if exists
+            if (state.tournamentDetails.bracket) {
+              for (const round of state.tournamentDetails.bracket.rounds) {
+                const match = round.matches.find(
+                  (m) => m.id === matchPayload.match.id
+                );
+                if (match) {
+                  Object.assign(match, matchPayload.match);
+                  break;
+                }
+              }
+            }
+
+            // Track live matches
+            if (matchPayload.liveScore) {
+              state.liveMatches.add(matchPayload.match.id);
+            } else if (matchPayload.match.status === 'completed') {
+              state.liveMatches.delete(matchPayload.match.id);
+            }
+
+            // Update tournament progress if viewing the same tournament
+            if (state.selectedTournament?.id === matchPayload.tournamentId) {
+              const completedMatches =
+                state.tournamentDetails.matches?.filter(
+                  (m) => m.status === 'completed'
+                ).length || 0;
+              const totalMatches = state.tournamentDetails.matches?.length || 1;
+              const progress = Math.round(
+                (completedMatches / totalMatches) * 100
+              );
+
+              // Update tournament status if all matches completed
+              if (
+                progress === 100 &&
+                state.selectedTournament.status === 'in_progress'
+              ) {
+                state.selectedTournament.status = 'completed';
+              }
+            }
+
+          break;
+
+        case 'tournament:registration':
+          const regPayload = message.payload as TournamentRegistrationPayload;
+          set((state) => {
+            // Update tournament participant count
+            const tournament = state.tournaments.find(
+              (t) => t.id === regPayload.tournamentId
+            );
+            if (tournament) {
+              if (
+                regPayload.action === 'registered' ||
+                regPayload.action === 'confirmed'
+              ) {
+                tournament.currentParticipants = Math.min(
+                  tournament.currentParticipants + 1,
+                  tournament.maxParticipants
+                );
+              } else if (
+                regPayload.action === 'withdrawn' &&
+                tournament.currentParticipants > 0
+              ) {
+                tournament.currentParticipants--;
+              }
+            }
+
+            // Update my registrations if it&apos;s the current user
+            const currentUserId = localStorage.getItem('user_id');
+            if (regPayload.registration.userId === currentUserId) {
+              const regIndex = state.myRegistrations.findIndex(
+                (r) => r.id === regPayload.registration.id
+              );
+              if (regIndex !== -1) {
+                state.myRegistrations[regIndex] = regPayload.registration;
+              } else if (regPayload.action !== 'withdrawn') {
+                state.myRegistrations.push(regPayload.registration);
+              }
+            }
+
+            // Update tournament details participants if viewing the same tournament
+            if (
+              state.selectedTournament?.id === regPayload.tournamentId &&
+              state.tournamentDetails.participants
+            ) {
+              if (regPayload.action === 'withdrawn') {
+                state.tournamentDetails.participants =
+                  state.tournamentDetails.participants.filter(
+                    (p) => p.id !== regPayload.registration.participantId
+                  );
+              }
+            }
+
+          break;
+      }
+    },
+// handleWebSocketMessage: (message: WebSocketMessage) => {
+      get().handleMessage(message);
+    },
+
+    // Actions
+// setTournaments: (tournaments) =>
+      set((state) => {
+        state.tournaments = tournaments;
+      }),
+// addTournament: (tournament) =>
+      set((state) => {
+        state.tournaments.push(tournament);
+        // Sort by start date
+        state.tournaments.sort(
+          (a, b) =>
+            new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+        );
+      }),
+
+    updateTournament: (id, updates) =>
+      set((state) => {
+        const index = state.tournaments.findIndex((t) => t.id === id);
+        if (index !== -1 && state.tournaments[index]) {
+          Object.assign(state.tournaments[index], updates);
+        }
+        if (state.selectedTournament?.id === id) {
+          Object.assign(state.selectedTournament, updates);
+        }
+      }),
+// deleteTournament: (id) =>
+      set((state) => {
+        state.tournaments = state.tournaments.filter((t) => t.id !== id);
+        if (state.selectedTournament?.id === id) {
+          state.selectedTournament = null;
+          state.tournamentDetails = {};
+        }
+      }),
+
+    // Selection
+// setSelectedTournament: (tournament) =>
+      set((state) => {
+        state.selectedTournament = tournament;
+        if (!tournament) {
+          state.tournamentDetails = {};
+        }
+      }),
+// loadTournamentDetails: async (tournamentId) => {
+      set((state) => {
+        state.isLoading = true;
+        state.error = null;
+
+      try {
+        // This would be replaced with actual API calls
+        // For now, we'll simulate loading
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // In real implementation, fetch bracket, groups, standings, etc.
+        set((state) => {
+          state.isLoading = false;
+
+      } catch (error) {
+        set((state) => {
+          state.isLoading = false;
+          state.error =
+            error instanceof Error
+              ? error.message
+              : 'Failed to load tournament details';
+
+      }
+    },
+
+    // Tournament details
+// setBracket: (bracket) =>
+      set((state) => {
+        state.tournamentDetails.bracket = bracket;
+      }),
+// setGroups: (groups) =>
+      set((state) => {
+        state.tournamentDetails.groups = groups;
+      }),
+// setStandings: (standings) =>
+      set((state) => {
+        state.tournamentDetails.standings = standings;
+      }),
+// setParticipants: (participants) =>
+      set((state) => {
+        state.tournamentDetails.participants = participants;
+      }),
+// setMatches: (matches) =>
+      set((state) => {
+        state.tournamentDetails.matches = matches;
+      }),
+
+    // Match updates
+    updateMatch: (matchId, updates) =>
+      set((state) => {
+        if (state.tournamentDetails.matches) {
+          const matchIndex = state.tournamentDetails.matches.findIndex(
+            (m) => m.id === matchId
+          );
+          if (
+            matchIndex !== -1 &&
+            state.tournamentDetails.matches[matchIndex]
+          ) {
+            Object.assign(state.tournamentDetails.matches[matchIndex], updates);
+          }
+        }
+
+        // Update match in bracket if exists
+        if (state.tournamentDetails.bracket) {
+          for (const round of state.tournamentDetails.bracket.rounds) {
+            const match = round.matches.find((m) => m.id === matchId);
+            if (match) {
+              Object.assign(match, updates);
+              break;
+            }
+          }
+        }
+      }),
+
+    updateMatchScore: (matchId, team1Score, team2Score) =>
+      set((state) => {
+        const { updateMatch } = get();
+        updateMatch(matchId, {
+// team1: {
+            ...state.tournamentDetails.matches?.find((m) => m.id === matchId)
+// team1!
+// score: team1Score
+          },
+// team2: {
+            ...state.tournamentDetails.matches?.find((m) => m.id === matchId)
+// team2!
+// score: team2Score
+          },
+// winner: team1Score > team2Score ? 'team1' : 'team2'
+
+      }),
+
+    // Registrations
+// setMyRegistrations: (registrations) =>
+      set((state) => {
+        state.myRegistrations = registrations;
+      }),
+// addRegistration: (registration) =>
+      set((state) => {
+        state.myRegistrations.push(registration);
+      }),
+
+    updateRegistration: (id, updates) =>
+      set((state) => {
+        const index = state.myRegistrations.findIndex((r) => r.id === id);
+        if (index !== -1 && state.myRegistrations[index]) {
+          Object.assign(state.myRegistrations[index], updates);
+        }
+      }),
+// withdrawRegistration: (id) =>
+      set((state) => {
+        const index = state.myRegistrations.findIndex((r) => r.id === id);
+        if (index !== -1 && state.myRegistrations[index]) {
+          state.myRegistrations[index].status = 'withdrawn';
+        }
+      }),
+
+    // Filters
+// setFilters: (filters) =>
+      set((state) => {
+        Object.assign(state.filters, filters);
+      }),
+// resetFilters: () =>
+      set((state) => {
+        state.filters = defaultFilters;
+      }),
+
+    // Loading states
+// setLoading: (loading) =>
+      set((state) => {
+        state.isLoading = loading;
+      }),
+// setError: (error) =>
+      set((state) => {
+        state.error = error;
+      }),
+
+    // Optimistic updates
+// addOptimisticUpdate: (update) =>
+      set((state) => {
+        state.optimisticUpdates.push(update);
+      }),
+// removeOptimisticUpdate: (id) =>
+      set((state) => {
+        state.optimisticUpdates = state.optimisticUpdates.filter(
+          (u) => u.id !== id
+        );
+      }),
+
+    // Computed getters
+// getFilteredTournaments: () => {
+      const { tournaments, filters } = get();
+
+      return tournaments.filter((tournament) => {
+        // Status filter
+        if (
+          filters.status.length > 0 &&
+          !filters.status.includes(tournament.status)
+        ) {
+          return false;
+        }
+
+        // Category filter
+        if (
+          filters.category.length > 0 &&
+          !filters.category.includes(tournament.category)
+        ) {
+          return false;
+        }
+
+        // Format filter
+        if (
+          filters.format.length > 0 &&
+          !filters.format.includes(tournament.format)
+        ) {
+          return false;
+        }
+
+        // Date range filter
+        const tournamentDate = new Date(tournament.startDate);
+        const startDate = new Date(filters.dateRange.start);
+        const endDate = new Date(filters.dateRange.end);
+
+        if (tournamentDate < startDate || tournamentDate > endDate) {
+          return false;
+        }
+
+        // Club filter
+        if (filters.clubId && tournament.club.id !== filters.clubId) {
+          return false;
+        }
+
+        // Available spots filter
+        if (
+          filters.hasAvailableSpots &&
+          tournament.currentParticipants >= tournament.maxParticipants
+        ) {
+          return false;
+        }
+
+        return true;
+
+    },
+// getUpcomingTournaments: () => {
+      const { tournaments } = get();
+      return tournaments.filter(
+        (t) => t.status === 'upcoming' || t.status === 'registration_open'
+      );
+    },
+// getActiveTournaments: () => {
+      const { tournaments } = get();
+      return tournaments.filter((t) => t.status === 'in_progress');
+    },
+// getTournamentsByClub: (clubId) => {
+      const { tournaments } = get();
+      return tournaments.filter((t) => t.club.id === clubId);
+    },
+// getMyActiveTournaments: () => {
+      const { tournaments, myRegistrations } = get();
+      const activeTournamentIds = myRegistrations
+        .filter((r) => r.status === 'confirmed')
+        .map((r) => r.tournamentId);
+
+      return tournaments.filter(
+        (t) =>
+          activeTournamentIds.includes(t.id) &&
+          (t.status === 'in_progress' || t.status === 'upcoming')
+      );
+    },
+// canRegister: (tournamentId) => {
+      const { tournaments, myRegistrations } = get();
+      const tournament = tournaments.find((t) => t.id === tournamentId);
+
+      if (!tournament) return false;
+
+      // Check if already registered
+      const hasRegistration = myRegistrations.some(
+        (r) =>
+          r.tournamentId === tournamentId &&
+          ['pending', 'confirmed'].includes(r.status)
+      );
+
+      if (hasRegistration) return false;
+
+      // Check tournament status
+      if (tournament.status !== 'registration_open') return false;
+
+      // Check available spots
+      if (tournament.currentParticipants >= tournament.maxParticipants)
+        return false;
+
+      // Check registration deadline
+      const now = new Date();
+      const registrationEnd = new Date(tournament.registrationEndDate);
+      if (now > registrationEnd) return false;
+
+      return true;
+    },
+// getNextMatch: (participantId) => {
+      const { tournamentDetails } = get();
+      if (!tournamentDetails.matches) return undefined;
+
+      return tournamentDetails.matches.find(
+        (match) =>
+          match.status === 'pending' &&
+          (match.participant1.id === participantId ||
+            match.participant2.id === participantId)
+      );
+    },
+// getTournamentProgress: (tournamentId) => {
+      const { tournamentDetails } = get();
+      if (!tournamentDetails.matches) return 0;
+
+      const tournamentMatches = tournamentDetails.matches.filter(
+        (m) => m.tournamentId === tournamentId
+      );
+      if (tournamentMatches.length === 0) return 0;
+
+      const completedMatches = tournamentMatches.filter(
+        (m) => m.status === 'completed'
+      ).length;
+      return Math.round((completedMatches / tournamentMatches.length) * 100);
+    },
+  }))
+);

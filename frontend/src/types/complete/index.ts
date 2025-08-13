@@ -1,0 +1,80 @@
+/**
+ * Exporta TODOS los tipos completos del sistema
+ */
+
+export * from './clients-complete';
+export * from './clubs-complete';
+export * from './classes-complete';
+export * from './reservations-complete';
+export * from './leagues-complete';
+export * from './bi-complete';
+export * from './root-complete';
+export * from './finance-complete';
+export * from './tournaments-complete';
+export * from './authentication-complete';
+export * from './notifications-complete';
+
+// Tipo que incluye todos los modelos del sistema
+export type AllModels = {
+  PlayerLevel: PlayerLevel;
+  Club: Club;
+  Court: Court;
+  Schedule: Schedule;
+  CourtSpecialPricing: CourtSpecialPricing;
+  Announcement: Announcement;
+  MaintenanceType: MaintenanceType;
+  MaintenanceRecord: MaintenanceRecord;
+  MaintenanceSchedule: MaintenanceSchedule;
+  ClassLevel: ClassLevel;
+  ClassEnrollment: ClassEnrollment;
+  ClassAttendance: ClassAttendance;
+  InstructorEvaluation: InstructorEvaluation;
+  StudentPackage: StudentPackage;
+  Reservation: Reservation;
+  ReservationPayment: ReservationPayment;
+  BlockedSlot: BlockedSlot;
+  LeagueSeason: LeagueSeason;
+  LeagueTeam: LeagueTeam;
+  LeagueMatch: LeagueMatch;
+  LeagueStanding: LeagueStanding;
+  LeagueRules: LeagueRules;
+  LeagueSchedule: LeagueSchedule;
+  DashboardWidget: DashboardWidget;
+  MetricValue: MetricValue;
+  AlertHistory: AlertHistory;
+  Organization: Organization;
+  Subscription: Subscription;
+  Invoice: Invoice;
+  Payment: Payment;
+  ClubOnboarding: ClubOnboarding;
+  AuditLog: AuditLog;
+  Payment: Payment;
+  PaymentRefund: PaymentRefund;
+  PaymentMethod: PaymentMethod;
+  PaymentIntent: PaymentIntent;
+  Membership: Membership;
+  Revenue: Revenue;
+  Subscription: Subscription;
+  Invoice: Invoice;
+  TournamentCategory: TournamentCategory;
+  TournamentRegistration: TournamentRegistration;
+  TournamentBracket: TournamentBracket;
+  Prize: Prize;
+  TournamentRules: TournamentRules;
+  TournamentStats: TournamentStats;
+  Bracket: Bracket;
+  BracketNode: BracketNode;
+  MatchSchedule: MatchSchedule;
+  OrganizationMembership: OrganizationMembership;
+  Session: Session;
+  LoginAttempt: LoginAttempt;
+  OTPVerification: OTPVerification;
+  APIKey: APIKey;
+  BlacklistedToken: BlacklistedToken;
+  AuthAuditLog: AuthAuditLog;
+  NotificationType: NotificationType;
+  NotificationChannel: NotificationChannel;
+  UserNotificationPreference: UserNotificationPreference;
+  NotificationDelivery: NotificationDelivery;
+  NotificationEvent: NotificationEvent;
+};

@@ -1,0 +1,54 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+
+export async function POST(request: NextRequest) {
+  try {
+    const cookieStore = cookies();
+    const accessToken = cookieStore.get('access_token')?.value;
+
+    // Try to logout from backend (optional - might fail if token is invalid)
+    if (accessToken) {
+      try {
+        await fetch(`${BACKEND_URL}/auth/logout/`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+      } catch (error) {
+        // Silent fail - we'll clear cookies anyway
+      }
+    }
+
+    // Clear httpOnly cookies
+    cookieStore.set('access_token', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 0,
+    });
+    
+    cookieStore.set('refresh_token', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 0,
+    });
+
+    return NextResponse.json({ message: 'Logged out successfully' });
+
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Logout error:', error);
+    }
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}

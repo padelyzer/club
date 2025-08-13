@@ -1,0 +1,13 @@
+frontend/
+docs/
+*.md
+*.png
+*.jpg  
+*.log
+.git/
+__pycache__/
+*.pyc
+.DS_Store
+package.json
+package-lock.json
+node_modules/

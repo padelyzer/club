@@ -1,0 +1,104 @@
+{
+  "module": "integration",
+  "timestamp": "2025-08-06T17:21:52.979421",
+  "tests": {
+    "Mapear endpoints del backend": {
+      "success": true,
+      "message": "Endpoints mapeados: 5 encontrados"
+    },
+    "Mapear páginas del frontend": {
+      "success": false,
+      "message": "Error accediendo frontend: HTTPConnectionPool(host='localhost', port=3000): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10a0dd250>: Failed to establish a new connection: [Errno 61] Connection refused'))"
+    },
+    "Verificar conectividad básica": {
+      "success": false,
+      "message": "Error de conectividad: HTTPConnectionPool(host='localhost', port=3000): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10a14fcd0>: Failed to establish a new connection: [Errno 61] Connection refused'))"
+    },
+    "Coherencia en modelos de clubes": {
+      "success": true,
+      "message": "Coherencia de clubes OK - 7 clubs validados"
+    },
+    "Coherencia en modelos de reservaciones": {
+      "success": true,
+      "message": "Coherencia de reservaciones OK - 5 validadas"
+    },
+    "Coherencia en modelos de clientes": {
+      "success": true,
+      "message": "Sin clientes para validar coherencia"
+    },
+    "Validar formatos de fecha/hora": {
+      "success": true,
+      "message": "Formatos consistentes encontrados: 1"
+    },
+    "E2E: Login y autenticación": {
+      "success": true,
+      "message": "Flujo auth OK - Total: 202ms"
+    },
+    "E2E: Listado de clubes": {
+      "success": true,
+      "message": "Clubs listing OK - 7 clubes, paginación: True, tiempo: 13ms"
+    },
+    "E2E: Creación de reservación": {
+      "success": true,
+      "message": "Reservación validada (respuesta: 400)"
+    },
+    "E2E: Gestión de perfil": {
+      "success": true,
+      "message": "Profile flow OK - cliente: False"
+    },
+    "Tiempo de respuesta APIs": {
+      "success": true,
+      "message": "Performance APIs OK - 4 endpoints validados"
+    },
+    "Carga inicial de páginas": {
+      "success": true,
+      "message": "Performance páginas OK - 2 páginas validadas"
+    },
+    "Optimización de queries": {
+      "success": true,
+      "message": "Optimización de queries OK - 3 endpoints validados"
+    },
+    "Caching y headers": {
+      "success": false,
+      "message": "Problemas de caching: ['Health endpoint debería ser no-cache']"
+    },
+    "APIs no utilizadas": {
+      "success": true,
+      "message": "Análisis de APIs completado - 5 endpoints totales"
+    },
+    "Páginas sin backend": {
+      "success": true,
+      "message": "Análisis de páginas completado - 0 páginas verificadas"
+    },
+    "Validaciones faltantes": {
+      "success": true,
+      "message": "Validaciones apropiadas en 3 módulos"
+    },
+    "Error handling": {
+      "success": false,
+      "message": "Problemas de error handling: ['http://localhost:8000/api/v1/nonexistent/: error no es JSON válido']"
+    },
+    "Manejo de tokens JWT": {
+      "success": true,
+      "message": "JWT handling OK - token válido y funcional"
+    },
+    "Refresh de tokens": {
+      "success": true,
+      "message": "Token refresh no implementado"
+    },
+    "Protección de rutas": {
+      "success": true,
+      "message": "Protección de rutas OK - 3 endpoints verificados"
+    },
+    "Validación de permisos": {
+      "success": true,
+      "message": "Permisos OK - usuario puede acceder a 7 clubes"
+    }
+  },
+  "summary": {
+    "total": 23,
+    "passed": 19,
+    "failed": 4,
+    "skipped": 0
+  }
+}

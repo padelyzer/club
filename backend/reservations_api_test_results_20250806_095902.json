@@ -1,0 +1,155 @@
+{
+  "timestamp": "2025-08-06T09:59:02.871662",
+  "summary": {
+    "Health Check": "PASS",
+    "Authentication": "FAIL",
+    "Club Context": "FAIL",
+    "Courts Listing": "FAIL",
+    "Availability Endpoint": "FAIL",
+    "Reservation Creation": "FAIL",
+    "Error Scenarios": "COMPLETED"
+  },
+  "detailed_results": {
+    "API_HEALTH_CHECK": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T09:59:02.802015",
+      "details": {
+        "status_code": 200,
+        "response_data": {
+          "status": "healthy",
+          "timestamp": "2025-08-06T09:59:02.693361",
+          "version": "1.0.0",
+          "environment": "config.settings.development",
+          "checks": {
+            "database": {
+              "status": "ok",
+              "response_time_ms": 0.39
+            },
+            "cache": {
+              "status": "ok",
+              "response_time_ms": 0.61
+            },
+            "redis": {
+              "status": "ok",
+              "response_time_ms": 1.04
+            },
+            "filesystem": {
+              "status": "fail",
+              "error": "Media directory not writable"
+            }
+          },
+          "system": {
+            "cpu_percent": 1.2,
+            "memory_percent": 71.6,
+            "disk_percent": 27.2
+          },
+          "response_time_ms": 107.63
+        },
+        "response_time": 0.110174
+      }
+    },
+    "AUTH_ATTEMPT_1": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T09:59:02.807723",
+      "details": {
+        "credentials": "admin@test.com",
+        "status_code": 400,
+        "response": "{\"email\":[\"Este campo es requerido.\"]}"
+      }
+    },
+    "AUTH_ATTEMPT_2": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T09:59:02.813798",
+      "details": {
+        "credentials": "admin",
+        "status_code": 400,
+        "response": "{\"email\":[\"Este campo es requerido.\"]}"
+      }
+    },
+    "AUTH_ATTEMPT_3": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T09:59:02.817225",
+      "details": {
+        "credentials": "admin",
+        "status_code": 400,
+        "response": "{\"email\":[\"Este campo es requerido.\"]}"
+      }
+    },
+    "AUTH_ATTEMPT_4": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T09:59:02.820119",
+      "details": {
+        "credentials": "testuser@example.com",
+        "status_code": 400,
+        "response": "{\"email\":[\"Este campo es requerido.\"]}"
+      }
+    },
+    "AUTHENTICATION": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T09:59:02.820125",
+      "details": {
+        "error": "All credential sets failed"
+      }
+    },
+    "CLUB_CONTEXT": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T09:59:02.822317",
+      "details": {
+        "status_code": 401,
+        "error": "{\"detail\":\"Las credenciales de autenticaci\u00f3n no se proveyeron.\"}"
+      }
+    },
+    "COURTS_LISTING": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T09:59:02.862884",
+      "details": {
+        "status_code": 404,
+        "error": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n  <title>Page not found at /api/v1/courts/</title>\n  <meta name=\"robots\" content=\"NONE,NOA"
+      }
+    },
+    "AVAILABILITY_ENDPOINT": {
+      "status": "SKIP",
+      "timestamp": "2025-08-06T09:59:02.862909",
+      "details": {
+        "error": "No club data available for testing"
+      }
+    },
+    "RESERVATION_CREATION": {
+      "status": "SKIP",
+      "timestamp": "2025-08-06T09:59:02.862916",
+      "details": {
+        "error": "No club data available for testing"
+      }
+    },
+    "ERROR_HANDLING": {
+      "status": "PASS",
+      "timestamp": "2025-08-06T09:59:02.871449",
+      "details": {
+        "tests_run": 2,
+        "tests_passed": 2,
+        "test_results": [
+          {
+            "test": "invalid_auth",
+            "status_code": 401,
+            "expected": 401,
+            "passed": true
+          },
+          {
+            "test": "invalid_endpoint",
+            "status_code": 404,
+            "expected": 404,
+            "passed": true
+          }
+        ]
+      }
+    }
+  },
+  "user_data": null,
+  "club_data": null,
+  "recommendations": [
+    "Fix authentication if failing",
+    "Ensure organization relationships",
+    "Verify court availability endpoint",
+    "Test reservation creation flow"
+  ]
+}

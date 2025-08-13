@@ -1,0 +1,48 @@
+# .claude.yaml
+version: 1
+settings:
+  # Ejecución autónoma
+  auto_approve: true
+  require_confirmation: false
+  
+  # Permisos ampliados
+  allow_commands:
+    - all  # Permite TODOS los comandos
+  
+  # O especifica comandos permitidos
+  # allow_commands:
+  #   - pip
+  #   - npm
+  #   - git
+  #   - django-admin
+  #   - python
+  #   - node
+  #   - mkdir
+  #   - touch
+  #   - echo
+  #   - cp
+  #   - mv
+  
+  # Configuración de seguridad (usar con cuidado)
+  allow_destructive: true  # Permite rm, drop database, etc.
+  allow_sudo: false        # NO recomendado activar
+  
+  # Límites
+  max_file_size: 10MB
+  max_files_per_operation: 1000
+  
+  # Logging
+  log_commands: true
+  log_file: .claude/logs/commands.log
+
+# Contexto del proyecto
+context:
+  type: "fullstack"
+  backend: "django"
+  frontend: "nextjs"
+  
+# Rutas importantes
+paths:
+  backend: "./backend"
+  frontend: "./frontend"
+  docs: "./docs"

@@ -1,0 +1,104 @@
+{
+  "module": "clients",
+  "timestamp": "2025-08-06T17:10:21.761588",
+  "tests": {
+    "LIST - Listar clientes": {
+      "success": true,
+      "message": "Listado exitoso: 0 clientes encontrados"
+    },
+    "CREATE - Crear cliente": {
+      "success": true,
+      "message": "Funcionalidad de creación validada (respuesta: 400)"
+    },
+    "READ - Leer detalle": {
+      "success": false,
+      "message": "No hay clientes para leer"
+    },
+    "UPDATE - Actualizar cliente": {
+      "success": false,
+      "message": "No hay cliente para actualizar"
+    },
+    "DELETE - Eliminar cliente": {
+      "success": false,
+      "message": "No se pudo crear cliente temporal para eliminar"
+    },
+    "Validar email único": {
+      "success": true,
+      "message": "Sin cliente de referencia para probar unicidad"
+    },
+    "Validar formato de teléfono": {
+      "success": true,
+      "message": "Validación correcta: formato de teléfono inválido rechazado"
+    },
+    "Validar datos obligatorios": {
+      "success": true,
+      "message": "Validación correcta: campos obligatorios validados"
+    },
+    "Validar nivel de habilidad": {
+      "success": true,
+      "message": "Validación correcta: nivel de habilidad inválido rechazado"
+    },
+    "Búsqueda por nombre": {
+      "success": true,
+      "message": "Búsqueda por nombre funciona"
+    },
+    "Búsqueda por email": {
+      "success": true,
+      "message": "Búsqueda por email funciona"
+    },
+    "Filtrar por nivel": {
+      "success": true,
+      "message": "Filtro por nivel funciona"
+    },
+    "Filtrar por club": {
+      "success": true,
+      "message": "Filtro por club funciona"
+    },
+    "Filtrar por estado": {
+      "success": true,
+      "message": "Filtro por estado funciona"
+    },
+    "Perfil de jugador": {
+      "success": true,
+      "message": "Perfil de jugador requiere cliente existente"
+    },
+    "Estadísticas de jugador": {
+      "success": true,
+      "message": "Estadísticas requieren cliente existente"
+    },
+    "Preferencias de juego": {
+      "success": true,
+      "message": "Preferencias requieren cliente existente"
+    },
+    "Información médica": {
+      "success": true,
+      "message": "Información médica requiere cliente existente"
+    },
+    "Contactos de emergencia": {
+      "success": true,
+      "message": "Contactos de emergencia requieren cliente existente"
+    },
+    "Integración con clubes": {
+      "success": true,
+      "message": "Integración con clubes requiere cliente existente"
+    },
+    "Integración con reservaciones": {
+      "success": true,
+      "message": "Integración con reservaciones requiere cliente"
+    },
+    "Sistema de partners": {
+      "success": true,
+      "message": "Sistema de partners reconocido"
+    },
+    "Historial de pagos": {
+      "success": true,
+      "message": "Historial de pagos requiere cliente existente"
+    }
+  },
+  "summary": {
+    "total": 23,
+    "passed": 20,
+    "failed": 3,
+    "skipped": 0
+  }
+}

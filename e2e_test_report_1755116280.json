@@ -1,0 +1,146 @@
+{
+  "timestamp": "2025-08-13T14:18:00.479605",
+  "summary": {
+    "total_tests": 14,
+    "passed": 14,
+    "failed": 0,
+    "warnings": 0,
+    "success_rate": 100.0,
+    "average_response_time": 0.21044250896998815
+  },
+  "system_status": "HEALTHY",
+  "critical_paths": {
+    "backend_api": "PASS",
+    "authentication": "PASS",
+    "frontend_login": "PASS",
+    "database": "PASS"
+  },
+  "detailed_results": [
+    {
+      "name": "Backend Health Check",
+      "endpoint": "/health/",
+      "status": "PASS",
+      "response_time": 0.1190338134765625,
+      "details": "Status: healthy, Checks: 4",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:17:57.000590"
+    },
+    {
+      "name": "API Root Endpoint",
+      "endpoint": "/api/v1/",
+      "status": "PASS",
+      "response_time": 0.0037221908569335938,
+      "details": "API: Padelyzer API, Version: 1.0.0",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:17:57.004391"
+    },
+    {
+      "name": "User Authentication",
+      "endpoint": "/api/v1/auth/login/",
+      "status": "PASS",
+      "response_time": 0.2379908561706543,
+      "details": "Token received, User: admin@padelyzer.com",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:17:57.892608"
+    },
+    {
+      "name": "Database Connectivity",
+      "endpoint": "/health/",
+      "status": "PASS",
+      "response_time": 0.10864901542663574,
+      "details": "DB response time: 0.24ms",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:17:58.002109"
+    },
+    {
+      "name": "Clubs List",
+      "endpoint": "/api/v1/clubs/",
+      "status": "PASS",
+      "response_time": 0.0260007381439209,
+      "details": "Retrieved 51 items",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:17:58.028300"
+    },
+    {
+      "name": "Reservations List",
+      "endpoint": "/api/v1/reservations/",
+      "status": "PASS",
+      "response_time": 0.01230001449584961,
+      "details": "Retrieved 1 items",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:17:58.040661"
+    },
+    {
+      "name": "Clients List",
+      "endpoint": "/api/v1/clients/",
+      "status": "PASS",
+      "response_time": 0.054877281188964844,
+      "details": "Retrieved 0 items",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:17:58.095595"
+    },
+    {
+      "name": "Login Page",
+      "endpoint": "/es/login",
+      "status": "PASS",
+      "response_time": 0.14172601699829102,
+      "details": "Page loads successfully (20493 bytes)",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:17:58.237374"
+    },
+    {
+      "name": "Home Page",
+      "endpoint": "/",
+      "status": "PASS",
+      "response_time": 0.35207104682922363,
+      "details": "Page loads successfully (40453 bytes)",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:17:58.589501"
+    },
+    {
+      "name": "Dashboard",
+      "endpoint": "/es/dashboard-produccion",
+      "status": "PASS",
+      "response_time": 0.2339639663696289,
+      "details": "Page loads successfully (12767 bytes)",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:17:58.823506"
+    },
+    {
+      "name": "Club Page",
+      "endpoint": "/es/api-test-padel-club",
+      "status": "PASS",
+      "response_time": 0.02390003204345703,
+      "details": "Page loads successfully (12761 bytes)",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:17:58.847464"
+    },
+    {
+      "name": "Reservations Page",
+      "endpoint": "/es/api-test-padel-club/reservations",
+      "status": "PASS",
+      "response_time": 1.5420880317687988,
+      "details": "Page loads successfully (13349 bytes)",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:18:00.389604"
+    },
+    {
+      "name": "API Response Time",
+      "endpoint": "/api/v1/",
+      "status": "PASS",
+      "response_time": 0.002885103225708008,
+      "details": "Response time: 0.003s",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:18:00.392527"
+    },
+    {
+      "name": "Frontend Response Time",
+      "endpoint": "/es/login",
+      "status": "PASS",
+      "response_time": 0.08698701858520508,
+      "details": "Response time: 0.087s",
+      "status_code": 200,
+      "timestamp": "2025-08-13T14:18:00.479567"
+    }
+  ]
+}

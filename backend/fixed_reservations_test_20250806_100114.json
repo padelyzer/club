@@ -1,0 +1,94 @@
+{
+  "timestamp": "2025-08-06T10:01:14.690187",
+  "test_summary": {
+    "authentication": false
+  },
+  "detailed_results": {
+    "AUTH_ATTEMPT_1": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T10:01:12.807054",
+      "details": {
+        "email": "admin@padelyzer.com",
+        "status_code": 400,
+        "response": "{\"non_field_errors\":[\"Credenciales inv\u00e1lidas.\"]}"
+      }
+    },
+    "AUTH_ATTEMPT_2": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T10:01:13.422222",
+      "details": {
+        "email": "root@padelyzer.com",
+        "status_code": 400,
+        "response": "{\"non_field_errors\":[\"Credenciales inv\u00e1lidas.\"]}"
+      }
+    },
+    "AUTH_ATTEMPT_3": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T10:01:14.048082",
+      "details": {
+        "email": "contact@apitestclub.com",
+        "status_code": 400,
+        "response": "{\"non_field_errors\":[\"Credenciales inv\u00e1lidas.\"]}"
+      }
+    },
+    "AUTH_ATTEMPT_4": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T10:01:14.690113",
+      "details": {
+        "email": "test@clubpadel.com",
+        "status_code": 400,
+        "response": "{\"non_field_errors\":[\"Credenciales inv\u00e1lidas.\"]}"
+      }
+    },
+    "AUTHENTICATION": {
+      "status": "FAIL",
+      "timestamp": "2025-08-06T10:01:14.690125",
+      "details": {
+        "error": "All credential sets failed"
+      }
+    },
+    "API_ANALYSIS": {
+      "status": "INFO",
+      "timestamp": "2025-08-06T10:01:14.690141",
+      "details": {
+        "analysis": {
+          "authentication_working": false,
+          "user_context": false,
+          "user_has_organization": false,
+          "user_has_club": false,
+          "clubs_available": 0,
+          "courts_available": 0,
+          "pricing_configured": false
+        },
+        "issues_found": [
+          "Authentication system not working",
+          "User lacks organization context",
+          "No courts available for reservations",
+          "Court pricing not configured"
+        ],
+        "recommendations": [
+          "Fix authentication credentials and login endpoint",
+          "Ensure users are properly assigned to organizations",
+          "Create courts and verify court endpoints",
+          "Configure price_per_hour for courts"
+        ],
+        "data_preview": "0 clubs, 0 courts"
+      }
+    }
+  },
+  "user_data": null,
+  "clubs_data": [],
+  "courts_data": [],
+  "critical_issues": [
+    "Authentication",
+    "Club Access",
+    "Court Access"
+  ],
+  "frontend_recommendations": [
+    "Use email field for authentication",
+    "Use /api/v1/clubs/courts/ for court data",
+    "Verify user organization context",
+    "Check court availability endpoints",
+    "Review reservation creation validation"
+  ]
+}

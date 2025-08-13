@@ -1,0 +1,31 @@
+{% extends "auth/emails/base.html" %}
+
+{% block title %}Verifica tu cuenta - Padelyzer{% endblock %}
+
+{% block content %}
+<h2>Verifica tu cuenta</h2>
+
+<p>¡Hola {{ user.first_name|default:"Nuevo usuario" }}!</p>
+
+<p>¡Bienvenido a Padelyzer! Para completar tu registro y verificar tu correo electrónico, ingresa el siguiente código:</p>
+
+<div class="otp-code">{{ otp_code }}</div>
+
+<p>Este código es válido por <strong>10 minutos</strong>.</p>
+
+<p>Una vez verificada tu cuenta, podrás:</p>
+<ul>
+    <li>Acceder a todas las funciones de la plataforma</li>
+    <li>Reservar canchas en tu club</li>
+    <li>Inscribirte en torneos y ligas</li>
+    <li>Gestionar tu perfil de jugador</li>
+</ul>
+
+<div class="warning">
+    <strong>Nota:</strong> Si no creaste una cuenta en Padelyzer, puedes ignorar este correo de forma segura.
+</div>
+
+<p>¡Nos vemos en las canchas!</p>
+
+<p>Saludos,<br>El equipo de Padelyzer</p>
+{% endblock %}

@@ -1,0 +1,87 @@
+# 🚀 RAILWAY DEPLOYMENT VARIABLES - PADELYZER
+# Copy these variables to Railway Dashboard → Settings → Variables
+
+# ======================
+# DJANGO CORE
+# ======================
+DEBUG=False
+SECRET_KEY=django-insecure-REPLACE_WITH_SECURE_64_CHAR_KEY_FOR_PRODUCTION
+ALLOWED_HOSTS=${RAILWAY_PUBLIC_DOMAIN},${RAILWAY_PRIVATE_DOMAIN},padelyzer.com,www.padelyzer.com
+
+# ======================
+# DATABASE (Railway PostgreSQL)
+# ======================
+DATABASE_URL=${DATABASE_URL}
+
+# ======================
+# REDIS (Railway Redis)
+# ======================
+REDIS_URL=${REDIS_URL}
+
+# ======================
+# SECURITY
+# ======================
+JWT_SECRET_KEY=jwt-secret-REPLACE_WITH_DIFFERENT_64_CHAR_KEY
+SECURE_SSL_REDIRECT=True
+SESSION_COOKIE_SECURE=True
+CSRF_COOKIE_SECURE=True
+
+# ======================
+# EMAIL PRODUCTION
+# ======================
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=noreply@padelyzer.com
+EMAIL_HOST_PASSWORD=REPLACE_WITH_GMAIL_APP_PASSWORD
+
+# ======================
+# STORAGE (Google Cloud)
+# ======================
+DEFAULT_FILE_STORAGE=storages.backends.gcloud.GoogleCloudStorage
+GS_BUCKET_NAME=padelyzer-media-prod
+GS_PROJECT_ID=REPLACE_WITH_GCP_PROJECT_ID
+
+# ======================
+# MONITORING
+# ======================
+SENTRY_DSN=https://REPLACE_WITH_SENTRY_DSN@sentry.io/PROJECT_ID
+
+# ======================
+# PAYMENT GATEWAYS (PRODUCTION)
+# ======================
+# ⚠️ IMPORTANT: Use LIVE Stripe keys
+STRIPE_PUBLISHABLE_KEY=pk_live_REPLACE_WITH_LIVE_PUBLISHABLE_KEY
+STRIPE_SECRET_KEY=sk_live_REPLACE_WITH_LIVE_SECRET_KEY
+STRIPE_WEBHOOK_SECRET=whsec_REPLACE_WITH_LIVE_WEBHOOK_SECRET
+
+# MercadoPago PRODUCTION
+MERCADOPAGO_PUBLIC_KEY=APP_USR_REPLACE_WITH_PROD_PUBLIC_KEY
+MERCADOPAGO_ACCESS_TOKEN=APP_USR_REPLACE_WITH_PROD_ACCESS_TOKEN
+
+# ======================
+# CORS & DOMAINS
+# ======================
+CORS_ALLOWED_ORIGINS=https://padelyzer.com,https://www.padelyzer.com
+FRONTEND_URL=https://padelyzer.com
+PADELYZER_API_DOMAIN=https://${RAILWAY_PUBLIC_DOMAIN}
+
+# ======================
+# CAPTCHA (PRODUCTION)
+# ======================
+ENABLE_CAPTCHA=True
+RECAPTCHA_PUBLIC_KEY=REPLACE_WITH_PROD_RECAPTCHA_SITE_KEY
+RECAPTCHA_PRIVATE_KEY=REPLACE_WITH_PROD_RECAPTCHA_SECRET_KEY
+
+# ======================
+# ORG CONFIGURATION
+# ======================
+DEFAULT_ORGANIZATION_ID=GENERATE_NEW_UUID_FOR_PRODUCTION
+AUTO_ASSIGN_DEFAULT_ORG=True
+
+# ======================
+# CELERY (Redis)
+# ======================
+CELERY_BROKER_URL=${REDIS_URL}
+CELERY_RESULT_BACKEND=${REDIS_URL}

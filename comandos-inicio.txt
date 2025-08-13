@@ -1,0 +1,29 @@
+COMANDOS PARA INICIAR LOS SERVIDORES DE PADELYZER
+================================================
+
+Para iniciar el proyecto necesitas dos terminales:
+
+TERMINAL 1 - Backend Django (Puerto 8000):
+------------------------------------------
+cd /Users/ja/PZR4/backend
+source venv/bin/activate
+python manage.py runserver
+
+
+TERMINAL 2 - Frontend Next.js (Puerto 3001):
+--------------------------------------------
+cd /Users/ja/PZR4/frontend
+npm run dev
+
+
+URLs DE ACCESO:
+---------------
+- Backend API: http://localhost:8000
+- Frontend: http://localhost:3001
+
+
+COMANDOS ÚTILES:
+----------------
+Para detener los servidores: Ctrl+C en cada terminal
+Para verificar si los puertos están ocupados: lsof -i :8000 o lsof -i :3001
+Para matar procesos en los puertos: kill $(lsof -t -i:8000) o kill $(lsof -t -i:3001)

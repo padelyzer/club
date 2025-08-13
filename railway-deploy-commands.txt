@@ -1,0 +1,31 @@
+# Comandos para deployment con Railway
+
+# 1. Instalar Railway CLI (si no lo tienes)
+brew install railway
+
+# 2. Login en Railway
+railway login
+
+# 3. Crear nuevo proyecto
+railway init
+
+# 4. Vincular con GitHub
+railway link
+
+# 5. Configurar variables de entorno
+railway variables set SECRET_KEY="tu-secret-key-django"
+railway variables set DEBUG="False"
+railway variables set ALLOWED_HOSTS="*.railway.app"
+railway variables set DATABASE_URL="${{Postgres.DATABASE_URL}}"
+
+# 6. Agregar base de datos PostgreSQL
+railway add
+
+# 7. Deploy
+railway up
+
+# 8. Ver logs
+railway logs
+
+# 9. Abrir en navegador
+railway open

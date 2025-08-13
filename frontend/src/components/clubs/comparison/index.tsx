@@ -1,0 +1,1 @@
+export { ClubComparisonDashboard } from './club-comparison-dashboard';

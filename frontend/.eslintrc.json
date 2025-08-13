@@ -1,0 +1,4 @@
+{
+  "extends": ["next"],
+  "ignorePatterns": ["**/*.stories.tsx", "**/*.stories.ts", "**/*.story.tsx", "**/*.story.ts"]
+}

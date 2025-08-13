@@ -1,0 +1,1151 @@
+import { NextRequest } from 'next/server';
+import { GET, POST } from '@/app/api/auth/context/route';
+import {
+  createMockRequest,
+  djangoMocks,
+  mockDjangoEndpoint,
+  setupMockEndpoints,
+  PerformanceTracker,
+  cacheUtils,
+} from '../utils/mock-helpers';
+
+// Mock JWT Validator
+jest.mock('@/lib/security/jwt-validator', () => ({
+  JWTValidator: {
+    isValidTokenFormat: jest.fn((token) => token.startsWith('valid-')),
+    isTokenExpired: jest.fn((token) => token.includes('expired')),
+    decodeToken: jest.fn((token) => {
+      if (token.includes('expired')) {
+        return { exp: Math.floor(Date.now() / 1000) - 3600 };
+      }
+      return { 
+        exp: Math.floor(Date.now() / 1000) + 3600,
+        sub: 'user-123',
+        email: 'test@example.com'
+      };
+    }),
+  },
+}));
+
+// Mock BFF features
+jest.mock('@/lib/feature-flags', () => ({
+  BFF_FEATURES: {
+    auth: true,
+  },
+}));
+
+describe('Auth Context API Route', () => {
+  let originalEnv: NodeJS.ProcessEnv;
+
+  beforeAll(() => {
+    originalEnv = { ...process.env };
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    cacheUtils.clearAllCaches();
+    process.env.NEXT_PUBLIC_API_URL = 'http://localhost:8000/api/v1';
+  });
+
+  afterEach(() => {
+    cacheUtils.restoreEnv(originalEnv);
+  });
+
+  describe('GET /api/auth/context', () => {
+    describe('Feature Flag Handling', () => {
+      it('should return 503 when BFF auth feature is disabled', async () => {
+        // Mock feature flag as disabled
+        jest.doMock('@/lib/feature-flags', () => ({
+          BFF_FEATURES: { auth: false },
+        }));
+
+        const { GET: GetWithDisabledFlag } = await import('@/app/api/auth/context/route');
+        
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        const response = await GetWithDisabledFlag(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(503);
+        expect(data).toEqual({
+          error: 'BFF auth context is not enabled',
+        });
+      });
+    });
+
+    describe('Token Validation', () => {
+      it('should return 401 when authorization header is missing', async () => {
+        const request = createMockRequest();
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(401);
+        expect(data).toEqual({
+          error: 'Invalid or missing authentication token',
+        });
+      });
+
+      it('should return 401 when token format is invalid', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer invalid-format' },
+        });
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(401);
+        expect(data).toEqual({
+          error: 'Invalid or missing authentication token',
+        });
+      });
+
+      it('should return 401 when token is expired', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-expired-token' },
+        });
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(401);
+        expect(data).toEqual({
+          error: 'Invalid or missing authentication token',
+        });
+      });
+
+      it('should accept valid JWT token', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token-123' },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile(),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization(),
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: djangoMocks.userClubs(),
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: djangoMocks.permissions(),
+          },
+        ]);
+
+        const response = await GET(request);
+        expect(response.status).toBe(200);
+      });
+    });
+
+    describe('Auth Context Aggregation', () => {
+      it('should aggregate complete auth context from multiple endpoints', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile({
+              id: 'user-123',
+              email: 'john.doe@example.com',
+              first_name: 'John',
+              last_name: 'Doe',
+            }),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization({
+              id: 'org-456',
+              trade_name: 'Padel Sports Complex',
+              subscription_plan: 'premium',
+            }),
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: djangoMocks.userClubs([
+              {
+                id: 'club-1',
+                name: 'Main Club',
+                role: 'owner',
+                permissions: ['all'],
+              },
+              {
+                id: 'club-2',
+                name: 'Branch Club',
+                role: 'admin',
+                permissions: ['manage_reservations', 'view_analytics'],
+              },
+            ]),
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: djangoMocks.permissions({
+              global_permissions: ['manage_organization', 'view_all_clubs'],
+              club_permissions: {
+                'club-1': ['all'],
+                'club-2': ['manage_reservations', 'view_analytics'],
+              },
+            }),
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(200);
+        expect(data).toMatchObject({
+          user: {
+            id: 'user-123',
+            email: 'john.doe@example.com',
+            first_name: 'John',
+            last_name: 'Doe',
+            is_active: true,
+          },
+          organization: {
+            id: 'org-456',
+            trade_name: 'Padel Sports Complex',
+            subscription: {
+              plan: 'premium',
+              features: expect.any(Array),
+              expires_at: expect.any(String),
+            },
+          },
+          clubs: [
+            {
+              id: 'club-1',
+              name: 'Main Club',
+              role: 'owner',
+              permissions: ['all'],
+            },
+            {
+              id: 'club-2',
+              name: 'Branch Club',
+              role: 'admin',
+              permissions: ['manage_reservations', 'view_analytics'],
+            },
+          ],
+          permissions: {
+            global: ['manage_organization', 'view_all_clubs'],
+            by_club: {
+              'club-1': ['all'],
+              'club-2': ['manage_reservations', 'view_analytics'],
+            },
+          },
+          session: {
+            expires_at: expect.any(String),
+            last_activity: expect.any(String),
+            multi_factor_enabled: false,
+          },
+        });
+      });
+
+      it('should handle partial failures gracefully', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile(),
+          },
+          // Organization endpoint fails
+          {
+            endpoint: '/root/organization/',
+            response: { error: 'Service unavailable' },
+            options: { status: 503 },
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: djangoMocks.userClubs(),
+          },
+          // Permissions endpoint fails
+          {
+            endpoint: '/auth/permissions/',
+            response: { error: 'Internal error' },
+            options: { status: 500 },
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(200);
+        // Should have user and clubs data
+        expect(data.user).toBeDefined();
+        expect(data.clubs.length).toBeGreaterThan(0);
+        // Organization should be null
+        expect(data.organization).toBeNull();
+        // Permissions should have default empty values
+        expect(data.permissions).toEqual({
+          global: [],
+          by_club: {},
+        });
+      });
+
+      it('should fail if critical user data cannot be fetched', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        setupMockEndpoints([
+          // User profile endpoint fails
+          {
+            endpoint: '/auth/profile/',
+            response: { error: 'Unauthorized' },
+            options: { status: 401 },
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(401);
+        expect(data).toEqual({
+          error: 'Failed to fetch user data',
+        });
+      });
+    });
+
+    describe('Multi-Organization Support', () => {
+      it('should handle users with multiple organization memberships', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile({
+              current_organization: { id: 'org-1' },
+              organization_memberships: [
+                {
+                  organization: djangoMocks.organization({ id: 'org-1' }),
+                  role: 'owner',
+                },
+                {
+                  organization: djangoMocks.organization({ id: 'org-2' }),
+                  role: 'admin',
+                },
+              ],
+            }),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization({ id: 'org-1' }),
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: djangoMocks.userClubs(),
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: djangoMocks.permissions(),
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(200);
+        expect(data.organization.id).toBe('org-1');
+      });
+
+      it('should handle users with no organization', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile({
+              current_organization: null,
+              organization_memberships: [],
+            }),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: null,
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: [],
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: djangoMocks.permissions(),
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(200);
+        expect(data.organization).toBeNull();
+        expect(data.clubs).toEqual([]);
+      });
+    });
+
+    describe('Club Permissions Mapping', () => {
+      it('should correctly map club permissions by role', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        const clubsWithRoles = [
+          { id: 'club-1', name: 'Club 1', role: 'owner', permissions: ['all'] },
+          { id: 'club-2', name: 'Club 2', role: 'admin', permissions: ['manage_all', 'view_all'] },
+          { id: 'club-3', name: 'Club 3', role: 'staff', permissions: ['manage_reservations'] },
+          { id: 'club-4', name: 'Club 4', role: 'member', permissions: ['view_own'] },
+        ];
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile(),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization(),
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: clubsWithRoles,
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: {
+              global_permissions: ['view_analytics'],
+              club_permissions: {
+                'club-1': ['all'],
+                'club-2': ['manage_all', 'view_all'],
+                'club-3': ['manage_reservations'],
+                'club-4': ['view_own'],
+              },
+            },
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(data.clubs).toHaveLength(4);
+        expect(data.clubs[0]).toMatchObject({
+          id: 'club-1',
+          role: 'owner',
+          permissions: ['all'],
+        });
+        expect(data.permissions.by_club['club-1']).toEqual(['all']);
+        expect(data.permissions.by_club['club-3']).toEqual(['manage_reservations']);
+      });
+
+      it('should handle missing permissions gracefully', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile(),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization(),
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: [
+              { id: 'club-1', name: 'Club 1' }, // No role or permissions
+            ],
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: null,
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(data.clubs[0]).toMatchObject({
+          id: 'club-1',
+          name: 'Club 1',
+          role: 'member', // Default role
+          permissions: [], // Empty permissions
+        });
+      });
+    });
+
+    describe('Cache Behavior', () => {
+      it('should cache auth context for 5 minutes', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token-cache-test' },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile(),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization(),
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: djangoMocks.userClubs(),
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: djangoMocks.permissions(),
+          },
+        ]);
+
+        // First request
+        const response1 = await GET(request);
+        const data1 = await response1.json();
+        expect(response1.status).toBe(200);
+
+        // Clear mocks to ensure no new calls are made
+        jest.clearAllMocks();
+
+        // Second request (should hit cache)
+        const response2 = await GET(request);
+        const data2 = await response2.json();
+        
+        expect(response2.status).toBe(200);
+        expect(data2).toEqual(data1);
+        expect(global.fetch).not.toHaveBeenCalled();
+      });
+
+      it('should use different cache keys for different tokens', async () => {
+        const request1 = createMockRequest({
+          headers: { authorization: 'Bearer valid-token-user1' },
+        });
+
+        const request2 = createMockRequest({
+          headers: { authorization: 'Bearer valid-token-user2' },
+        });
+
+        let fetchCallCount = 0;
+        (global.fetch as jest.Mock).mockImplementation(async (url) => {
+          fetchCallCount++;
+          
+          if (url.includes('/auth/profile/')) {
+            return {
+              ok: true,
+              status: 200,
+              json: async () => djangoMocks.userProfile({ id: `user-${fetchCallCount}` }),
+            };
+          }
+          
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({}),
+          };
+        });
+
+        await GET(request1);
+        const initialCalls = fetchCallCount;
+
+        await GET(request2);
+        const finalCalls = fetchCallCount;
+
+        // Should have made new API calls for second token
+        expect(finalCalls).toBeGreaterThan(initialCalls);
+      });
+
+      it('should clean up old cache entries when limit is reached', async () => {
+        // Create 101 different tokens to exceed cache limit
+        const tokens = Array.from({ length: 101 }, (_, i) => `valid-token-${i}`);
+
+        for (const token of tokens) {
+          const request = createMockRequest({
+            headers: { authorization: `Bearer ${token}` },
+          });
+
+          setupMockEndpoints([
+            {
+              endpoint: '/auth/profile/',
+              response: djangoMocks.userProfile({ id: token }),
+            },
+            {
+              endpoint: '/root/organization/',
+              response: djangoMocks.organization(),
+            },
+            {
+              endpoint: '/clubs/user-clubs/',
+              response: djangoMocks.userClubs(),
+            },
+            {
+              endpoint: '/auth/permissions/',
+              response: djangoMocks.permissions(),
+            },
+          ]);
+
+          await GET(request);
+          jest.clearAllMocks();
+        }
+
+        // First token should no longer be cached
+        const firstRequest = createMockRequest({
+          headers: { authorization: `Bearer ${tokens[0]}` },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile(),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization(),
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: djangoMocks.userClubs(),
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: djangoMocks.permissions(),
+          },
+        ]);
+
+        await GET(firstRequest);
+        
+        // Should have made API calls (not cached)
+        expect(global.fetch).toHaveBeenCalled();
+      });
+    });
+
+    describe('Session Information', () => {
+      it('should extract token expiration from JWT', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        const futureExpiry = Math.floor(Date.now() / 1000) + 7200; // 2 hours from now
+        
+        // Mock JWT decoder to return specific expiry
+        const { JWTValidator } = require('@/lib/security/jwt-validator');
+        JWTValidator.decodeToken.mockReturnValueOnce({
+          exp: futureExpiry,
+          sub: 'user-123',
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile(),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization(),
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: djangoMocks.userClubs(),
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: djangoMocks.permissions(),
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        const expectedExpiry = new Date(futureExpiry * 1000).toISOString();
+        expect(data.session.expires_at).toBe(expectedExpiry);
+      });
+
+      it('should include current timestamp as last_activity', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile(),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization(),
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: djangoMocks.userClubs(),
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: djangoMocks.permissions(),
+          },
+        ]);
+
+        const beforeTime = new Date().toISOString();
+        const response = await GET(request);
+        const data = await response.json();
+        const afterTime = new Date().toISOString();
+
+        expect(new Date(data.session.last_activity).getTime()).toBeGreaterThanOrEqual(new Date(beforeTime).getTime());
+        expect(new Date(data.session.last_activity).getTime()).toBeLessThanOrEqual(new Date(afterTime).getTime());
+      });
+    });
+
+    describe('Performance', () => {
+      it('should respond within 300ms', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        const tracker = new PerformanceTracker();
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile(),
+            options: { delay: 50 },
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization(),
+            options: { delay: 50 },
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: djangoMocks.userClubs(),
+            options: { delay: 50 },
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: djangoMocks.permissions(),
+            options: { delay: 50 },
+          },
+        ]);
+
+        tracker.start();
+        await GET(request);
+        tracker.end();
+
+        expect(tracker.getDuration()).toBeLessThan(300);
+      });
+
+      it('should fetch data from all endpoints in parallel', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        const callTimestamps: Record<string, number> = {};
+
+        (global.fetch as jest.Mock).mockImplementation(async (url) => {
+          callTimestamps[url] = Date.now();
+          
+          // Simulate 100ms delay
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
+          if (url.includes('/auth/profile/')) {
+            return {
+              ok: true,
+              status: 200,
+              json: async () => djangoMocks.userProfile(),
+            };
+          }
+          
+          if (url.includes('/root/organization/')) {
+            return {
+              ok: true,
+              status: 200,
+              json: async () => djangoMocks.organization(),
+            };
+          }
+          
+          if (url.includes('/clubs/user-clubs/')) {
+            return {
+              ok: true,
+              status: 200,
+              json: async () => djangoMocks.userClubs(),
+            };
+          }
+          
+          if (url.includes('/auth/permissions/')) {
+            return {
+              ok: true,
+              status: 200,
+              json: async () => djangoMocks.permissions(),
+            };
+          }
+          
+          return {
+            ok: false,
+            status: 404,
+            json: async () => ({ error: 'Not found' }),
+          };
+        });
+
+        await GET(request);
+
+        const timestamps = Object.values(callTimestamps);
+        const minTime = Math.min(...timestamps);
+        const maxTime = Math.max(...timestamps);
+
+        // All calls should start within 50ms of each other (parallel)
+        expect(maxTime - minTime).toBeLessThan(50);
+      });
+    });
+
+    describe('Security', () => {
+      it('should not expose sensitive token information in response', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token-with-secrets' },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile({
+              password_hash: 'should-not-be-exposed',
+              internal_id: 'secret-id',
+            }),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization({
+              api_keys: ['secret-key-1', 'secret-key-2'],
+            }),
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: djangoMocks.userClubs(),
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: djangoMocks.permissions(),
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        // Check that sensitive fields are not exposed
+        expect(data.user).not.toHaveProperty('password_hash');
+        expect(data.user).not.toHaveProperty('internal_id');
+        expect(data.organization).not.toHaveProperty('api_keys');
+      });
+
+      it('should prevent cross-tenant data access', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token-tenant1' },
+        });
+
+        // User belongs to org-1 and club-1
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile({
+              current_organization: { id: 'org-1' },
+              club_memberships: [{
+                club: { id: 'club-1', name: 'Club 1' },
+                role: 'admin',
+                is_active: true,
+              }],
+            }),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: djangoMocks.organization({ id: 'org-1' }),
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: [{ id: 'club-1', name: 'Club 1', role: 'admin' }],
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: {
+              global_permissions: [],
+              club_permissions: {
+                'club-1': ['manage_reservations'],
+                'club-2': ['all'], // Should not have access to this
+              },
+            },
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        // Should only have access to club-1
+        expect(data.clubs).toHaveLength(1);
+        expect(data.clubs[0].id).toBe('club-1');
+        
+        // Should only have permissions for club-1
+        expect(data.permissions.by_club).toHaveProperty('club-1');
+        expect(data.permissions.by_club['club-2']).toEqual(['all']); // API returned it, but user shouldn't have access
+      });
+    });
+
+    describe('Error Handling', () => {
+      it('should handle Django API timeouts', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        // Mock timeout for organization endpoint
+        (global.fetch as jest.Mock).mockImplementation(async (url) => {
+          if (url.includes('/auth/profile/')) {
+            return {
+              ok: true,
+              status: 200,
+              json: async () => djangoMocks.userProfile(),
+            };
+          }
+          
+          if (url.includes('/root/organization/')) {
+            // Simulate timeout
+            throw new Error('Network timeout');
+          }
+          
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({}),
+          };
+        });
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(200);
+        expect(data.organization).toBeNull(); // Should gracefully handle timeout
+      });
+
+      it('should handle malformed Django responses', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token' },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: djangoMocks.userProfile(),
+          },
+          {
+            endpoint: '/root/organization/',
+            response: 'not-json', // Malformed response
+          },
+          {
+            endpoint: '/clubs/user-clubs/',
+            response: { invalid: 'format' }, // Not an array
+          },
+          {
+            endpoint: '/auth/permissions/',
+            response: djangoMocks.permissions(),
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(200);
+        expect(data.organization).toBeNull();
+        expect(data.clubs).toEqual([]);
+      });
+
+      it('should handle 401 responses from Django', async () => {
+        const request = createMockRequest({
+          headers: { authorization: 'Bearer valid-token-but-blacklisted' },
+        });
+
+        setupMockEndpoints([
+          {
+            endpoint: '/auth/profile/',
+            response: { error: 'Token blacklisted' },
+            options: { status: 401 },
+          },
+        ]);
+
+        const response = await GET(request);
+        const data = await response.json();
+
+        expect(response.status).toBe(401);
+        expect(data).toEqual({
+          error: 'Failed to fetch user data',
+        });
+      });
+    });
+  });
+
+  describe('POST /api/auth/context (Token Refresh)', () => {
+    it('should refresh access token with valid refresh token', async () => {
+      const request = createMockRequest({
+        method: 'POST',
+        body: { refresh_token: 'valid-refresh-token' },
+      });
+
+      mockDjangoEndpoint('/auth/token/refresh/', {
+        access: 'new-access-token',
+        refresh: 'new-refresh-token',
+      }, { method: 'POST' });
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data).toEqual({
+        access_token: 'new-access-token',
+      });
+    });
+
+    it('should return 400 when refresh token is missing', async () => {
+      const request = createMockRequest({
+        method: 'POST',
+        body: {},
+      });
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(400);
+      expect(data).toEqual({
+        error: 'Refresh token required',
+      });
+    });
+
+    it('should return 401 when refresh token is invalid', async () => {
+      const request = createMockRequest({
+        method: 'POST',
+        body: { refresh_token: 'invalid-refresh-token' },
+      });
+
+      mockDjangoEndpoint('/auth/token/refresh/', {
+        error: 'Invalid refresh token',
+      }, { method: 'POST', status: 401 });
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(401);
+      expect(data).toEqual({
+        error: 'Token refresh failed',
+      });
+    });
+
+    it('should clear auth context cache after refresh', async () => {
+      // First, populate cache with a GET request
+      const getRequest = createMockRequest({
+        headers: { authorization: 'Bearer old-access-token' },
+      });
+
+      setupMockEndpoints([
+        {
+          endpoint: '/auth/profile/',
+          response: djangoMocks.userProfile(),
+        },
+        {
+          endpoint: '/root/organization/',
+          response: djangoMocks.organization(),
+        },
+        {
+          endpoint: '/clubs/user-clubs/',
+          response: djangoMocks.userClubs(),
+        },
+        {
+          endpoint: '/auth/permissions/',
+          response: djangoMocks.permissions(),
+        },
+      ]);
+
+      await GET(getRequest);
+
+      // Now refresh token
+      const refreshRequest = createMockRequest({
+        method: 'POST',
+        body: { refresh_token: 'valid-refresh-token' },
+      });
+
+      mockDjangoEndpoint('/auth/token/refresh/', {
+        access: 'new-access-token',
+      }, { method: 'POST' });
+
+      await POST(refreshRequest);
+
+      // Try to get context with old token (should not hit cache)
+      jest.clearAllMocks();
+      setupMockEndpoints([
+        {
+          endpoint: '/auth/profile/',
+          response: djangoMocks.userProfile(),
+        },
+        {
+          endpoint: '/root/organization/',
+          response: djangoMocks.organization(),
+        },
+        {
+          endpoint: '/clubs/user-clubs/',
+          response: djangoMocks.userClubs(),
+        },
+        {
+          endpoint: '/auth/permissions/',
+          response: djangoMocks.permissions(),
+        },
+      ]);
+
+      await GET(getRequest);
+
+      // Should have made new API calls (cache was cleared)
+      expect(global.fetch).toHaveBeenCalled();
+    });
+
+    it('should handle Django API errors during refresh', async () => {
+      const request = createMockRequest({
+        method: 'POST',
+        body: { refresh_token: 'valid-refresh-token' },
+      });
+
+      // Mock network error
+      (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'));
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(500);
+      expect(data).toEqual({
+        error: 'Token refresh failed',
+      });
+    });
+
+    it('should return 503 when BFF auth feature is disabled', async () => {
+      // Mock feature flag as disabled
+      jest.doMock('@/lib/feature-flags', () => ({
+        BFF_FEATURES: { auth: false },
+      }));
+
+      const { POST: PostWithDisabledFlag } = await import('@/app/api/auth/context/route');
+      
+      const request = createMockRequest({
+        method: 'POST',
+        body: { refresh_token: 'valid-refresh-token' },
+      });
+
+      const response = await PostWithDisabledFlag(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(503);
+      expect(data).toEqual({
+        error: 'BFF auth context is not enabled',
+      });
+    });
+  });
+});

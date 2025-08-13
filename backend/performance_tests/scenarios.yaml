@@ -1,0 +1,162 @@
+# Performance Testing Scenarios for Padelyzer
+# Defines different load patterns to test various aspects of the system
+
+scenarios:
+  # Normal daily load pattern
+  - name: "Normal Load"
+    description: "Typical daily usage pattern"
+    users: 100
+    spawn_rate: 10
+    duration: 5m
+    user_distribution:
+      PadelyzerUser: 70
+      MobileUser: 25
+      AdminUser: 5
+    
+  # Morning rush when people book courts
+  - name: "Morning Rush"
+    description: "Peak booking time in the morning (8-10 AM)"
+    users: 300
+    spawn_rate: 30
+    duration: 10m
+    user_distribution:
+      PadelyzerUser: 60
+      MobileUser: 40
+      AdminUser: 0
+    
+  # Evening peak hours
+  - name: "Peak Hours"
+    description: "Evening peak usage (6-8 PM)"
+    users: 500
+    spawn_rate: 50
+    duration: 15m
+    user_distribution:
+      PadelyzerUser: 65
+      MobileUser: 30
+      AdminUser: 5
+    
+  # Weekend tournament registration
+  - name: "Tournament Registration"
+    description: "High load when tournament registration opens"
+    users: 800
+    spawn_rate: 100
+    duration: 10m
+    user_distribution:
+      PadelyzerUser: 85
+      MobileUser: 15
+      AdminUser: 0
+    
+  # Stress test - maximum load
+  - name: "Stress Test"
+    description: "Maximum sustainable load test"
+    users: 1000
+    spawn_rate: 100
+    duration: 30m
+    user_distribution:
+      PadelyzerUser: 70
+      MobileUser: 25
+      AdminUser: 5
+    
+  # Spike test - sudden traffic surge
+  - name: "Spike Test"
+    description: "Sudden traffic spike simulation"
+    stages:
+      - duration: 2m
+        users: 100
+        spawn_rate: 10
+      - duration: 30s
+        users: 1000
+        spawn_rate: 500  # Very aggressive spike
+      - duration: 2m
+        users: 1000
+        spawn_rate: 0   # Maintain load
+      - duration: 1m
+        users: 100
+        spawn_rate: -100  # Ramp down
+    
+  # Endurance test - sustained load
+  - name: "Endurance Test"
+    description: "Long-running test for memory leaks and degradation"
+    users: 200
+    spawn_rate: 20
+    duration: 2h
+    user_distribution:
+      PadelyzerUser: 70
+      MobileUser: 25
+      AdminUser: 5
+    
+  # Flash sale simulation
+  - name: "Flash Sale"
+    description: "Everyone trying to book premium courts"
+    users: 500
+    spawn_rate: 200
+    duration: 5m
+    custom_test: "booking_flow.StressTestBooking"
+    
+  # API stress test
+  - name: "API Stress"
+    description: "Direct API load testing"
+    users: 1000
+    spawn_rate: 100
+    duration: 10m
+    endpoints:
+      - path: "/api/courts/availability/"
+        weight: 40
+      - path: "/api/reservations/"
+        weight: 30
+      - path: "/api/dashboard/stats/"
+        weight: 20
+      - path: "/api/payments/process/"
+        weight: 10
+
+# Performance thresholds and alerts
+thresholds:
+  response_time:
+    p50: 100   # 50th percentile < 100ms
+    p95: 200   # 95th percentile < 200ms
+    p99: 500   # 99th percentile < 500ms
+  
+  error_rate:
+    max: 0.01  # Max 1% error rate
+    
+  requests_per_second:
+    min: 200   # Minimum 200 RPS capability
+    
+# Monitoring configuration
+monitoring:
+  metrics_export:
+    - prometheus
+    - statsd
+    - cloudwatch
+    
+  alerts:
+    - name: "High Response Time"
+      condition: "p95_response_time > 300ms for 2 minutes"
+      severity: "warning"
+      
+    - name: "Error Rate Spike"
+      condition: "error_rate > 5% for 1 minute"
+      severity: "critical"
+      
+    - name: "Database Connection Pool Exhausted"
+      condition: "db_connections_available < 10"
+      severity: "critical"
+
+# Test environment configuration
+environment:
+  base_url: "${BASE_URL:-http://localhost:8000}"
+  
+  # Database connection settings for load testing
+  database:
+    max_connections: 200
+    connection_timeout: 5
+    
+  # Redis settings
+  redis:
+    max_connections: 100
+    
+  # Application settings
+  app:
+    debug: false
+    cache_enabled: true
+    rate_limiting: false  # Disable for load tests

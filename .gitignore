@@ -1,0 +1,157 @@
+# Padelyzer - Complete Padel Club Management System
+# Root .gitignore for monorepo
+
+# Environment variables and secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+**/.env*
+.env.backup.important
+.env.backup*
+*backup.important*
+
+# Logs
+*.log
+logs/
+frontend.log
+backend.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Databases
+*.sqlite3
+*.db
+db_backup/
+default_*.sqlite3
+
+# Cache directories
+.cache/
+.next/
+.nuxt/
+dist/
+build/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+venv/
+venv_*/
+env/
+ENV/
+.venv/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+*.tsbuildinfo
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.coverage
+.pytest_cache/
+.tox/
+htmlcov/
+test-results/
+playwright-report/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+agents-backup-*.tar.gz
+
+# Build artifacts
+*.egg-info/
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+
+# Static files (will be collected in production)
+staticfiles/
+media/
+
+# Configuration backups and reports
+*_REPORT.md
+*_SUMMARY.md
+*_IMPLEMENTATION.md
+*_GUIDE.md
+*.json.backup
+requirements_*.txt
+*_backup.*
+
+# Sensitive test files
+test_payment_details.json
+test_*_details.json
+working_*.py
+debug_*.py
+simple_*.py
+*_simple.py
+create_*.py
+validate_*.py
+fix_*.py
+reset_*.py
+setup_*.py
+
+# Documentation that might contain sensitive info
+RAILWAY_DEPLOYMENT.md
+*DEPLOYMENT*.md
+*PRODUCTION*.md
+security_audit_report.md
+
+# Specific to this project
+recovery-plan.md
+working-features.md
+optimize.sh
+start-*.sh
+run-*.sh
+*.sh
+
+# Railway and deployment
+railway.json
+Procfile
+runtime.txt
+
+# Package manager locks (include package-lock.json and yarn.lock for reproducible builds)
+# But exclude them if they're causing conflicts
+# package-lock.json
+# yarn.lock
+
+# Environment files
+.env
+.env.local
+.env.production
+backend/.env

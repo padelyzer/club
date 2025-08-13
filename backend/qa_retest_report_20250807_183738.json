@@ -1,0 +1,77 @@
+{
+  "start_time": "2025-08-07 18:37:38.923062",
+  "modules_tested": {
+    "Clients": {
+      "status": "failed",
+      "error": "Organization() got unexpected keyword arguments: 'name', 'slug'",
+      "summary": "Module test failed: Organization() got unexpected keyword arguments: 'name', 'slug'"
+    },
+    "Reservations": {
+      "status": "failed",
+      "error": "Organization() got unexpected keyword arguments: 'name', 'slug'",
+      "summary": "Module test failed: Organization() got unexpected keyword arguments: 'name', 'slug'"
+    },
+    "Payments": {
+      "status": "failed",
+      "error": "Organization() got unexpected keyword arguments: 'name', 'slug'",
+      "summary": "Module test failed: Organization() got unexpected keyword arguments: 'name', 'slug'"
+    },
+    "Revenue": {
+      "status": "failed",
+      "error": "Organization() got unexpected keyword arguments: 'name', 'slug'",
+      "summary": "Module test failed: Organization() got unexpected keyword arguments: 'name', 'slug'"
+    }
+  },
+  "critical_flows": {
+    "Complete Reservation Flow": {
+      "status": "failed",
+      "error": "Organization() got unexpected keyword arguments: 'name', 'slug'",
+      "summary": "Flow test failed: Organization() got unexpected keyword arguments: 'name', 'slug'"
+    },
+    "Payment and Revenue Flow": {
+      "status": "failed",
+      "error": "Organization() got unexpected keyword arguments: 'name', 'slug'",
+      "summary": "Flow test failed: Organization() got unexpected keyword arguments: 'name', 'slug'"
+    },
+    "Check-in and Completion Flow": {
+      "status": "failed",
+      "error": "Organization() got unexpected keyword arguments: 'name', 'slug'",
+      "summary": "Flow test failed: Organization() got unexpected keyword arguments: 'name', 'slug'"
+    },
+    "Refund Flow": {
+      "status": "failed",
+      "error": "Organization() got unexpected keyword arguments: 'name', 'slug'",
+      "summary": "Flow test failed: Organization() got unexpected keyword arguments: 'name', 'slug'"
+    }
+  },
+  "data_integrity": {
+    "status": "failed",
+    "error": "no such column: finance_payment.client_id",
+    "summary": "Integrity check failed: no such column: finance_payment.client_id"
+  },
+  "performance_metrics": {
+    "status": "failed",
+    "error": "Organization() got unexpected keyword arguments: 'name', 'slug'"
+  },
+  "issues_found": [],
+  "recommendations": [],
+  "edge_cases": {
+    "Concurrent Reservations": {
+      "passed": false,
+      "error": "Organization() got unexpected keyword arguments: 'name', 'slug'"
+    },
+    "Payment Limits": {
+      "passed": false,
+      "error": "['Los pagos en cash solo se procesan en horario comercial (8:00 AM - 8:00 PM)']"
+    },
+    "Invalid Data Handling": {
+      "passed": false,
+      "error": "['No se pueden crear reservas en el pasado', 'Las reservas deben hacerse con al menos 30 minutos de anticipaci\u00f3n']"
+    },
+    "Business Rule Violations": {
+      "passed": false,
+      "error": "object of type 'bool' has no len()"
+    }
+  },
+  "end_time": "2025-08-07 18:37:38.945085"
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Padelyzer{% endblock %}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 0;
+        }
+        .header {
+            background-color: #10B981;
+            color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 40px 20px;
+        }
+        .otp-code {
+            background-color: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 8px;
+            text-align: center;
+            padding: 20px;
+            margin: 30px 0;
+            color: #10B981;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #10B981;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .footer {
+            background-color: #f3f4f6;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .footer a {
+            color: #10B981;
+            text-decoration: none;
+        }
+        .warning {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 12px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Padelyzer</h1>
+        </div>
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="footer">
+            <p>© 2024 Padelyzer. Todos los derechos reservados.</p>
+            <p>
+                <a href="{{ app_url }}">Visitar Padelyzer</a> | 
+                <a href="mailto:{{ support_email }}">Contactar Soporte</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

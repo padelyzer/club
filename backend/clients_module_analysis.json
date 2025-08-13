@@ -1,0 +1,119 @@
+{
+  "timestamp": "2025-08-04T12:58:44.259137",
+  "module": "clients",
+  "analysis": {
+    "models": {
+      "PlayerLevel": {
+        "count": 4,
+        "levels": [
+          {
+            "name": "beginner",
+            "display_name": "Beginner",
+            "min_rating": 0,
+            "max_rating": 300
+          },
+          {
+            "name": "intermediate",
+            "display_name": "Intermediate",
+            "min_rating": 300,
+            "max_rating": 600
+          },
+          {
+            "name": "advanced",
+            "display_name": "Advanced",
+            "min_rating": 600,
+            "max_rating": 900
+          },
+          {
+            "name": "professional",
+            "display_name": "Profesional",
+            "min_rating": 900,
+            "max_rating": 1000
+          }
+        ]
+      },
+      "ClientProfile": {
+        "count": 1,
+        "fields_count": 25,
+        "with_organization": 1,
+        "with_club": 1
+      },
+      "PlayerStats": {
+        "count": 1
+      },
+      "EmergencyContact": {
+        "count": 0
+      },
+      "MedicalInfo": {
+        "count": 0
+      },
+      "PlayerPreferences": {
+        "count": 1
+      },
+      "PartnerRequest": {
+        "count": 0
+      }
+    },
+    "viewsets": [
+      "ClientProfileViewSet",
+      "EmergencyContactViewSet",
+      "MedicalInfoViewSet",
+      "PartnerRequestViewSet",
+      "PlayerLevelViewSet",
+      "PlayerPreferencesViewSet",
+      "PlayerStatsViewSet"
+    ],
+    "serializers": [
+      "ClientProfileCreateSerializer",
+      "ClientProfileDetailSerializer",
+      "ClientProfileListSerializer",
+      "EmergencyContactSerializer",
+      "MedicalInfoSerializer",
+      "PartnerRequestResponseSerializer",
+      "PartnerRequestSerializer",
+      "PlayerLevelSerializer",
+      "PlayerPreferencesSerializer",
+      "PlayerRankingSerializer",
+      "PlayerSearchSerializer",
+      "PlayerStatsSerializer"
+    ],
+    "features": {
+      "profile_management": {
+        "description": "Gesti\u00f3n completa de perfiles de jugadores",
+        "includes": [
+          "Informaci\u00f3n personal",
+          "Nivel de juego y rating",
+          "Preferencias de juego",
+          "Historial m\u00e9dico"
+        ]
+      },
+      "partner_system": {
+        "description": "Sistema de b\u00fasqueda y solicitud de parejas",
+        "includes": [
+          "B\u00fasqueda por nivel",
+          "Solicitudes de pareja",
+          "Bloqueo de jugadores",
+          "Preferencias de pareja"
+        ]
+      },
+      "statistics": {
+        "description": "Estad\u00edsticas detalladas de juego",
+        "includes": [
+          "Partidos jugados/ganados",
+          "Torneos participados",
+          "Ratio victorias/derrotas",
+          "Puntos totales"
+        ]
+      },
+      "multi_tenant": {
+        "description": "Soporte multi-tenant completo",
+        "includes": [
+          "Aislamiento por organizaci\u00f3n",
+          "Filtrado por club",
+          "Permisos granulares"
+        ]
+      }
+    },
+    "integrity_issues": []
+  }
+}

@@ -1,0 +1,155 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundation/Typography" />
+
+# Typography System
+
+Our typography system provides a comprehensive set of text styles that ensure consistency and hierarchy across the application.
+
+## Design Principles
+
+1. **Hierarchy** - Clear visual hierarchy guides users through content
+2. **Readability** - Optimized for screen reading at all sizes
+3. **Consistency** - Unified type scale across all components
+4. **Flexibility** - Adaptable to different contexts and devices
+5. **Performance** - System fonts for optimal loading
+
+## Type Scale
+
+### Display Styles
+Used for hero sections and major page headings.
+
+| Variant | Size | Line Height | Usage |
+|---------|------|-------------|-------|
+| display-xl | 48px/60px | 48px | Hero headlines |
+| display-lg | 40px/50px | 40px | Page titles |
+| display-md | 32px/40px | 36px | Section headers |
+| display-sm | 24px/32px | 32px | Subsection headers |
+
+### Heading Styles
+Standard heading hierarchy for content structure.
+
+| Variant | Size | Line Height | Usage |
+|---------|------|-------------|-------|
+| h1 | 32px/40px | 40px | Main page title |
+| h2 | 24px/32px | 32px | Section title |
+| h3 | 20px/28px | 28px | Subsection title |
+| h4 | 18px/28px | 28px | Card title |
+| h5 | 16px/24px | 24px | Small title |
+| h6 | 14px/20px | 20px | Tiny title |
+
+### Body Styles
+For regular content and reading text.
+
+| Variant | Size | Line Height | Usage |
+|---------|------|-------------|-------|
+| body-lg | 18px/28px | 28px | Emphasized body |
+| body-md | 16px/24px | 24px | Default body |
+| body-sm | 14px/20px | 20px | Secondary text |
+| body-xs | 12px/16px | 16px | Captions |
+
+### UI Styles
+For interface elements and controls.
+
+| Variant | Size | Weight | Usage |
+|---------|------|--------|-------|
+| ui-lg | 16px | Medium | Large buttons/links |
+| ui-md | 14px | Medium | Default UI text |
+| ui-sm | 12px | Medium | Small UI elements |
+
+## Usage Examples
+
+### Import
+```tsx
+import { 
+  Typography, 
+  Heading1, 
+  Heading2, 
+  Body, 
+  Lead 
+} from '@/components/ui/typography';
+```
+
+### Basic Usage
+```tsx
+// Using the base component
+<Typography variant="h1">Page Title</Typography>
+<Typography variant="body-md" color="muted">
+  Description text
+</Typography>
+
+// Using convenience components
+<Heading1>Page Title</Heading1>
+<Body color="muted">Description text</Body>
+```
+
+### With Props
+```tsx
+<Typography 
+  variant="h2" 
+  color="primary" 
+  align="center"
+  weight="bold"
+>
+  Centered Bold Primary Heading
+</Typography>
+```
+
+### Color Options
+- `default` - Standard text color
+- `primary` - Brand color
+- `secondary` - Secondary text
+- `muted` - De-emphasized text
+- `destructive` - Error/danger text
+- `success` - Success state
+- `warning` - Warning state
+- `info` - Informational text
+
+### Alignment Options
+- `left` - Left aligned (default)
+- `center` - Center aligned
+- `right` - Right aligned
+- `justify` - Justified text
+
+### Weight Options
+- `normal` - Regular weight (400)
+- `medium` - Medium weight (500)
+- `semibold` - Semibold weight (600)
+- `bold` - Bold weight (700)
+
+## Best Practices
+
+### DO
+- ✅ Use semantic variants (h1, h2, etc.) for proper document structure
+- ✅ Maintain consistent hierarchy throughout the app
+- ✅ Use color variants for semantic meaning
+- ✅ Test readability at different screen sizes
+- ✅ Consider line length (45-75 characters optimal)
+
+### DON'T
+- ❌ Skip heading levels (h1 → h3)
+- ❌ Use display variants for body text
+- ❌ Mix different type scales in the same context
+- ❌ Override font families
+- ❌ Use color alone to convey meaning
+
+## Accessibility
+
+- All text meets WCAG AA contrast requirements
+- Proper heading hierarchy for screen readers
+- Font sizes are relative for user scaling
+- Line heights provide comfortable reading
+- Focus states are clearly visible
+
+## Font Stack
+
+```css
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 
+             Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+```
+
+This system font stack ensures:
+- Native font rendering on each platform
+- Optimal performance (no font downloads)
+- Consistent experience across devices
+- Excellent legibility at all sizes

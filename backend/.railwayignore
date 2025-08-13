@@ -1,0 +1,36 @@
+# Ignore large and unnecessary files
+*.sqlite3
+*.log
+*.pyc
+__pycache__/
+venv/
+venv_py312/
+.pytest_cache/
+staticfiles/
+media/
+*.png
+*.jpg
+*.jpeg
+db.sqlite3*
+default_*.sqlite3
+test_*.json
+*_test_results*.json
+*_report*.json
+selenium_*.png
+puppeteer_*.png
+
+# Ignore Docker files (force nixpacks)
+Dockerfile*
+docker-compose*
+.dockerignore
+entrypoint.sh
+
+# Ignore test files
+test_*.py
+*_test.py
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo

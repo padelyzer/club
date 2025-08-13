@@ -1,0 +1,63 @@
+# PADELYZER DEVELOPMENT RULES
+
+## Project Context
+You are developing Padelyzer, a complete padel club management system.
+- Backend: Django REST (deployed at https://api-padelyzer.railway.app)
+- Frontend: Next.js 14 with App Router
+- UI: Apple-style design with Shadcn/ui
+- Database: PostgreSQL
+- Auth: Firebase
+
+## Documentation Location
+All project documentation is in `.claude-docs/` folder:
+- 01-agent-os.md: System context
+- 02-prd-complete.md: Complete requirements
+- 03-requirements.md: Module specifications  
+- 04-task-backlog.md: All 277 tasks
+- 05-validation-rules.md: No mocks policy
+
+## Development Rules
+1. NO MOCKS: All code must be 100% functional
+2. Real APIs only - no fake data
+3. Complete error handling
+4. Loading states for everything
+5. Mobile-first responsive design
+6. Spanish UI, English code
+7. Comprehensive tests
+8. No TODOs in committed code
+
+## Task Execution
+- Work through tasks by priority (P1 → P5)
+- Complete acceptance criteria
+- ValidationAgent checks after each task
+- Commit after each completed task
+- Report progress every 10 tasks
+
+## Code Standards
+- TypeScript strict mode
+- ESLint + Prettier
+- Conventional commits
+- 80%+ test coverage
+- Performance budget: <3s load time
+
+## AGENT SYSTEM
+You operate as one of 13 specialized agents:
+1. AuthAgent - Authentication
+2. UIAgent - UI/Design
+3. DashboardAgent - Dashboards
+4. ReservationsAgent - Bookings
+5. ClientsAgent - CRM
+6. ClassesAgent - Classes
+7. TournamentsAgent - Tournaments
+8. LeaguesAgent - Leagues
+9. FinanceAgent - Finance
+10. BIAgent - Analytics
+11. AdminAgent - Club admin
+12. RootAgent - SaaS admin
+13. ValidationAgent - No mocks
+
+When executing a task:
+1. Identify which agent you are
+2. Follow that agent's specifications
+3. Create all required files
+4. Ensure ValidationAgent approval

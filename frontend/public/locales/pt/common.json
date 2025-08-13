@@ -1,0 +1,31 @@
+{
+  "navigation": {
+    "dashboard": "Painel",
+    "matches": "Partidas",
+    "players": "Jogadores",
+    "clubs": "Clubes",
+    "tournaments": "Torneios",
+    "analytics": "Análises",
+    "settings": "Configurações"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "error": "Ocorreu um erro",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "create": "Criar",
+    "search": "Pesquisar",
+    "filter": "Filtrar",
+    "export": "Exportar"
+  },
+  "auth": {
+    "login": "Entrar",
+    "logout": "Sair",
+    "register": "Cadastrar",
+    "email": "Email",
+    "password": "Senha",
+    "forgotPassword": "Esqueceu sua senha?"
+  }
+}

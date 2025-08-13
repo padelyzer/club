@@ -1,0 +1,77 @@
+{
+  "timestamp": "2025-08-13T14:18:43.804618",
+  "frontend_url": "http://localhost:3000",
+  "correct_login_route": "/es/login",
+  "middleware_behavior": "Locale-based routing with authentication redirects",
+  "results": [
+    {
+      "route": "/login-simple",
+      "description": "Original failing route",
+      "status_code": 404,
+      "status": "\u274c NOT FOUND",
+      "details": "Page does not exist"
+    },
+    {
+      "route": "/es/login",
+      "description": "Spanish locale login (correct)",
+      "status_code": 200,
+      "status": "\u2705 SUCCESS",
+      "details": "Page loads (OK - 20493 bytes)"
+    },
+    {
+      "route": "/en/login",
+      "description": "English locale login",
+      "status_code": 200,
+      "status": "\u2705 SUCCESS",
+      "details": "Page loads (OK - 20493 bytes)"
+    },
+    {
+      "route": "/login",
+      "description": "Root login (should redirect)",
+      "status_code": 404,
+      "status": "\u274c NOT FOUND",
+      "details": "Page does not exist"
+    },
+    {
+      "route": "/",
+      "description": "Home page",
+      "status_code": 200,
+      "status": "\u2705 SUCCESS",
+      "details": "Page loads (OK - 40453 bytes)"
+    },
+    {
+      "route": "/es/dashboard-produccion",
+      "description": "Dashboard (should redirect to login)",
+      "status_code": 307,
+      "status": "\ud83d\udd04 REDIRECT",
+      "details": "Redirects to: /es/login?from=%2Fes%2Fdashboard-produccion"
+    },
+    {
+      "route": "/dashboard-produccion",
+      "description": "Dashboard without locale",
+      "status_code": 200,
+      "status": "\u2705 SUCCESS",
+      "details": "Page loads (OK - 9030 bytes)"
+    },
+    {
+      "route": "/es/reservations",
+      "description": "Reservations page",
+      "status_code": 307,
+      "status": "\ud83d\udd04 REDIRECT",
+      "details": "Redirects to: /es/login?from=%2Fes%2Freservations"
+    },
+    {
+      "route": "/es/clubs",
+      "description": "Clubs page",
+      "status_code": 307,
+      "status": "\ud83d\udd04 REDIRECT",
+      "details": "Redirects to: /es/login?from=%2Fes%2Fclubs"
+    }
+  ],
+  "recommendations": [
+    "Update E2E tests to use /es/login instead of /login-simple",
+    "Use proper locale prefixes for all routes",
+    "Expect and handle authentication redirects properly",
+    "Test with proper authentication cookies for protected routes"
+  ]
+}

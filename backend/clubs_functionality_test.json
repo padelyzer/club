@@ -1,0 +1,126 @@
+{
+  "timestamp": "2025-08-04T12:44:17.746179",
+  "tests": {
+    "list_clubs": {
+      "status": "passed",
+      "count": 1
+    },
+    "get_club_detail": {
+      "status": "failed",
+      "error": 404
+    },
+    "list_courts": {
+      "status": "failed",
+      "error": 404
+    },
+    "court_availability": {
+      "status": "passed",
+      "data": {
+        "court_id": "879150b1-3f6c-4905-9598-3e2b7388f574",
+        "court_name": "API Test Court",
+        "availability": [
+          {
+            "date": "2025-08-04",
+            "is_closed": false,
+            "time_slots": [
+              {
+                "start_time": "08:00:00",
+                "end_time": "09:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "09:00:00",
+                "end_time": "10:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "10:00:00",
+                "end_time": "11:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "11:00:00",
+                "end_time": "12:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "12:00:00",
+                "end_time": "13:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "13:00:00",
+                "end_time": "14:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "14:00:00",
+                "end_time": "15:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "15:00:00",
+                "end_time": "16:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "16:00:00",
+                "end_time": "17:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "17:00:00",
+                "end_time": "18:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "18:00:00",
+                "end_time": "19:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "19:00:00",
+                "end_time": "20:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "20:00:00",
+                "end_time": "21:00:00",
+                "is_available": false,
+                "price": "450.00"
+              },
+              {
+                "start_time": "21:00:00",
+                "end_time": "22:00:00",
+                "is_available": false,
+                "price": "450.00"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "create_announcement": {
+      "status": "failed",
+      "error": {
+        "detail": "M\u00e9todo \"POST\" no permitido."
+      }
+    },
+    "schedules": {
+      "status": "failed",
+      "error": 404
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "timestamp": "2025-08-04T12:48:57.779578",
+  "environment": "production_ready",
+  "tests": {
+    "multi_tenant_isolation": {
+      "name": "multi_tenant_isolation",
+      "passed": true,
+      "details": [
+        {
+          "check": "club_isolation",
+          "result": "passed",
+          "clubs_visible": 1
+        },
+        {
+          "check": "cross_org_access",
+          "result": "passed"
+        },
+        {
+          "check": "court_organization",
+          "result": "passed",
+          "courts": 2
+        }
+      ]
+    },
+    "club_operations": {
+      "name": "club_operations",
+      "passed": true,
+      "details": [
+        {
+          "operation": "GET",
+          "result": "passed"
+        },
+        {
+          "operation": "PATCH",
+          "result": "not_allowed",
+          "status": 404
+        }
+      ]
+    },
+    "reservations_flow": {
+      "name": "reservations_flow",
+      "passed": false,
+      "details": [],
+      "error": "no such column: clients_clientprofile.organization_id"
+    }
+  },
+  "performance": {
+    "/api/v1/clubs/": {
+      "name": "Lista de clubes",
+      "response_time_ms": 9.647846221923828,
+      "status_code": 200,
+      "acceptable": true
+    },
+    "/api/v1/courts/?club=7eb65179-65fa-4e59-83bc-cceac964c6c8": {
+      "name": "Lista de canchas",
+      "response_time_ms": 5.645990371704102,
+      "status_code": 404,
+      "acceptable": true
+    },
+    "/api/v1/reservations/": {
+      "name": "Lista de reservaciones",
+      "response_time_ms": 170.32980918884277,
+      "status_code": 200,
+      "acceptable": true
+    },
+    "/api/v1/auth/profile/": {
+      "name": "Perfil de usuario",
+      "response_time_ms": 7.380247116088867,
+      "status_code": 200,
+      "acceptable": true
+    }
+  },
+  "security": {
+    "headers": {
+      "Content-Type": "application/json",
+      "Allow": "GET, POST, HEAD, OPTIONS",
+      "X-Frame-Options": "DENY",
+      "Content-Length": "929",
+      "Vary": "origin",
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "same-origin",
+      "Cross-Origin-Opener-Policy": "same-origin"
+    }
+  },
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5
+  }
+}

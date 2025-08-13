@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear All Storage</title>
+</head>
+<body>
+    <h1>Clearing all storage and cookies...</h1>
+    <script>
+        // Clear localStorage
+        localStorage.clear();
+        
+        // Clear sessionStorage
+        sessionStorage.clear();
+        
+        // Clear all cookies
+        document.cookie.split(";").forEach(function(c) { 
+            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+        });
+        
+        // Remove specific problematic items
+        localStorage.removeItem('preferredClubSlug');
+        localStorage.removeItem('activeClub');
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        
+        document.body.innerHTML = '<h1>All storage and cookies cleared! You can close this window and try logging in again.</h1>';
+    </script>
+</body>
+</html>

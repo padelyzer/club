@@ -1,0 +1,72 @@
+{
+  "module": "clubs",
+  "timestamp": "2025-08-06T16:45:41.766514",
+  "tests": {
+    "LIST - Listar clubes": {
+      "success": true,
+      "message": "Listado exitoso: 5 clubes encontrados"
+    },
+    "CREATE - Crear club": {
+      "success": true,
+      "message": "Club creado: Club Test 164541 (ID: b268091d-de3d-4b5e-b70b-70a619ad0193)"
+    },
+    "READ - Leer detalle": {
+      "success": true,
+      "message": "Detalle obtenido: Club Test 164541"
+    },
+    "UPDATE - Actualizar club": {
+      "success": true,
+      "message": "Club actualizado correctamente"
+    },
+    "DELETE - Eliminar club": {
+      "success": true,
+      "message": "Club eliminado correctamente"
+    },
+    "Acceso sin autenticación": {
+      "success": true,
+      "message": "Acceso denegado sin autenticación"
+    },
+    "Validación de organización": {
+      "success": true,
+      "message": "Validación correcta: requiere organización"
+    },
+    "Búsqueda por nombre": {
+      "success": true,
+      "message": "Búsqueda funciona: 1 resultados"
+    },
+    "Paginación": {
+      "success": true,
+      "message": "Paginación OK: 6 total, página 1/3"
+    },
+    "Filtros": {
+      "success": true,
+      "message": "Filtros funcionan correctamente"
+    },
+    "Integración con canchas": {
+      "success": true,
+      "message": "Endpoint de canchas no implementado aún"
+    },
+    "Configuración de horarios": {
+      "success": true,
+      "message": "Horarios configurados: 08:00:00 - 22:00:00"
+    },
+    "Unicidad de slug": {
+      "success": false,
+      "message": "Error: permitió slug duplicado (201)"
+    },
+    "Validación de teléfono": {
+      "success": true,
+      "message": "Validación OK: rechaza teléfonos inválidos"
+    },
+    "Integridad de datos": {
+      "success": true,
+      "message": "Integridad OK en 7 clubes"
+    }
+  },
+  "summary": {
+    "total": 15,
+    "passed": 14,
+    "failed": 1,
+    "skipped": 0
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "timestamp": "2025-08-13T15:01:31.609238",
+  "models": {
+    "clients": {},
+    "clubs": {},
+    "classes": {},
+    "reservations": {},
+    "leagues": {},
+    "bi": {},
+    "root": {},
+    "finance": {},
+    "tournaments": {},
+    "authentication": {},
+    "notifications": {}
+  },
+  "relationships": {
+    "foreign_keys": [],
+    "many_to_many": [],
+    "one_to_one": []
+  },
+  "indexes": {
+    "single_field": [],
+    "composite": [],
+    "unique": [],
+    "recommendations": []
+  },
+  "migrations": {
+    "total_count": 21,
+    "by_app": {
+      "clients": {
+        "count": 1,
+        "files": [
+          "0001_initial.py"
+        ]
+      },
+      "clubs": {
+        "count": 4,
+        "files": [
+          "0001_initial.py",
+          "0002_add_court_special_pricing.py",
+          "0003_court_images.py",
+          "0004_add_advanced_club_features.py"
+        ]
+      },
+      "classes": {
+        "count": 1,
+        "files": [
+          "0001_initial.py"
+        ]
+      },
+      "reservations": {
+        "count": 6,
+        "files": [
+          "0001_initial.py",
+          "0002_reservation_paid_at_reservation_payment_amount_and_more.py",
+          "0003_reservation_client.py",
+          "0004_add_reservation_payment_model.py",
+          "0005_alter_reservation_player_email.py",
+          "0006_add_reservation_fields.py"
+        ]
+      },
+      "leagues": {
+        "count": 1,
+        "files": [
+          "0001_initial.py"
+        ]
+      },
+      "bi": {
+        "count": 1,
+        "files": [
+          "0001_initial.py"
+        ]
+      },
+      "root": {
+        "count": 1,
+        "files": [
+          "0001_initial.py"
+        ]
+      },
+      "finance": {
+        "count": 2,
+        "files": [
+          "0001_initial.py",
+          "0002_payment_models_update.py"
+        ]
+      },
+      "tournaments": {
+        "count": 1,
+        "files": [
+          "0001_initial.py"
+        ]
+      },
+      "authentication": {
+        "count": 2,
+        "files": [
+          "0001_initial.py",
+          "0002_initial_schema.py"
+        ]
+      },
+      "notifications": {
+        "count": 1,
+        "files": [
+          "0001_initial.py"
+        ]
+      }
+    },
+    "latest_migrations": [
+      {
+        "app": "clients",
+        "file": "0001_initial.py",
+        "date": "2025-08-13T09:28:39.189533"
+      },
+      {
+        "app": "clubs",
+        "file": "0004_add_advanced_club_features.py",
+        "date": "2025-08-13T09:28:39.198752"
+      },
+      {
+        "app": "classes",
+        "file": "0001_initial.py",
+        "date": "2025-08-13T09:28:39.185576"
+      },
+      {
+        "app": "reservations",
+        "file": "0006_add_reservation_fields.py",
+        "date": "2025-08-13T09:28:39.228866"
+      },
+      {
+        "app": "leagues",
+        "file": "0001_initial.py",
+        "date": "2025-08-13T09:28:39.213686"
+      },
+      {
+        "app": "bi",
+        "file": "0001_initial.py",
+        "date": "2025-08-13T09:28:39.179500"
+      },
+      {
+        "app": "root",
+        "file": "0001_initial.py",
+        "date": "2025-08-13T09:28:39.235609"
+      },
+      {
+        "app": "finance",
+        "file": "0002_payment_models_update.py",
+        "date": "2025-08-13T09:28:39.206505"
+      },
+      {
+        "app": "tournaments",
+        "file": "0001_initial.py",
+        "date": "2025-08-13T09:28:39.247586"
+      },
+      {
+        "app": "authentication",
+        "file": "0002_initial_schema.py",
+        "date": "2025-08-13T09:28:39.173118"
+      },
+      {
+        "app": "notifications",
+        "file": "0001_initial.py",
+        "date": "2025-08-13T09:28:39.220688"
+      }
+    ],
+    "pending": []
+  },
+  "optimizations": [],
+  "schema_diagram": "erDiagram",
+  "statistics": {
+    "total_apps": 11,
+    "total_models": 0,
+    "total_fields": 0,
+    "total_relationships": {
+      "foreign_keys": 0,
+      "many_to_many": 0,
+      "one_to_one": 0,
+      "total": 0
+    },
+    "field_types_distribution": {},
+    "avg_fields_per_model": 0,
+    "models_without_timestamps": [],
+    "models_without_str_method": []
+  }
+}

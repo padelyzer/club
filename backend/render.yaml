@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: padelyzer-backend
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "bash start.sh"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        value: UQl8OMv8U5CAzDnpFw3AUaJdgr88mJWJT2Mt9DGc6PVPXzzTRSwp2HzRTxZcGZflfl8
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.production
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: DEBUG
+        value: "False"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: padelyzer-db
+          property: connectionString
+      - key: FRONTEND_URL
+        value: https://padelyzer.vercel.app
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://padelyzer.vercel.app,http://localhost:3000
+
+databases:
+  - name: padelyzer-db
+    plan: free
+    databaseName: padelyzer
+    user: padelyzer

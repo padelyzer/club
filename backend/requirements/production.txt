@@ -1,0 +1,19 @@
+-r base.txt
+
+# Production optimizations
+django-cachalot==2.6.2
+django-compression-middleware==0.5.0
+
+# Security
+django-csp==3.7
+django-ratelimit==4.1.0
+
+# Monitoring
+elastic-apm==6.19.0
+django-health-check==3.17.0
+
+# Database optimizations
+django-db-connection-pool==1.2.5
+
+# Static files
+whitenoise==6.6.0

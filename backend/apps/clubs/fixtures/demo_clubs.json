@@ -1,0 +1,128 @@
+[
+  {
+    "model": "clubs.club",
+    "pk": "11111111-1111-1111-1111-111111111111",
+    "fields": {
+      "created_at": "2024-01-01T10:00:00Z",
+      "updated_at": "2024-01-01T10:00:00Z",
+      "is_active": true,
+      "organization": "bf9644de-50a0-4ceb-b31c-f0fd423547b0",
+      "name": "Padel Club Demo",
+      "slug": "padel-club-demo",
+      "description": "Un club de padel de demostraci\u00f3n para testing",
+      "email": "demo@padelclub.com",
+      "phone": "+52 55 1234 5678",
+      "website": "https://padelclub.com",
+      "address": {
+        "street": "Av. Insurgentes Sur",
+        "number": "1234",
+        "colony": "Roma Norte",
+        "city": "CDMX",
+        "state": "Ciudad de M\u00e9xico",
+        "postal_code": "06700",
+        "country": "M\u00e9xico"
+      },
+      "latitude": "19.4185",
+      "longitude": "-99.1640",
+      "opening_time": "07:00:00",
+      "closing_time": "23:00:00",
+      "days_open": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "features": [
+        "parking",
+        "restaurant",
+        "pro_shop",
+        "lighting"
+      ],
+      "settings": {
+        "allow_online_booking": true,
+        "require_membership": false,
+        "advance_booking_days": 7
+      },
+      "logo_url": "",
+      "cover_image_url": "",
+      "primary_color": "#1E88E5",
+      "total_courts": 4,
+      "total_members": 150
+    }
+  },
+  {
+    "model": "clubs.court",
+    "pk": "22222222-2222-2222-2222-222222222222",
+    "fields": {
+      "created_at": "2024-01-01T10:00:00Z",
+      "updated_at": "2024-01-01T10:00:00Z",
+      "is_active": true,
+      "club": "11111111-1111-1111-1111-111111111111",
+      "organization": "bf9644de-50a0-4ceb-b31c-f0fd423547b0",
+      "name": "Cancha 1",
+      "number": 1,
+      "surface_type": "glass",
+      "has_lighting": true,
+      "has_heating": false,
+      "has_roof": false,
+      "is_maintenance": false,
+      "maintenance_notes": "",
+      "price_per_hour": "300.00"
+    }
+  },
+  {
+    "model": "clubs.court",
+    "pk": "33333333-3333-3333-3333-333333333333",
+    "fields": {
+      "created_at": "2024-01-01T10:00:00Z",
+      "updated_at": "2024-01-01T10:00:00Z",
+      "is_active": true,
+      "club": "11111111-1111-1111-1111-111111111111",
+      "organization": "bf9644de-50a0-4ceb-b31c-f0fd423547b0",
+      "name": "Cancha 2",
+      "number": 2,
+      "surface_type": "glass",
+      "has_lighting": true,
+      "has_heating": false,
+      "has_roof": true,
+      "is_maintenance": false,
+      "maintenance_notes": "",
+      "price_per_hour": "350.00"
+    }
+  },
+  {
+    "model": "clubs.schedule",
+    "pk": "44444444-4444-4444-4444-444444444444",
+    "fields": {
+      "created_at": "2024-01-01T10:00:00Z",
+      "updated_at": "2024-01-01T10:00:00Z",
+      "is_active": true,
+      "club": "11111111-1111-1111-1111-111111111111",
+      "organization": "bf9644de-50a0-4ceb-b31c-f0fd423547b0",
+      "weekday": 0,
+      "opening_time": "07:00:00",
+      "closing_time": "23:00:00",
+      "is_closed": false,
+      "notes": "Horario regular de lunes"
+    }
+  },
+  {
+    "model": "clubs.schedule",
+    "pk": "55555555-5555-5555-5555-555555555555",
+    "fields": {
+      "created_at": "2024-01-01T10:00:00Z",
+      "updated_at": "2024-01-01T10:00:00Z",
+      "is_active": true,
+      "club": "11111111-1111-1111-1111-111111111111",
+      "organization": "bf9644de-50a0-4ceb-b31c-f0fd423547b0",
+      "weekday": 6,
+      "opening_time": "08:00:00",
+      "closing_time": "22:00:00",
+      "is_closed": false,
+      "notes": "Horario de domingo"
+    }
+  }
+]

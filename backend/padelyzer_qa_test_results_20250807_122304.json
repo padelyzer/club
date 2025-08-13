@@ -1,0 +1,21 @@
+{
+  "test_start": "2025-08-07T12:23:03.807433",
+  "flows_tested": [],
+  "validations": [],
+  "errors": [
+    {
+      "timestamp": "12:23:04",
+      "step": "Login failed",
+      "status": "ERROR",
+      "details": "Status: 400"
+    },
+    {
+      "timestamp": "12:23:04",
+      "step": "Authentication failed - cannot continue",
+      "status": "ERROR",
+      "details": null
+    }
+  ],
+  "warnings": [],
+  "summary": {}
+}

@@ -1,0 +1,899 @@
+{
+  "authentication": {
+    "module_name": "authentication",
+    "is_critical": true,
+    "timestamp": "2025-08-11T15:14:08.884469",
+    "path": "/Users/ja/PZR4/backend/apps/authentication",
+    "code_health": {
+      "status": "analyzed",
+      "files_count": 40,
+      "total_lines": 5679,
+      "total_functions": 230,
+      "total_classes": 123,
+      "documentation_ratio": 0.6,
+      "avg_lines_per_file": 142
+    },
+    "test_coverage": {
+      "status": "error",
+      "test_files_count": 4,
+      "has_tests": true,
+      "estimated_coverage": 80
+    },
+    "file_structure": {
+      "completeness": 1.0,
+      "existing_files": [
+        "models.py",
+        "views.py",
+        "serializers.py",
+        "urls.py",
+        "tests.py",
+        "__init__.py"
+      ],
+      "missing_files": [],
+      "has_migrations": true,
+      "has_admin": true
+    },
+    "models_status": {
+      "status": "exists",
+      "models_count": 8,
+      "has_base_model": true,
+      "has_relationships": true,
+      "file_size": 24615
+    },
+    "views_status": {
+      "status": "exists",
+      "has_viewsets": true,
+      "has_permissions": true,
+      "has_serializers": true,
+      "file_size": 35596
+    },
+    "urls_status": {
+      "status": "exists",
+      "has_router": true,
+      "has_urlpatterns": true
+    },
+    "tests_status": {
+      "status": "exists",
+      "test_files": 4,
+      "test_methods": 75
+    },
+    "dependencies": {
+      "django_rest": [
+        "rest_framework",
+        "serializers",
+        "viewsets"
+      ],
+      "django_core": [
+        "django.db",
+        "django.contrib"
+      ],
+      "custom_imports": [
+        "apps.",
+        "core."
+      ],
+      "external_libs": [
+        "celery",
+        "requests"
+      ]
+    },
+    "imports": {
+      "total_imports": 258,
+      "unique_imports": 135,
+      "external_imports": 213
+    },
+    "performance": {
+      "performance_score": 80,
+      "optimizations": {
+        "has_select_related": true,
+        "has_prefetch_related": true,
+        "has_pagination": false,
+        "has_caching": true,
+        "has_indexes": true
+      },
+      "optimizations_count": 4
+    },
+    "documentation": {
+      "has_documentation": true,
+      "doc_files": [
+        "CLAUDE.md",
+        "README.md"
+      ],
+      "doc_count": 2
+    },
+    "overall_status": {
+      "score": 98,
+      "max_score": 100,
+      "percentage": 98,
+      "level": "excellent",
+      "emoji": "\ud83d\udfe2",
+      "text": "Excelente"
+    },
+    "mvp_progress": {
+      "percentage": 100,
+      "completed_requirements": 5,
+      "total_requirements": 5,
+      "requirements": {
+        "models": true,
+        "views": true,
+        "urls": true,
+        "basic_tests": true,
+        "documentation": true
+      },
+      "is_mvp_ready": true
+    },
+    "recommendations": [],
+    "scan_success": true
+  },
+  "clubs": {
+    "module_name": "clubs",
+    "is_critical": true,
+    "timestamp": "2025-08-11T15:14:08.902225",
+    "path": "/Users/ja/PZR4/backend/apps/clubs",
+    "code_health": {
+      "status": "analyzed",
+      "files_count": 30,
+      "total_lines": 7672,
+      "total_functions": 314,
+      "total_classes": 125,
+      "documentation_ratio": 0.7,
+      "avg_lines_per_file": 256
+    },
+    "test_coverage": {
+      "status": "error",
+      "test_files_count": 8,
+      "has_tests": true,
+      "estimated_coverage": 80
+    },
+    "file_structure": {
+      "completeness": 0.83,
+      "existing_files": [
+        "models.py",
+        "views.py",
+        "serializers.py",
+        "urls.py",
+        "__init__.py"
+      ],
+      "missing_files": [
+        "tests.py"
+      ],
+      "has_migrations": true,
+      "has_admin": true
+    },
+    "models_status": {
+      "status": "exists",
+      "models_count": 8,
+      "has_base_model": true,
+      "has_relationships": true,
+      "file_size": 30979
+    },
+    "views_status": {
+      "status": "exists",
+      "has_viewsets": true,
+      "has_permissions": true,
+      "has_serializers": true,
+      "file_size": 36875
+    },
+    "urls_status": {
+      "status": "exists",
+      "has_router": true,
+      "has_urlpatterns": true
+    },
+    "tests_status": {
+      "status": "exists",
+      "test_files": 8,
+      "test_methods": 71
+    },
+    "dependencies": {
+      "django_rest": [
+        "rest_framework",
+        "serializers",
+        "viewsets"
+      ],
+      "django_core": [
+        "django.db",
+        "django.contrib"
+      ],
+      "custom_imports": [
+        "apps.",
+        "core."
+      ],
+      "external_libs": []
+    },
+    "imports": {
+      "total_imports": 287,
+      "unique_imports": 128,
+      "external_imports": 235
+    },
+    "performance": {
+      "performance_score": 100,
+      "optimizations": {
+        "has_select_related": true,
+        "has_prefetch_related": true,
+        "has_pagination": true,
+        "has_caching": true,
+        "has_indexes": true
+      },
+      "optimizations_count": 5
+    },
+    "documentation": {
+      "has_documentation": true,
+      "doc_files": [
+        "CLAUDE.md",
+        "README.md"
+      ],
+      "doc_count": 2
+    },
+    "overall_status": {
+      "score": 97,
+      "max_score": 100,
+      "percentage": 97,
+      "level": "excellent",
+      "emoji": "\ud83d\udfe2",
+      "text": "Excelente"
+    },
+    "mvp_progress": {
+      "percentage": 100,
+      "completed_requirements": 5,
+      "total_requirements": 5,
+      "requirements": {
+        "models": true,
+        "views": true,
+        "urls": true,
+        "basic_tests": true,
+        "documentation": true
+      },
+      "is_mvp_ready": true
+    },
+    "recommendations": [
+      "Crear archivos faltantes: tests.py"
+    ],
+    "scan_success": true
+  },
+  "reservations": {
+    "module_name": "reservations",
+    "is_critical": true,
+    "timestamp": "2025-08-11T15:14:08.918534",
+    "path": "/Users/ja/PZR4/backend/apps/reservations",
+    "code_health": {
+      "status": "analyzed",
+      "files_count": 27,
+      "total_lines": 7314,
+      "total_functions": 298,
+      "total_classes": 82,
+      "documentation_ratio": 0.63,
+      "avg_lines_per_file": 271
+    },
+    "test_coverage": {
+      "status": "error",
+      "test_files_count": 4,
+      "has_tests": true,
+      "estimated_coverage": 80
+    },
+    "file_structure": {
+      "completeness": 0.83,
+      "existing_files": [
+        "models.py",
+        "views.py",
+        "serializers.py",
+        "urls.py",
+        "__init__.py"
+      ],
+      "missing_files": [
+        "tests.py"
+      ],
+      "has_migrations": true,
+      "has_admin": true
+    },
+    "models_status": {
+      "status": "exists",
+      "models_count": 3,
+      "has_base_model": true,
+      "has_relationships": true,
+      "file_size": 24816
+    },
+    "views_status": {
+      "status": "exists",
+      "has_viewsets": true,
+      "has_permissions": true,
+      "has_serializers": true,
+      "file_size": 23513
+    },
+    "urls_status": {
+      "status": "exists",
+      "has_router": true,
+      "has_urlpatterns": true
+    },
+    "tests_status": {
+      "status": "exists",
+      "test_files": 4,
+      "test_methods": 49
+    },
+    "dependencies": {
+      "django_rest": [
+        "rest_framework",
+        "serializers",
+        "viewsets"
+      ],
+      "django_core": [
+        "django.db",
+        "django.contrib"
+      ],
+      "custom_imports": [
+        "apps.",
+        "core."
+      ],
+      "external_libs": [
+        "stripe"
+      ]
+    },
+    "imports": {
+      "total_imports": 209,
+      "unique_imports": 87,
+      "external_imports": 141
+    },
+    "performance": {
+      "performance_score": 100,
+      "optimizations": {
+        "has_select_related": true,
+        "has_prefetch_related": true,
+        "has_pagination": true,
+        "has_caching": true,
+        "has_indexes": true
+      },
+      "optimizations_count": 5
+    },
+    "documentation": {
+      "has_documentation": true,
+      "doc_files": [
+        "CLAUDE.md",
+        "README.md"
+      ],
+      "doc_count": 2
+    },
+    "overall_status": {
+      "score": 97,
+      "max_score": 100,
+      "percentage": 97,
+      "level": "excellent",
+      "emoji": "\ud83d\udfe2",
+      "text": "Excelente"
+    },
+    "mvp_progress": {
+      "percentage": 100,
+      "completed_requirements": 5,
+      "total_requirements": 5,
+      "requirements": {
+        "models": true,
+        "views": true,
+        "urls": true,
+        "basic_tests": true,
+        "documentation": true
+      },
+      "is_mvp_ready": true
+    },
+    "recommendations": [
+      "Crear archivos faltantes: tests.py"
+    ],
+    "scan_success": true
+  },
+  "finance": {
+    "module_name": "finance",
+    "is_critical": true,
+    "timestamp": "2025-08-11T15:14:08.934773",
+    "path": "/Users/ja/PZR4/backend/apps/finance",
+    "code_health": {
+      "status": "analyzed",
+      "files_count": 22,
+      "total_lines": 6681,
+      "total_functions": 212,
+      "total_classes": 74,
+      "documentation_ratio": 0.77,
+      "avg_lines_per_file": 304
+    },
+    "test_coverage": {
+      "status": "error",
+      "test_files_count": 2,
+      "has_tests": true,
+      "estimated_coverage": 60
+    },
+    "file_structure": {
+      "completeness": 0.83,
+      "existing_files": [
+        "models.py",
+        "views.py",
+        "serializers.py",
+        "urls.py",
+        "__init__.py"
+      ],
+      "missing_files": [
+        "tests.py"
+      ],
+      "has_migrations": true,
+      "has_admin": true
+    },
+    "models_status": {
+      "status": "exists",
+      "models_count": 8,
+      "has_base_model": true,
+      "has_relationships": true,
+      "file_size": 27297
+    },
+    "views_status": {
+      "status": "exists",
+      "has_viewsets": true,
+      "has_permissions": true,
+      "has_serializers": true,
+      "file_size": 12658
+    },
+    "urls_status": {
+      "status": "exists",
+      "has_router": true,
+      "has_urlpatterns": true
+    },
+    "tests_status": {
+      "status": "exists",
+      "test_files": 2,
+      "test_methods": 29
+    },
+    "dependencies": {
+      "django_rest": [
+        "rest_framework",
+        "serializers",
+        "viewsets"
+      ],
+      "django_core": [
+        "django.db",
+        "django.contrib"
+      ],
+      "custom_imports": [
+        "apps.",
+        "core."
+      ],
+      "external_libs": [
+        "stripe",
+        "requests"
+      ]
+    },
+    "imports": {
+      "total_imports": 196,
+      "unique_imports": 102,
+      "external_imports": 143
+    },
+    "performance": {
+      "performance_score": 60,
+      "optimizations": {
+        "has_select_related": true,
+        "has_prefetch_related": false,
+        "has_pagination": false,
+        "has_caching": true,
+        "has_indexes": true
+      },
+      "optimizations_count": 3
+    },
+    "documentation": {
+      "has_documentation": true,
+      "doc_files": [
+        "CLAUDE.md",
+        "README.md"
+      ],
+      "doc_count": 2
+    },
+    "overall_status": {
+      "score": 93,
+      "max_score": 100,
+      "percentage": 93,
+      "level": "excellent",
+      "emoji": "\ud83d\udfe2",
+      "text": "Excelente"
+    },
+    "mvp_progress": {
+      "percentage": 100,
+      "completed_requirements": 5,
+      "total_requirements": 5,
+      "requirements": {
+        "models": true,
+        "views": true,
+        "urls": true,
+        "basic_tests": true,
+        "documentation": true
+      },
+      "is_mvp_ready": true
+    },
+    "recommendations": [
+      "Crear archivos faltantes: tests.py"
+    ],
+    "scan_success": true
+  },
+  "clients": {
+    "module_name": "clients",
+    "is_critical": false,
+    "timestamp": "2025-08-11T15:14:08.948060",
+    "path": "/Users/ja/PZR4/backend/apps/clients",
+    "code_health": {
+      "status": "analyzed",
+      "files_count": 23,
+      "total_lines": 4653,
+      "total_functions": 178,
+      "total_classes": 86,
+      "documentation_ratio": 0.7,
+      "avg_lines_per_file": 202
+    },
+    "test_coverage": {
+      "status": "error",
+      "test_files_count": 5,
+      "has_tests": true,
+      "estimated_coverage": 60
+    },
+    "file_structure": {
+      "completeness": 0.83,
+      "existing_files": [
+        "models.py",
+        "views.py",
+        "serializers.py",
+        "urls.py",
+        "__init__.py"
+      ],
+      "missing_files": [
+        "tests.py"
+      ],
+      "has_migrations": true,
+      "has_admin": true
+    },
+    "models_status": {
+      "status": "exists",
+      "models_count": 8,
+      "has_base_model": true,
+      "has_relationships": true,
+      "file_size": 18527
+    },
+    "views_status": {
+      "status": "exists",
+      "has_viewsets": true,
+      "has_permissions": true,
+      "has_serializers": true,
+      "file_size": 35161
+    },
+    "urls_status": {
+      "status": "exists",
+      "has_router": true,
+      "has_urlpatterns": true
+    },
+    "tests_status": {
+      "status": "exists",
+      "test_files": 5,
+      "test_methods": 67
+    },
+    "dependencies": {
+      "django_rest": [
+        "rest_framework",
+        "serializers",
+        "viewsets"
+      ],
+      "django_core": [
+        "django.db",
+        "django.contrib"
+      ],
+      "custom_imports": [
+        "apps.",
+        "core."
+      ],
+      "external_libs": [
+        "requests"
+      ]
+    },
+    "imports": {
+      "total_imports": 140,
+      "unique_imports": 68,
+      "external_imports": 106
+    },
+    "performance": {
+      "performance_score": 80,
+      "optimizations": {
+        "has_select_related": true,
+        "has_prefetch_related": true,
+        "has_pagination": true,
+        "has_caching": false,
+        "has_indexes": true
+      },
+      "optimizations_count": 4
+    },
+    "documentation": {
+      "has_documentation": true,
+      "doc_files": [
+        "CLAUDE.md",
+        "README.md"
+      ],
+      "doc_count": 2
+    },
+    "overall_status": {
+      "score": 95,
+      "max_score": 100,
+      "percentage": 95,
+      "level": "excellent",
+      "emoji": "\ud83d\udfe2",
+      "text": "Excelente"
+    },
+    "mvp_progress": {
+      "percentage": 100,
+      "completed_requirements": 5,
+      "total_requirements": 5,
+      "requirements": {
+        "models": true,
+        "views": true,
+        "urls": true,
+        "basic_tests": true,
+        "documentation": true
+      },
+      "is_mvp_ready": true
+    },
+    "recommendations": [
+      "Crear archivos faltantes: tests.py"
+    ],
+    "scan_success": true
+  },
+  "tournaments": {
+    "module_name": "tournaments",
+    "is_critical": false,
+    "timestamp": "2025-08-11T15:14:08.959032",
+    "path": "/Users/ja/PZR4/backend/apps/tournaments",
+    "code_health": {
+      "status": "analyzed",
+      "files_count": 22,
+      "total_lines": 7079,
+      "total_functions": 266,
+      "total_classes": 98,
+      "documentation_ratio": 0.68,
+      "avg_lines_per_file": 322
+    },
+    "test_coverage": {
+      "status": "error",
+      "test_files_count": 3,
+      "has_tests": true,
+      "estimated_coverage": 60
+    },
+    "file_structure": {
+      "completeness": 0.83,
+      "existing_files": [
+        "models.py",
+        "views.py",
+        "serializers.py",
+        "urls.py",
+        "__init__.py"
+      ],
+      "missing_files": [
+        "tests.py"
+      ],
+      "has_migrations": true,
+      "has_admin": true
+    },
+    "models_status": {
+      "status": "exists",
+      "models_count": 8,
+      "has_base_model": true,
+      "has_relationships": true,
+      "file_size": 25083
+    },
+    "views_status": {
+      "status": "exists",
+      "has_viewsets": true,
+      "has_permissions": true,
+      "has_serializers": true,
+      "file_size": 19586
+    },
+    "urls_status": {
+      "status": "exists",
+      "has_router": true,
+      "has_urlpatterns": true
+    },
+    "tests_status": {
+      "status": "exists",
+      "test_files": 3,
+      "test_methods": 43
+    },
+    "dependencies": {
+      "django_rest": [
+        "rest_framework",
+        "serializers",
+        "viewsets"
+      ],
+      "django_core": [
+        "django.db",
+        "django.contrib"
+      ],
+      "custom_imports": [
+        "apps.",
+        "core."
+      ],
+      "external_libs": []
+    },
+    "imports": {
+      "total_imports": 181,
+      "unique_imports": 92,
+      "external_imports": 120
+    },
+    "performance": {
+      "performance_score": 80,
+      "optimizations": {
+        "has_select_related": true,
+        "has_prefetch_related": true,
+        "has_pagination": false,
+        "has_caching": true,
+        "has_indexes": true
+      },
+      "optimizations_count": 4
+    },
+    "documentation": {
+      "has_documentation": true,
+      "doc_files": [
+        "README.md",
+        "CLAUDE.md",
+        "README.md"
+      ],
+      "doc_count": 3
+    },
+    "overall_status": {
+      "score": 95,
+      "max_score": 100,
+      "percentage": 95,
+      "level": "excellent",
+      "emoji": "\ud83d\udfe2",
+      "text": "Excelente"
+    },
+    "mvp_progress": {
+      "percentage": 100,
+      "completed_requirements": 5,
+      "total_requirements": 5,
+      "requirements": {
+        "models": true,
+        "views": true,
+        "urls": true,
+        "basic_tests": true,
+        "documentation": true
+      },
+      "is_mvp_ready": true
+    },
+    "recommendations": [
+      "Crear archivos faltantes: tests.py"
+    ],
+    "scan_success": true
+  },
+  "classes": {
+    "module_name": "classes",
+    "is_critical": false,
+    "timestamp": "2025-08-11T15:14:08.971413",
+    "path": "/Users/ja/PZR4/backend/apps/classes",
+    "code_health": {
+      "status": "analyzed",
+      "files_count": 12,
+      "total_lines": 2654,
+      "total_functions": 81,
+      "total_classes": 110,
+      "documentation_ratio": 0.58,
+      "avg_lines_per_file": 221
+    },
+    "test_coverage": {
+      "status": "error",
+      "test_files_count": 2,
+      "has_tests": true,
+      "estimated_coverage": 40
+    },
+    "file_structure": {
+      "completeness": 0.83,
+      "existing_files": [
+        "models.py",
+        "views.py",
+        "serializers.py",
+        "urls.py",
+        "__init__.py"
+      ],
+      "missing_files": [
+        "tests.py"
+      ],
+      "has_migrations": true,
+      "has_admin": true
+    },
+    "models_status": {
+      "status": "exists",
+      "models_count": 21,
+      "has_base_model": true,
+      "has_relationships": true,
+      "file_size": 23940
+    },
+    "views_status": {
+      "status": "exists",
+      "has_viewsets": true,
+      "has_permissions": true,
+      "has_serializers": true,
+      "file_size": 24084
+    },
+    "urls_status": {
+      "status": "exists",
+      "has_router": true,
+      "has_urlpatterns": true
+    },
+    "tests_status": {
+      "status": "exists",
+      "test_files": 2,
+      "test_methods": 13
+    },
+    "dependencies": {
+      "django_rest": [
+        "rest_framework",
+        "serializers",
+        "viewsets"
+      ],
+      "django_core": [
+        "django.db",
+        "django.contrib"
+      ],
+      "custom_imports": [
+        "core.",
+        "apps."
+      ],
+      "external_libs": []
+    },
+    "imports": {
+      "total_imports": 64,
+      "unique_imports": 45,
+      "external_imports": 44
+    },
+    "performance": {
+      "performance_score": 40,
+      "optimizations": {
+        "has_select_related": false,
+        "has_prefetch_related": false,
+        "has_pagination": true,
+        "has_caching": false,
+        "has_indexes": true
+      },
+      "optimizations_count": 2
+    },
+    "documentation": {
+      "has_documentation": true,
+      "doc_files": [
+        "README.md",
+        "CLAUDE.md",
+        "README.md"
+      ],
+      "doc_count": 3
+    },
+    "overall_status": {
+      "score": 91,
+      "max_score": 100,
+      "percentage": 91,
+      "level": "excellent",
+      "emoji": "\ud83d\udfe2",
+      "text": "Excelente"
+    },
+    "mvp_progress": {
+      "percentage": 100,
+      "completed_requirements": 5,
+      "total_requirements": 5,
+      "requirements": {
+        "models": true,
+        "views": true,
+        "urls": true,
+        "basic_tests": true,
+        "documentation": true
+      },
+      "is_mvp_ready": true
+    },
+    "recommendations": [
+      "Crear archivos faltantes: tests.py",
+      "Agregar optimizaciones de performance: select_related()"
+    ],
+    "scan_success": true
+  },
+  "_summary": {
+    "timestamp": "2025-08-11T15:14:08.979152",
+    "total_modules": 7,
+    "critical_modules": 4,
+    "avg_score": 95,
+    "mvp_ready_modules": 7,
+    "mvp_ready_percentage": 100,
+    "status_distribution": {
+      "excellent": 7
+    },
+    "overall_health": "good"
+  }
+}
