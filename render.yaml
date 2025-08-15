@@ -6,7 +6,7 @@ services:
   - type: web
     name: padelyzer-backend
     runtime: python
-    repo: https://github.com/tu-usuario/padelyzer # Cambiar a tu repo
+    repo: https://github.com/padelyzer/club
     branch: main
     rootDir: backend
     buildCommand: "./build.sh"
@@ -32,7 +32,7 @@ services:
   - type: web
     name: padelyzer-frontend  
     runtime: static
-    repo: https://github.com/tu-usuario/padelyzer # Cambiar a tu repo
+    repo: https://github.com/padelyzer/club
     branch: main
     rootDir: frontend
     buildCommand: "npm install && npm run build && npm run export"
