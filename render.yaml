@@ -22,11 +22,6 @@ services:
         fromDatabase:
           name: padelyzer-db
           property: connectionString
-      - key: REDIS_URL
-        fromService:
-          name: padelyzer-redis
-          type: redis
-          property: connectionString
     
   # Frontend Next.js (Static)
   - type: web
@@ -50,15 +45,9 @@ services:
         name: X-Frame-Options
         value: SAMEORIGIN
 
-  # Redis (para cache)
-  - type: redis
-    name: padelyzer-redis
-    plan: free # o "starter" para producción
-    maxmemoryPolicy: allkeys-lru
-
 databases:
   # PostgreSQL Database
   - name: padelyzer-db
-    plan: free # o "starter" para producción
+    plan: free
     databaseName: padelyzer
     user: padelyzer
