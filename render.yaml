@@ -5,6 +5,7 @@ services:
   # Backend Django API
   - type: web
     name: padelyzer-backend
+    plan: free
     runtime: python
     repo: https://github.com/padelyzer/club
     branch: main
@@ -25,7 +26,8 @@ services:
     
   # Frontend Next.js (Static)
   - type: web
-    name: padelyzer-frontend  
+    name: padelyzer-frontend
+    plan: free
     runtime: static
     repo: https://github.com/padelyzer/club
     branch: main
