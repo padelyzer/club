@@ -5,7 +5,6 @@ services:
   # Backend Django API
   - type: web
     name: padelyzer-backend
-    plan: hobby
     runtime: python
     repo: https://github.com/padelyzer/club
     branch: main
@@ -27,7 +26,6 @@ services:
   # Frontend Next.js (Static)
   - type: web
     name: padelyzer-frontend
-    plan: hobby
     runtime: static
     repo: https://github.com/padelyzer/club
     branch: main
@@ -50,6 +48,5 @@ services:
 databases:
   # PostgreSQL Database
   - name: padelyzer-db
-    plan: hobby
     databaseName: padelyzer
     user: padelyzer
