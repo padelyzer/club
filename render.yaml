@@ -50,16 +50,15 @@ services:
         name: X-Frame-Options
         value: SAMEORIGIN
 
+  # Redis (para cache)
+  - type: redis
+    name: padelyzer-redis
+    plan: free # o "starter" para producción
+    maxmemoryPolicy: allkeys-lru
+
 databases:
   # PostgreSQL Database
   - name: padelyzer-db
     plan: free # o "starter" para producción
     databaseName: padelyzer
     user: padelyzer
-
-# Redis (opcional para cache)
-services:
-  - type: redis
-    name: padelyzer-redis
-    plan: free # o "starter" para producción
-    maxmemoryPolicy: allkeys-lru
